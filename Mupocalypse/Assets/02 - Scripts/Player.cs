@@ -156,7 +156,7 @@ public class Player : Singleton<Player>
             {
                 canDash = false;
                 rb.velocity += dashSpeed * direction * Vector2.right;
-                //rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
+                rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
             }
         }
     }
@@ -241,6 +241,8 @@ public class Player : Singleton<Player>
     {
         // TODO
     }
+
+    void EnableYMovement() => rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
 
     void EnableMovement() => canMove = true;
     void DisableMovement() => canMove = false;
