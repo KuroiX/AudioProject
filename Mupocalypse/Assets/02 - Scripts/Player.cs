@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -36,6 +37,10 @@ public class Player : Singleton<Player>
     protected JumpSettings jump;
     [SerializeField]
     protected GroundCheck groundCheck;
+    [SerializeField]
+    int lives = 3;
+    [SerializeField]
+    Text livesDisplay = null;
     [SerializeField]
     Transform flip = null;
 
@@ -73,6 +78,13 @@ public class Player : Singleton<Player>
 
         if (canMove)
             Move();
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.collider.tag == "Enemy")
+        {
+            Damage();
+        }
     }
 
     protected void OnDrawGizmosSelected()
@@ -131,8 +143,28 @@ public class Player : Singleton<Player>
     }
 
     #endregion
+    #region Public
 
-    protected bool IsGrounded()
+    public void Damage()
+    {
+        if (lives == 0)
+            Die();
+        else
+        {
+            lives--;
+            UpdateDisplay();
+        }
+    }
+
+    public void Heal()
+    {
+        lives++;
+        UpdateDisplay();
+    }
+
+    #endregion
+
+    bool IsGrounded()
     {
         var cols = Physics2D.OverlapCircle(transform.position2D() + groundCheck.position, groundCheck.distance, groundCheck.layers);
         return cols != null;
@@ -157,6 +189,11 @@ public class Player : Singleton<Player>
         // TODO
     }
 
+    void Die()
+    {
+        Debug.Log("You died!");
+    }
+
     void DirectionFlipped()
     {
         if (flip != null && canMove)
@@ -170,4 +207,10 @@ public class Player : Singleton<Player>
 
     void EnableMovement() => canMove = true;
     void DisableMovement() => canMove = false;
+
+    void UpdateDisplay()
+    {
+        if (livesDisplay != null)
+            livesDisplay.text = string.Format("Lives: {0}", lives);
+    }
 }
