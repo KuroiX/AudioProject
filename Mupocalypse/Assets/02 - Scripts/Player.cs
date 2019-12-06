@@ -38,6 +38,8 @@ public class Player : Singleton<Player>
     [SerializeField]
     protected GroundCheck groundCheck;
     [SerializeField]
+    float dashSpeed = 10;
+    [SerializeField]
     int lives = 3;
     [SerializeField]
     int maxLives = 3;
@@ -54,6 +56,8 @@ public class Player : Singleton<Player>
     bool jumpButtonPressed;
     bool sprinting;
     bool canMove = true;
+    bool gravity = true;
+    bool canDash;
 
     #region MonoBehavior
 
@@ -75,11 +79,14 @@ public class Player : Singleton<Player>
         }
         else grounded = false;
 
-        // apply additional gravity
-        if (rb.velocity.y < 0)
-            rb.velocity += Vector2.up * Physics.gravity.y * (jump.fallMultiplyer - 1) * Time.fixedDeltaTime;
-        else if (rb.velocity.y > 0 && !jumpButtonPressed)
-            rb.velocity += Vector2.up * Physics.gravity.y * (jump.lowJumpMultiplyer - 1) * Time.fixedDeltaTime;
+        // apply gravity
+        if (gravity)
+        {
+            if (rb.velocity.y < 0)
+                rb.velocity += Vector2.up * Physics.gravity.y * jump.fallMultiplyer * Time.fixedDeltaTime;
+            else if (rb.velocity.y > 0 && !jumpButtonPressed)
+                rb.velocity += Vector2.up * Physics.gravity.y * jump.lowJumpMultiplyer * Time.fixedDeltaTime;
+        }
 
         if (canMove)
             Move();
@@ -140,6 +147,19 @@ public class Player : Singleton<Player>
             jumpButtonPressed = false;
     }
 
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (canDash || grounded)
+            {
+                canDash = false;
+                rb.velocity += dashSpeed * direction * Vector2.right;
+                //rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
+            }
+        }
+    }
+
     public void OnSprint(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -187,6 +207,7 @@ public class Player : Singleton<Player>
 
     void Jump()
     {
+        canDash = true;
         rb.velocity += Vector2.up * jump.initialVelocity;
         audioSource.Play();
     }

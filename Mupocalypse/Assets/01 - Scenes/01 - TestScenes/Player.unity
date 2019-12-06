@@ -775,6 +775,7 @@ GameObject:
   - component: {fileID: 1406785344}
   - component: {fileID: 1406785340}
   - component: {fileID: 1406785345}
+  - component: {fileID: 1406785346}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -865,6 +866,21 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: eaee9d2a-f89b-4121-b0db-d32a6431ec65
     m_ActionName: Player/Attack[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1406785344}
+        m_MethodName: OnDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e9cec82c-8a90-4100-bd76-a0aa235a87bd
+    m_ActionName: Player/Dash[/Keyboard/s]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player
@@ -885,7 +901,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -948,6 +964,7 @@ MonoBehaviour:
     layers:
       serializedVersion: 2
       m_Bits: 256
+  dashSpeed: 10
   lives: 3
   maxLives: 3
   livesDisplay: {fileID: 686542772}
@@ -1048,6 +1065,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &1406785346
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406785339}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1932715316
 GameObject:
   m_ObjectHideFlags: 0
