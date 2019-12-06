@@ -40,6 +40,8 @@ public class Player : Singleton<Player>
     [SerializeField]
     int lives = 3;
     [SerializeField]
+    int maxLives = 3;
+    [SerializeField]
     Text livesDisplay = null;
     [SerializeField]
     Transform flip = null;
@@ -57,7 +59,10 @@ public class Player : Singleton<Player>
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
+
         audioSource = GetComponent<AudioSource>();
+
+        UpdateDisplay();
     }
 
     private void FixedUpdate()
@@ -81,10 +86,17 @@ public class Player : Singleton<Player>
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if (other.collider.tag == "Enemy")
+        // ! Test code
+        switch (other.collider.tag)
         {
-            Damage();
+            case "Enemy":
+                Damage();
+                break;
+            case "Pickup":
+                Heal();
+                break;
         }
+        // ! end
     }
 
     protected void OnDrawGizmosSelected()
@@ -158,8 +170,11 @@ public class Player : Singleton<Player>
 
     public void Heal()
     {
-        lives++;
-        UpdateDisplay();
+        if (lives != maxLives)
+        {
+            lives++;
+            UpdateDisplay();
+        }
     }
 
     #endregion
