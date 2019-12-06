@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Mupocalypse/Assets/06 - Sprites/Grid.prefab.meta
 guid: 0af5adf5d7a43cd4d829001ed4abaecb
 PrefabImporter:
+=======
+guid: b3c40d79a6c164cabbc688e9b3279f46
+folderAsset: yes
+DefaultImporter:
+>>>>>>> player:Mupocalypse/Assets/05 - Audio/01 - Music.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
