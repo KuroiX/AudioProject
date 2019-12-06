@@ -140,7 +140,11 @@ public class Player : Singleton<Player>
 
     void DirectionFlipped()
     {
-        Debug.Log("Direction Flipped");
+        if (flip != null)
+        {
+            flip.Rotate(0, 180, 0);
+        }
+        // TODO
     }
 
     void Landed()
