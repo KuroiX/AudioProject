@@ -124,6 +124,12 @@ public class Player : Singleton<Player>
             sprinting = false;
     }
 
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            Attack();
+    }
+
     #endregion
 
     protected bool IsGrounded()
@@ -144,6 +150,11 @@ public class Player : Singleton<Player>
         if (sprinting)
             v *= move.sprintMultiplyer;
         rb.position += v;
+    }
+
+    void Attack()
+    {
+        // TODO
     }
 
     void DirectionFlipped()
