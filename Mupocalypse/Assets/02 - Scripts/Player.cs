@@ -36,8 +36,11 @@ public class Player : Singleton<Player>
     protected JumpSettings jump;
     [SerializeField]
     protected GroundCheck groundCheck;
+    [SerializeField]
+    Transform flip = null;
 
     float moveInput = 0;
+    int direction = 1;
     Rigidbody2D rb;
     bool grounded;
     bool jumpButtonPressed;
@@ -72,8 +75,10 @@ public class Player : Singleton<Player>
     {
         Gizmos.color = Color.red;
         var pos = transform.position + new Vector3(groundCheck.position.x, groundCheck.position.y, 0);
-        Gizmos.DrawLine(pos, pos - transform.up * groundCheck.distance);
+        //Gizmos.DrawLine(pos, pos - transform.up * groundCheck.distance);
         Gizmos.DrawWireSphere(pos, groundCheck.distance);
+
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * direction);
     }
 
     #endregion
@@ -82,6 +87,17 @@ public class Player : Singleton<Player>
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<float>();
+        if (moveInput != 0)
+        {
+            var d = direction;
+            if (moveInput > 0)
+                d = 1;
+            else
+                d = -1;
+            if (d != direction)
+                DirectionFlipped();
+            direction = d;
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -122,9 +138,13 @@ public class Player : Singleton<Player>
         rb.position += v;
     }
 
+    void DirectionFlipped()
+    {
+        Debug.Log("Direction Flipped");
+    }
+
     void Landed()
     {
-        Debug.Log("Landed");
         // TODO
     }
 }
