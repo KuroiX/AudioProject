@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
 public class Player : Singleton<Player>
 {
     [Serializable]
@@ -20,15 +21,15 @@ public class Player : Singleton<Player>
     protected struct MoveSettings
     {
         public float speed;
-        public float sprintMultiplyer;
+        public float sprintMultiplier;
     }
 
     [Serializable]
     protected struct JumpSettings
     {
         public float initialVelocity;
-        public float fallMultiplyer;
-        public float lowJumpMultiplyer;
+        public float fallMultiplier;
+        public float lowJumpMultiplier;
     }
 
     [SerializeField]
@@ -48,21 +49,22 @@ public class Player : Singleton<Player>
     [SerializeField]
     Transform flip = null;
 
+    Rigidbody2D rb;
+    Animator animator;
+    AudioSource audioSource;
     float moveInput = 0;
     int direction = 1;
-    Rigidbody2D rb;
-    AudioSource audioSource;
     bool grounded;
     bool jumpButtonPressed;
     bool sprinting;
     bool canMove = true;
-    bool gravity = true;
     bool canDash;
 
     #region MonoBehavior
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
 
         audioSource = GetComponent<AudioSource>();
 
@@ -80,13 +82,10 @@ public class Player : Singleton<Player>
         else grounded = false;
 
         // apply gravity
-        if (gravity)
-        {
-            if (rb.velocity.y < 0)
-                rb.velocity += Vector2.up * Physics.gravity.y * jump.fallMultiplyer * Time.fixedDeltaTime;
-            else if (rb.velocity.y > 0 && !jumpButtonPressed)
-                rb.velocity += Vector2.up * Physics.gravity.y * jump.lowJumpMultiplyer * Time.fixedDeltaTime;
-        }
+        if (rb.velocity.y < 0)
+            rb.velocity += Vector2.up * Physics.gravity.y * (jump.fallMultiplier - 1) * Time.fixedDeltaTime;
+        else if (rb.velocity.y > 0 && !jumpButtonPressed)
+            rb.velocity += Vector2.up * Physics.gravity.y * (jump.lowJumpMultiplier - 1) * Time.fixedDeltaTime;
 
         if (canMove)
             Move();
@@ -110,7 +109,6 @@ public class Player : Singleton<Player>
     {
         Gizmos.color = Color.red;
         var pos = transform.position + new Vector3(groundCheck.position.x, groundCheck.position.y, 0);
-        //Gizmos.DrawLine(pos, pos - transform.up * groundCheck.distance);
         Gizmos.DrawWireSphere(pos, groundCheck.distance);
 
         Gizmos.DrawLine(transform.position, transform.position + Vector3.right * direction);
@@ -132,7 +130,10 @@ public class Player : Singleton<Player>
             if (d != direction)
                 DirectionFlipped();
             direction = d;
+            animator.SetBool("walking", true);
         }
+        else
+            animator.SetBool("walking", false);
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -216,7 +217,7 @@ public class Player : Singleton<Player>
     {
         var v = moveInput * Vector2.right * Time.fixedDeltaTime * move.speed;
         if (sprinting)
-            v *= move.sprintMultiplyer;
+            v *= move.sprintMultiplier;
         rb.position += v;
     }
 
