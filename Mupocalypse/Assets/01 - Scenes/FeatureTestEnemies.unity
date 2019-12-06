@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 415162872}
   - component: {fileID: 415162871}
   - component: {fileID: 415162870}
+  - component: {fileID: 415162873}
   m_Layer: 0
   m_Name: AntiJump
   m_TagString: Untagged
@@ -145,14 +146,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 415162869}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7127306874dc9ba4faa29f570c226f1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
   variance: 1
-  alive: 1
 --- !u!212 &415162871
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -216,6 +216,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &415162873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415162869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eff51077f646394f815c7db096227cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+  variance: 1
+  jumpHeight: 1
 --- !u!1 &966338368
 GameObject:
   m_ObjectHideFlags: 0
