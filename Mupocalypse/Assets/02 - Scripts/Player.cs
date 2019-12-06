@@ -46,6 +46,7 @@ public class Player : Singleton<Player>
     bool grounded;
     bool jumpButtonPressed;
     bool sprinting;
+    bool canMove = true;
 
     #region MonoBehavior
 
@@ -70,7 +71,8 @@ public class Player : Singleton<Player>
         else if (rb.velocity.y > 0 && !jumpButtonPressed)
             rb.velocity += Vector2.up * Physics.gravity.y * (jump.lowJumpMultiplyer - 1) * Time.fixedDeltaTime;
 
-        Move();
+        if (canMove)
+            Move();
     }
 
     protected void OnDrawGizmosSelected()
@@ -107,11 +109,8 @@ public class Player : Singleton<Player>
         if (context.started)
         {
             jumpButtonPressed = true;
-            if (grounded)
-            {
-                rb.velocity += Vector2.up * jump.initialVelocity;
-                audioSource.Play();
-            }
+            if (grounded && canMove)
+                Jump();
         }
         else if (context.canceled)
             jumpButtonPressed = false;
@@ -133,6 +132,12 @@ public class Player : Singleton<Player>
         return cols != null;
     }
 
+    void Jump()
+    {
+        rb.velocity += Vector2.up * jump.initialVelocity;
+        audioSource.Play();
+    }
+
     void Move()
     {
         var v = moveInput * Vector2.right * Time.fixedDeltaTime * move.speed;
@@ -143,15 +148,15 @@ public class Player : Singleton<Player>
 
     void DirectionFlipped()
     {
-        if (flip != null)
-        {
+        if (flip != null && canMove)
             flip.Rotate(0, 180, 0);
-        }
-        // TODO
     }
 
     void Landed()
     {
         // TODO
     }
+
+    void EnableMovement() => canMove = true;
+    void DisableMovement() => canMove = false;
 }

@@ -520,7 +520,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.04}
   serializedVersion: 2
-  m_Radius: 0.45
+  m_Radius: 0.4
 --- !u!4 &1406785343
 Transform:
   m_ObjectHideFlags: 0
@@ -556,7 +556,7 @@ MonoBehaviour:
     fallMultiplyer: 2.5
     lowJumpMultiplyer: 2
   groundCheck:
-    position: {x: 0, y: -0.5}
+    position: {x: 0, y: -0.44}
     distance: 0.045
     layers:
       serializedVersion: 2
