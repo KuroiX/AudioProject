@@ -53,7 +53,9 @@ public class Player : Singleton<Player>
     {
         if (IsGrounded())
         {
-
+            if (!grounded)
+                Landed();
+            grounded = true;
         }
         else grounded = false;
 
@@ -122,6 +124,7 @@ public class Player : Singleton<Player>
 
     void Landed()
     {
+        Debug.Log("Landed");
         // TODO
     }
 }
