@@ -42,6 +42,7 @@ public class Player : Singleton<Player>
     float moveInput = 0;
     int direction = 1;
     Rigidbody2D rb;
+    AudioSource audioSource;
     bool grounded;
     bool jumpButtonPressed;
     bool sprinting;
@@ -50,6 +51,7 @@ public class Player : Singleton<Player>
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -108,6 +110,7 @@ public class Player : Singleton<Player>
             if (grounded)
             {
                 rb.velocity += Vector2.up * jump.initialVelocity;
+                audioSource.Play();
             }
         }
         else if (context.canceled)
