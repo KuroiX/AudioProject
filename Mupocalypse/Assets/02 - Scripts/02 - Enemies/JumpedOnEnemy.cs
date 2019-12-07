@@ -28,6 +28,31 @@ public class JumpedOnEnemy : MonoBehaviour
         
     }
 
+    void Die()
+    {
+        print("Dead");
+        Destroy(this.gameObject);
+    }
+
+    void OnTriggerEnter2D (Collider2D other)
+    {
+        GameObject otherObject = other.gameObject;
+        if (otherObject.CompareTag("Player"))
+        {
+            float x = Mathf.Abs(transform.position.x - otherObject.transform.position.x);
+            float y = Mathf.Abs(transform.position.y - otherObject.transform.position.y);
+
+            if (x <= y && transform.position.y < otherObject.transform.position.y)
+            {
+                Die();
+            }
+            else
+            {
+                print("Hit");
+            }
+        }
+    }
+
     IEnumerator Walk()
     {
         while (alive)
