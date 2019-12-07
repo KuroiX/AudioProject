@@ -129,7 +129,7 @@ public class Player : Singleton<Player>
         else grounded = false;
 
         // apply gravity
-        if (rb.velocity.y < 0)
+        if (rb.velocity.y < 0 || rb.velocity.y < 5f)
             rb.velocity += Vector2.up * Physics2D.gravity.y * (jump.fallMultiplier - 1) * Time.fixedDeltaTime;
         // else if (rb.velocity.y > 0 && !jumpButtonPressed)
         //     rb.velocity += Vector2.up * Physics.gravity.y * (jump.lowJumpMultiplier - 1) * Time.fixedDeltaTime;

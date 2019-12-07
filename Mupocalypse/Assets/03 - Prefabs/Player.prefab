@@ -180,7 +180,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: a5e9724dd1bd7814fb3983e5aad0e7a9, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -198,29 +198,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   move:
-    speed: 10
-    sprintMultiplier: 0
+    speed: 8
+    sprintMultiplier: 1.5
   jump:
-    initialVelocity: 10
-    fallMultiplier: 2.5
+    height: 5
+    fallMultiplier: 3
     lowJumpMultiplier: 2
   dash:
-    speed: 0
-    slowdown: 0
+    speed: 15
+    slowdown: 0.8
   attack:
-    range: 0
+    range: 1.71
     layers:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 768
   groundCheck:
     position: {x: 0, y: -0.88}
-    distance: 0.045
+    distance: 0.06
     layers:
       serializedVersion: 2
       m_Bits: 256
   lives:
-    lives: 0
-    maxLives: 0
+    lives: 3
+    maxLives: 3
     display: {fileID: 0}
     heartFull: {fileID: 0}
     heartEmpty: {fileID: 0}
