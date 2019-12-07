@@ -322,6 +322,7 @@ public class Player : Singleton<Player>
 
     void Die()
     {
+        GameManager.Instance.spawnID = GameManager.Instance.savePoint;
         LevelManager.Instance.FadeOut(GameManager.Instance.savePoint);
         
         Debug.Log("You died!");
