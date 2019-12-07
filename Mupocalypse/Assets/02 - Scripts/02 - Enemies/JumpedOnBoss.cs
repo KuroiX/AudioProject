@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpedOnBoss : MonoBehaviour
+public class JumpedOnBoss : MonoBehaviour, IDamageable
 {
     [SerializeField]
     private float walkSpeed;
@@ -12,6 +12,8 @@ public class JumpedOnBoss : MonoBehaviour
     private float variance;
     [SerializeField]
     private float jumpHeight;
+    [SerializeField]
+    private float jumpDuration;
     [SerializeField]
     private int jumpOdd;
     [SerializeField]
@@ -38,7 +40,13 @@ public class JumpedOnBoss : MonoBehaviour
         StartCoroutine(Move());
     }
 
-    void Die()
+    void IDamageable.GetDamage()
+    {
+        // TODO: Maybe add condition
+        LoseLive();
+    }
+
+    void LoseLive()
     {
         lives -= 1;
         if (lives == 0)
@@ -66,7 +74,7 @@ public class JumpedOnBoss : MonoBehaviour
                 }
                 else
                 {
-                    Die();
+                    LoseLive();
                     // TODO: Maybe jump
                 }
             }
@@ -90,7 +98,7 @@ public class JumpedOnBoss : MonoBehaviour
         int rand = Random.Range(0, jumpOdd);
         if (rand == 0)
         {
-            jumping = 1;
+            jumping = jumpDuration;
         }
     }
 
@@ -116,6 +124,10 @@ public class JumpedOnBoss : MonoBehaviour
         {
             // Walking
             float distance = walkSpeed * Time.deltaTime;
+            if (jumping > 0)
+            {
+                distance *= jumpSpeed;
+            }
             float x = transform.position.x;
             if (goRight)
             {
@@ -147,7 +159,7 @@ public class JumpedOnBoss : MonoBehaviour
             if (jumping > 0)
             {
                 y = Mathf.Sin(jumping * Mathf.PI) * jumpHeight;
-                jumping -= jumpSpeed * Time.deltaTime;
+                jumping -= Time.deltaTime;
             }
 
             transform.position = new Vector3(x, y, transform.position.z);

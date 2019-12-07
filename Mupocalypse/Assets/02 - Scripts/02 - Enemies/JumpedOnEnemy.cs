@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpedOnEnemy : MonoBehaviour
+public class JumpedOnEnemy : MonoBehaviour, IDamageable
 {
     [SerializeField]
     private float speed;
@@ -26,6 +26,11 @@ public class JumpedOnEnemy : MonoBehaviour
         collider2d = GetComponent<Collider2D>(); ;
 
         StartCoroutine(Walk());
+    }
+
+    void IDamageable.GetDamage()
+    {
+        Die();
     }
     
     void Die()
