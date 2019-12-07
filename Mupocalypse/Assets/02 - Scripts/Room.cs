@@ -7,10 +7,12 @@ public class Room : MonoBehaviour
     public SpawnPoint[] spawnPoint;
     
     public DespawnPoint[] despawnPoint;
-
+    
     private SpawnPoint currentSpawnPoint;
 
-   
+    public Vector2 cameraMin;
+    public Vector2 cameraMax;
+    public CameraController cam;
     
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,7 @@ public class Room : MonoBehaviour
         }
         SetPlayerPos();
         SetCameraPos();
+        LevelManager.Instance.FadeIn();
     }
 
     // Update is called once per frame
@@ -42,9 +45,13 @@ public class Room : MonoBehaviour
 
     public void SetCameraPos()
     {
-        Camera main = Camera.main;
-        if(main!=null)
-            main.transform.position = currentSpawnPoint.cameraMaxPos;
+
+        Vector3 temp = Player.Instance.transform.Position2D().ToVec3();
+        temp.z = -10;
+        cam.transform.position = temp; 
+        cam.max = cameraMax;
+        cam.min = cameraMin;
+
     }
     
 }

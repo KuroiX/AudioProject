@@ -5,10 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Rigidbody2D)),
+ RequireComponent(typeof(Animator)),
+ RequireComponent(typeof(AudioSource))]
 public class Player : Singleton<Player>
 {
+    // ? the following are 'protected' to avoid unity warnings
     [Serializable]
     protected struct GroundCheck
     {
@@ -32,22 +34,61 @@ public class Player : Singleton<Player>
         public float lowJumpMultiplier;
     }
 
+    [Serializable]
+    protected struct DashSettings
+    {
+        public float speed;
+        [Range(0, 1), Tooltip("Factor of the original force")]
+        public float slowdown;
+    }
+
+    [Serializable]
+    protected struct AttackSettings
+    {
+        public float range;
+        public LayerMask layers;
+    }
+
+    [Serializable]
+    protected struct LivesSettings
+    {
+        public int lives;
+        public int maxLives;
+        [Tooltip("Container for the images")]
+        public Transform display;
+        public Sprite heartFull;
+        public Sprite heartEmpty;
+    }
+
+    [Serializable]
+    protected struct SoundEffects
+    {
+        public AudioClip attackHit;
+        public AudioClip attackMiss;
+        public AudioClip dash;
+        public AudioClip death;
+        public AudioClip jump;
+        public AudioClip land;
+    }
+
     [SerializeField]
     protected MoveSettings move;
     [SerializeField]
     protected JumpSettings jump;
     [SerializeField]
+    protected DashSettings dash;
+    [SerializeField, Tooltip("Red Line shows current range")]
+    protected AttackSettings attack;
+    [SerializeField, Tooltip("Red Wire-Sphere shows current ground check")]
     protected GroundCheck groundCheck;
     [SerializeField]
-    float dashSpeed = 10;
+    protected LivesSettings lives;
     [SerializeField]
-    int lives = 3;
-    [SerializeField]
-    int maxLives = 3;
-    [SerializeField]
-    Text livesDisplay = null;
-    [SerializeField]
+    float timeInvulnerable = .4f;
+    [SerializeField, Tooltip("Transform to be turned towards direction.")]
     Transform flip = null;
+    [SerializeField]
+    protected SoundEffects sfx;
 
     Rigidbody2D rb;
     Animator animator;
@@ -55,10 +96,13 @@ public class Player : Singleton<Player>
     float moveInput = 0;
     int direction = 1;
     bool grounded;
+    Transform platform;
     bool jumpButtonPressed;
     bool sprinting;
     bool canMove = true;
     bool canDash;
+    bool dashing;
+    bool invulnerable;
 
     #region MonoBehavior
 
@@ -84,8 +128,8 @@ public class Player : Singleton<Player>
         // apply gravity
         if (rb.velocity.y < 0)
             rb.velocity += Vector2.up * Physics.gravity.y * (jump.fallMultiplier - 1) * Time.fixedDeltaTime;
-        else if (rb.velocity.y > 0 && !jumpButtonPressed)
-            rb.velocity += Vector2.up * Physics.gravity.y * (jump.lowJumpMultiplier - 1) * Time.fixedDeltaTime;
+        // else if (rb.velocity.y > 0 && !jumpButtonPressed)
+        //     rb.velocity += Vector2.up * Physics.gravity.y * (jump.lowJumpMultiplier - 1) * Time.fixedDeltaTime;
 
         if (canMove)
             Move();
@@ -111,7 +155,7 @@ public class Player : Singleton<Player>
         var pos = transform.position + new Vector3(groundCheck.position.x, groundCheck.position.y, 0);
         Gizmos.DrawWireSphere(pos, groundCheck.distance);
 
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * direction);
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * direction * attack.range);
     }
 
     #endregion
@@ -141,7 +185,7 @@ public class Player : Singleton<Player>
         if (context.started)
         {
             jumpButtonPressed = true;
-            if (grounded && canMove)
+            if (grounded && canMove && !dashing)
                 Jump();
         }
         else if (context.canceled)
@@ -151,14 +195,8 @@ public class Player : Singleton<Player>
     public void OnDash(InputAction.CallbackContext context)
     {
         if (context.started)
-        {
-            if (canDash || grounded)
-            {
-                canDash = false;
-                rb.velocity += dashSpeed * direction * Vector2.right;
-                rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
-            }
-        }
+            if (canMove && (canDash || grounded) && !dashing)
+                Dash();
     }
 
     public void OnSprint(InputAction.CallbackContext context)
@@ -180,37 +218,81 @@ public class Player : Singleton<Player>
 
     public void Damage()
     {
-        if (lives == 0)
+        if (invulnerable) return;
+        if (lives.lives == 0)
             Die();
         else
         {
-            lives--;
+            lives.lives--;
+            StartCoroutine(Invulnerability());
             UpdateDisplay();
         }
     }
 
     public void Heal()
     {
-        if (lives != maxLives)
+        if (lives.lives != lives.maxLives)
         {
-            lives++;
+            lives.lives++;
             UpdateDisplay();
         }
     }
 
     #endregion
 
+    IEnumerator Invulnerability()
+    {
+        invulnerable = true;
+        animator.SetBool("invulnerable", true);
+        yield return new WaitForSeconds(timeInvulnerable);
+        invulnerable = false;
+        animator.SetBool("invulnerable", false);
+    }
+
     bool IsGrounded()
     {
-        var cols = Physics2D.OverlapCircle(transform.position2D() + groundCheck.position, groundCheck.distance, groundCheck.layers);
-        return cols != null;
+        var col = Physics2D.OverlapCircle(transform.Position2D() + groundCheck.position, groundCheck.distance, groundCheck.layers);
+        if (col != null)
+        {
+            if (col.gameObject.tag == "Platform") // ?
+                platform = col.transform;
+            else
+                platform = null;
+            return true;
+        }
+        return false;
     }
 
     void Jump()
     {
         canDash = true;
         rb.velocity += Vector2.up * jump.initialVelocity;
-        audioSource.Play();
+        if (sfx.jump != null)
+            audioSource.PlayOneShot(sfx.jump);
+        animator.SetTrigger("jump");
+        animator.ResetTrigger("hit ground");
+    }
+
+    void Dash()
+    {
+        animator.ResetTrigger("hit ground");
+        animator.SetTrigger("dash");
+        dashing = true;
+        canDash = false;
+        rb.velocity += dash.speed * direction * Vector2.right;
+        rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
+        if (sfx.dash != null)
+            audioSource.PlayOneShot(sfx.dash);
+    }
+
+    // called from the animation
+    void DashEnd()
+    {
+        dashing = false;
+        rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        rb.velocity -= dash.speed * direction * Vector2.right * dash.slowdown;
+        if (Vector2.Dot(rb.velocity, Vector2.right * direction) < 0) // dont move backwards
+            rb.velocity = new Vector2(0, rb.velocity.y);
     }
 
     void Move()
@@ -223,12 +305,26 @@ public class Player : Singleton<Player>
 
     void Attack()
     {
-        // TODO
+        var hit = Physics2D.Raycast(rb.position, Vector2.right * direction, attack.range, attack.layers);
+        if (hit)
+        {
+            // var damagable = hit.collider.GetComponent<IDamagable>();
+            // if (damagable != null)
+            //     damagable.Damage();
+            animator.SetTrigger("attack");
+            canMove = false;
+            if (sfx.attackHit != null)
+                audioSource.PlayOneShot(sfx.attackHit);
+        }
+        else if (sfx.attackMiss != null)
+            audioSource.PlayOneShot(sfx.attackMiss);
     }
 
     void Die()
     {
         Debug.Log("You died!");
+        if (sfx.death != null)
+            audioSource.PlayOneShot(sfx.death);
     }
 
     void DirectionFlipped()
@@ -239,17 +335,25 @@ public class Player : Singleton<Player>
 
     void Landed()
     {
-        // TODO
+        animator.SetTrigger("hit ground");
+        animator.SetBool("on platform", platform != null);
     }
-
-    void EnableYMovement() => rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
 
     void EnableMovement() => canMove = true;
     void DisableMovement() => canMove = false;
 
     void UpdateDisplay()
     {
-        if (livesDisplay != null)
-            livesDisplay.text = string.Format("Lives: {0}", lives);
+        if (lives.display != null)
+        {
+            var hearts = lives.display.GetComponentsInChildren<Image>();
+            var i = 0;
+            if (lives.heartFull != null)
+                for (; i < Mathf.Min(hearts.Length, lives.lives); i++)
+                    hearts[i].sprite = lives.heartFull;
+            if (lives.heartEmpty != null)
+                for (; i < Mathf.Min(hearts.Length, lives.maxLives); i++)
+                    hearts[i].sprite = lives.heartEmpty;
+        }
     }
 }
