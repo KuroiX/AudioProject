@@ -329,6 +329,8 @@ public class Player : Singleton<Player>
 
     void Die()
     {
+        LevelManager.Instance.FadeOut(GameManager.Instance.savePoint);
+        
         Debug.Log("You died!");
         if (sfx.death != null)
             audioSource.PlayOneShot(sfx.death);

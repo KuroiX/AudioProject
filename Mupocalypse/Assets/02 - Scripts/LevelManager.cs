@@ -16,8 +16,9 @@ public class LevelManager : Singleton<LevelManager>
     }
 
     public void FadeIn()
-    {
-       fade.SetTrigger("FadeIn");
+    { 
+        fade.SetTrigger("FadeIn");
+        
     }
 
     public void FadeOut(int roomID)
