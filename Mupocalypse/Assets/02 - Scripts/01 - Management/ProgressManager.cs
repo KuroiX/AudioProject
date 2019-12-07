@@ -7,7 +7,7 @@ public class ProgressManager : Singleton<ProgressManager>
 {
     public List<Collectable> collectables = new List<Collectable>();
 
-    public Dictionary<Scene, bool[]> activeCollectables = new Dictionary<Scene, bool[]>();
+    public Dictionary<string, bool[]> activeCollectables = new Dictionary<string, bool[]>();
 
     protected override void OnEnableCallback() {
         SceneManager.sceneLoaded += OnLoad;
@@ -17,27 +17,27 @@ public class ProgressManager : Singleton<ProgressManager>
     {
         var objects = FindObjectsOfType<CollectableGO>();
 
-        if (!activeCollectables.ContainsKey(scene))
+        if (!activeCollectables.ContainsKey(scene.name))
         {
-            activeCollectables[scene] = new bool[objects.Length];
+            activeCollectables[scene.name] = new bool[objects.Length];
         }
 
         for (int i = 0; i < objects.Length; i++)
         {
-            if (activeCollectables[scene][i] == true)
-                Destroy(objects[i]);
+            if (activeCollectables[scene.name][i] == true)
+                Destroy(objects[i].gameObject);
             objects[i].id = i;
         }
     }
 
     public void MarkDestroyed(int id)
     {
-        activeCollectables[SceneManager.GetActiveScene()][id] = true;
+        activeCollectables[SceneManager.GetActiveScene().name][id] = true;
     }
 
     public void Reset()
     {
         collectables = new List<Collectable>();
-        activeCollectables = new Dictionary<Scene, bool[]>();
+        activeCollectables = new Dictionary<string, bool[]>();
     }
 }

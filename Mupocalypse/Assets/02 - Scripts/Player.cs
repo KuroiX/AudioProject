@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
+using UnityEngine.SceneManagement;
+
 [RequireComponent(typeof(Rigidbody2D)),
  RequireComponent(typeof(Animator)),
  RequireComponent(typeof(AudioSource))]
@@ -106,6 +108,14 @@ public class Player : Singleton<Player>
     bool dashing;
     bool invulnerable;
 
+    #region Singleton
+
+    protected override void OnEnableCallback()
+    {
+        SceneManager.sceneLoaded += OnLoad;
+    }
+
+    #endregion
     #region MonoBehavior
 
     private void Start() {
@@ -114,8 +124,6 @@ public class Player : Singleton<Player>
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
-
-        UpdateDisplay();
     }
 
     private void FixedUpdate()
@@ -251,6 +259,11 @@ public class Player : Singleton<Player>
 
     #endregion
 
+    private void OnLoad(Scene scene, LoadSceneMode mode)
+    {
+        UpdateDisplay();
+    }
+
     IEnumerator Invulnerability()
     {
         invulnerable = true;
@@ -338,6 +351,10 @@ public class Player : Singleton<Player>
         Debug.Log("You died!");
         if (sfx.death != null)
             audioSource.PlayOneShot(sfx.death);
+
+        lives.lives++;
+
+        SceneManager.LoadScene("ImmedialtelyGoBackScene");
     }
 
     void DirectionFlipped()
