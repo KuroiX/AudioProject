@@ -33,6 +33,7 @@ public class Room : MonoBehaviour
         
         SetPlayerPos();
         SetCameraPos();
+        
         LevelManager.Instance.FadeIn();
     }
 
