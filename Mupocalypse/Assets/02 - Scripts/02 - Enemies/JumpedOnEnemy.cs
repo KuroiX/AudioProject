@@ -13,12 +13,15 @@ public class JumpedOnEnemy : MonoBehaviour
     private bool goRight;
     private bool alive;
 
+    SpriteRenderer spriteRenderer;
+    
     void Start()
     {
         leftBorder = transform.position.x - variance;
         rightBorder = transform.position.x + variance;
         goRight = true;
         alive = true;
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         StartCoroutine(Walk());
     }
@@ -48,6 +51,12 @@ public class JumpedOnEnemy : MonoBehaviour
         }
     }
 
+    void Turn()
+    {
+        goRight = !goRight;
+        spriteRenderer.flipX = !spriteRenderer.flipX;
+    }
+
     IEnumerator Walk()
     {
         while (alive)
@@ -59,7 +68,7 @@ public class JumpedOnEnemy : MonoBehaviour
                 x += distance;
                 if (x >= rightBorder)
                 {
-                    goRight = false;
+                    Turn();
                 }
             }
             else
@@ -67,7 +76,7 @@ public class JumpedOnEnemy : MonoBehaviour
                 x -= distance;
                 if (x <= leftBorder)
                 {
-                    goRight = true;
+                    Turn();
                 }
             }
             transform.position = new Vector3(x, transform.position.y, transform.position.z);
