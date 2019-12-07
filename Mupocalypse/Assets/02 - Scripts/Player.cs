@@ -176,15 +176,6 @@ public class Player : Singleton<Player>
     #endregion
     #region Public
 
-    IEnumerator Invulnerability()
-    {
-        invulnerable = true;
-        animator.SetBool("invulnerable", true);
-        yield return new WaitForSeconds(timeInvulnerable);
-        invulnerable = false;
-        animator.SetBool("invulnerable", false);
-    }
-
     public void Damage()
     {
         if (invulnerable) return;
@@ -208,6 +199,15 @@ public class Player : Singleton<Player>
     }
 
     #endregion
+
+    IEnumerator Invulnerability()
+    {
+        invulnerable = true;
+        animator.SetBool("invulnerable", true);
+        yield return new WaitForSeconds(timeInvulnerable);
+        invulnerable = false;
+        animator.SetBool("invulnerable", false);
+    }
 
     bool IsGrounded()
     {
