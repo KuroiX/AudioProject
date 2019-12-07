@@ -221,18 +221,25 @@ MonoBehaviour:
   lives:
     lives: 3
     maxLives: 3
-    display: {fileID: 0}
+    displayTagName: Lives
     heartFull: {fileID: 0}
     heartEmpty: {fileID: 0}
   timeInvulnerable: 0.4
   flip: {fileID: 2327344997529598543}
   sfx:
-    attackHit: {fileID: 0}
+    attackHit: {fileID: 8300000, guid: f48ee663a210de24091f2edf88e460ad, type: 3}
     attackMiss: {fileID: 0}
     dash: {fileID: 0}
     death: {fileID: 0}
     jump: {fileID: 0}
     land: {fileID: 0}
+    unlock: {fileID: 0}
+  notes:
+    notesTag: 
+    dashTrigger: 
+    attackTrigger: 
+    jumpTrigger: 
+    sprintTrigger: 
 --- !u!114 &2327344997608579317
 MonoBehaviour:
   m_ObjectHideFlags: 0

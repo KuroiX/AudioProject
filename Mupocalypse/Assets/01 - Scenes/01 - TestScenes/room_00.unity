@@ -10945,5 +10945,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: notes.notesTag
+      value: Notes
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: notes.sprintTrigger
+      value: h
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: notes.jumpTrigger
+      value: a
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: notes.attackTrigger
+      value: c
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: notes.dashTrigger
+      value: e
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 859e5b8820854e94cab15505b4087bf1, type: 3}
