@@ -13,7 +13,8 @@ public class JumpedOnEnemy : MonoBehaviour
     private bool goRight;
     private bool alive;
 
-    SpriteRenderer spriteRenderer;
+    private SpriteRenderer spriteRenderer;
+    private Collider2D collider2d;
     
     void Start()
     {
@@ -22,18 +23,20 @@ public class JumpedOnEnemy : MonoBehaviour
         goRight = true;
         alive = true;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        collider2d = GetComponent<Collider2D>(); ;
 
         StartCoroutine(Walk());
     }
     
     void Die()
     {
+        print("Dead");
         Destroy(this.gameObject);
     }
 
-    void OnTriggerEnter2D (Collider2D other)
+    void OnCollisionEnter2D (Collision2D col)
     {
-        GameObject otherObject = other.gameObject;
+        GameObject otherObject = col.gameObject;
         if (otherObject.CompareTag("Player"))
         {
             float x = Mathf.Abs(transform.position.x - otherObject.transform.position.x);
@@ -42,6 +45,7 @@ public class JumpedOnEnemy : MonoBehaviour
             if (x <= y && transform.position.y < otherObject.transform.position.y)
             {
                 Die();
+                // TODO: Maybe jump
             }
             else
             {
@@ -55,6 +59,14 @@ public class JumpedOnEnemy : MonoBehaviour
     {
         goRight = !goRight;
         spriteRenderer.flipX = !spriteRenderer.flipX;
+        if (goRight)
+        {
+            collider2d.offset = new Vector2(-collider2d.offset.x, collider2d.offset.y);
+        }
+        else
+        {
+            collider2d.offset = new Vector2(-collider2d.offset.x, collider2d.offset.y);
+        }
     }
 
     IEnumerator Walk()

@@ -43,13 +43,16 @@ public class JumpedOnBoss : MonoBehaviour
         lives -= 1;
         if (lives == 0)
         {
+            print("Dead");
             Destroy(this.gameObject);
         }
+        else
+            print("Lost a live: " + lives + "left");
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D col)
     {
-        GameObject otherObject = other.gameObject;
+        GameObject otherObject = col.gameObject;
         if (otherObject.CompareTag("Player"))
         {
             float x = Mathf.Abs(transform.position.x - otherObject.transform.position.x);
@@ -64,6 +67,7 @@ public class JumpedOnBoss : MonoBehaviour
                 else
                 {
                     Die();
+                    // TODO: Maybe jump
                 }
             }
             else
