@@ -45,6 +45,8 @@ public class Player : Singleton<Player>
     [SerializeField]
     int maxLives = 3;
     [SerializeField]
+    float timeInvulnerable = .4f;
+    [SerializeField]
     Text livesDisplay = null;
     [SerializeField]
     Transform flip = null;
@@ -59,6 +61,7 @@ public class Player : Singleton<Player>
     bool sprinting;
     bool canMove = true;
     bool canDash;
+    bool invulnerable;
 
     #region MonoBehavior
 
@@ -84,8 +87,8 @@ public class Player : Singleton<Player>
         // apply gravity
         if (rb.velocity.y < 0)
             rb.velocity += Vector2.up * Physics.gravity.y * (jump.fallMultiplier - 1) * Time.fixedDeltaTime;
-        else if (rb.velocity.y > 0 && !jumpButtonPressed)
-            rb.velocity += Vector2.up * Physics.gravity.y * (jump.lowJumpMultiplier - 1) * Time.fixedDeltaTime;
+        // else if (rb.velocity.y > 0 && !jumpButtonPressed)
+        //     rb.velocity += Vector2.up * Physics.gravity.y * (jump.lowJumpMultiplier - 1) * Time.fixedDeltaTime;
 
         if (canMove)
             Move();
@@ -178,13 +181,24 @@ public class Player : Singleton<Player>
     #endregion
     #region Public
 
+    IEnumerator Invulnerability()
+    {
+        invulnerable = true;
+        animator.SetBool("invulnerable", true);
+        yield return new WaitForSeconds(timeInvulnerable);
+        invulnerable = false;
+        animator.SetBool("invulnerable", false);
+    }
+
     public void Damage()
     {
+        if (invulnerable) return;
         if (lives == 0)
             Die();
         else
         {
             lives--;
+            StartCoroutine(Invulnerability());
             UpdateDisplay();
         }
     }
@@ -211,6 +225,8 @@ public class Player : Singleton<Player>
         canDash = true;
         rb.velocity += Vector2.up * jump.initialVelocity;
         audioSource.Play();
+        animator.SetTrigger("jump");
+        animator.ResetTrigger("hit ground");
     }
 
     void Move()
@@ -239,7 +255,7 @@ public class Player : Singleton<Player>
 
     void Landed()
     {
-        // TODO
+        animator.SetTrigger("hit ground");
     }
 
     void EnableYMovement() => rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
