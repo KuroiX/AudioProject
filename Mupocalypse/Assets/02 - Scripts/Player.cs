@@ -109,7 +109,6 @@ public class Player : Singleton<Player>
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-
         audioSource = GetComponent<AudioSource>();
 
         UpdateDisplay();
@@ -308,9 +307,11 @@ public class Player : Singleton<Player>
         var hit = Physics2D.Raycast(rb.position, Vector2.right * direction, attack.range, attack.layers);
         if (hit)
         {
-            // var damagable = hit.collider.GetComponent<IDamagable>();
-            // if (damagable != null)
-            //     damagable.Damage();
+            var damagable = hit.collider.GetComponent<IDamageable>();
+            if (damagable != null)
+            {
+                damagable.GetDamage();
+            }
             animator.SetTrigger("attack");
             canMove = false;
             if (sfx.attackHit != null)
