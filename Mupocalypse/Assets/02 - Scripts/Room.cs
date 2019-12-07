@@ -13,15 +13,24 @@ public class Room : MonoBehaviour
     public Vector2 cameraMin;
     public Vector2 cameraMax;
     public CameraController cam;
+
+    public bool savePointRoom = false;
     
     // Start is called before the first frame update
     void Start()
     {
+        
         foreach (SpawnPoint sp in spawnPoint)
         {
             if (sp.spawnID == GameManager.Instance.spawnID)
                 currentSpawnPoint = sp;
         }
+
+
+        if(savePointRoom)
+          GameManager.Instance.savePoint = currentSpawnPoint.spawnID;
+        
+        
         SetPlayerPos();
         SetCameraPos();
         LevelManager.Instance.FadeIn();
