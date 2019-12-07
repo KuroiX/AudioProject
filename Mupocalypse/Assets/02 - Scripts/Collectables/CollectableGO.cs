@@ -8,6 +8,8 @@ public class CollectableGO : MonoBehaviour
     [SerializeField]
     Collectable collectable;
 
+    public int id {private get; set;}
+
     void Start()
     {
         GetComponentInChildren<SpriteRenderer>().sprite = collectable.sprite;
@@ -17,8 +19,10 @@ public class CollectableGO : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            var pm = ProgressManager.Instance;
             collectable.ApplyEffect(other.GetComponent<Player>());
-            ProgressManager.Instance.collectables.Add(collectable);
+            pm.collectables.Add(collectable);
+            pm.MarkDestroyed(id);
             Destroy(gameObject);
         }
     }
