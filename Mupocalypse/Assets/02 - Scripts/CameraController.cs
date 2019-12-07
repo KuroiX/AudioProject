@@ -25,6 +25,8 @@ public class CameraController : MonoBehaviour
     }
 
     private void Update() {
+        if (player == null) player = Player.Instance.transform;
+
         innerBoundsRect = new Rect(innerBoundsOffset + transform.Position2D() - innerBounds / 2, innerBounds);
 
         if (!innerBoundsRect.Contains(player.transform.Position2D()))
