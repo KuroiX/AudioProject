@@ -25,7 +25,6 @@ public class JumpedOnEnemy : MonoBehaviour
     
     void Die()
     {
-        print("Dead");
         Destroy(this.gameObject);
     }
 
@@ -44,6 +43,7 @@ public class JumpedOnEnemy : MonoBehaviour
             else
             {
                 print("Hit");
+                // TODO: Hit player
             }
         }
     }

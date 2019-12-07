@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 415162872}
   - component: {fileID: 415162871}
   - component: {fileID: 415162870}
-  - component: {fileID: 415162873}
   - component: {fileID: 415162874}
   m_Layer: 0
   m_Name: AntiJumpEnemy
@@ -139,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &415162870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,7 +146,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 415162869}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7127306874dc9ba4faa29f570c226f1f, type: 3}
   m_Name: 
@@ -217,23 +216,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &415162873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 415162869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2eff51077f646394f815c7db096227cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 1
-  jumpSpeed: 1
-  variance: 1
-  jumpHeight: 1
-  odd: 2
 --- !u!61 &415162874
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -424,7 +406,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1144696751
 MonoBehaviour:
@@ -496,7 +478,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1422628518}
   - component: {fileID: 1422628517}
-  - component: {fileID: 1422628516}
   - component: {fileID: 1422628515}
   - component: {fileID: 1422628514}
   m_Layer: 0
@@ -545,24 +526,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 1
-  jumpSpeed: 1
+  jumpSpeed: 0.5
   variance: 1
   jumpHeight: 1
-  odd: 2
---- !u!114 &1422628516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1422628513}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7127306874dc9ba4faa29f570c226f1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
-  variance: 1
+  jumpOdd: 2
+  attackOdd: 2
 --- !u!212 &1422628517
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -624,5 +592,5 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

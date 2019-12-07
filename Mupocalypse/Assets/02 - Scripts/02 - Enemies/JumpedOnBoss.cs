@@ -13,7 +13,9 @@ public class JumpedOnBoss : MonoBehaviour
     [SerializeField]
     private float jumpHeight;
     [SerializeField]
-    private int odd;
+    private int jumpOdd;
+    [SerializeField]
+    private int attackOdd;
 
     private float leftBorder;
     private float rightBorder;
@@ -22,6 +24,7 @@ public class JumpedOnBoss : MonoBehaviour
     private bool goRight;
     private int lives;
     private float jumping;
+    private bool attacking;
 
     void Start()
     {
@@ -30,7 +33,7 @@ public class JumpedOnBoss : MonoBehaviour
         groundHeight = transform.position.y;
         goRight = true;
         lives = 3;
-        jumping = 1;
+        jumping = 0;
 
         StartCoroutine(Move());
     }
@@ -38,7 +41,6 @@ public class JumpedOnBoss : MonoBehaviour
     void Die()
     {
         lives -= 1;
-        print("You lost a live: Remaining lives: " + lives);
         if (lives == 0)
         {
             Destroy(this.gameObject);
@@ -60,6 +62,7 @@ public class JumpedOnBoss : MonoBehaviour
             else
             {
                 print("Hit");
+                // TODO: Hit player
             }
         }
     }
@@ -68,15 +71,32 @@ public class JumpedOnBoss : MonoBehaviour
     {
         goRight = !goRight;
         SetRandomJumps();
+        SetRandomAttacks();
     }
     
     void SetRandomJumps()
     {
-        int rand = Random.Range(0, odd);
+        int rand = Random.Range(0, jumpOdd);
         if (rand == 0)
         {
             jumping = 1;
         }
+    }
+
+    void SetRandomAttacks()
+    {
+        int rand = Random.Range(0, attackOdd);
+        if (rand == 0)
+        {
+            attacking = true;
+            StartCoroutine(Attack());
+        }
+    }
+
+    IEnumerator Attack()
+    {
+        yield return new WaitForSeconds(1);
+        attacking = false;
     }
 
     IEnumerator Move()
@@ -92,6 +112,10 @@ public class JumpedOnBoss : MonoBehaviour
                 if (x >= rightBorder)
                 {
                     Turn();
+                    while(attacking)
+                    {
+                        yield return new WaitForFixedUpdate();
+                    }
                 }
             }
             else
@@ -100,6 +124,10 @@ public class JumpedOnBoss : MonoBehaviour
                 if (x <= leftBorder)
                 {
                     Turn();
+                    while (attacking)
+                    {
+                        yield return new WaitForFixedUpdate();
+                    }
                 }
             }
 
