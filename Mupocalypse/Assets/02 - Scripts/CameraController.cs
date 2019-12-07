@@ -6,7 +6,6 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField]
     Vector2 innerBounds = default(Vector2);
-    [SerializeField]
     Transform player = null;
     [SerializeField]
     float followSpeed = 1;
@@ -20,6 +19,7 @@ public class CameraController : MonoBehaviour
         // Test
         // min = new Vector2(-1, -1);
         // max = new Vector2(1, 1);
+        player = Player.Instance.transform;
     }
 
     private void OnValidate()
