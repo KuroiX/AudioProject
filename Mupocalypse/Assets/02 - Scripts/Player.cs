@@ -29,7 +29,9 @@ public class Player : Singleton<Player>
     [Serializable]
     protected struct JumpSettings
     {
+        [NonSerialized]
         public float initialVelocity;
+        public float height;
         public float fallMultiplier;
         public float lowJumpMultiplier;
     }
@@ -107,6 +109,8 @@ public class Player : Singleton<Player>
     #region MonoBehavior
 
     private void Start() {
+        CalculateJumpVelocity();
+
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
@@ -126,7 +130,7 @@ public class Player : Singleton<Player>
 
         // apply gravity
         if (rb.velocity.y < 0)
-            rb.velocity += Vector2.up * Physics.gravity.y * (jump.fallMultiplier - 1) * Time.fixedDeltaTime;
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (jump.fallMultiplier - 1) * Time.fixedDeltaTime;
         // else if (rb.velocity.y > 0 && !jumpButtonPressed)
         //     rb.velocity += Vector2.up * Physics.gravity.y * (jump.lowJumpMultiplier - 1) * Time.fixedDeltaTime;
 
@@ -156,6 +160,8 @@ public class Player : Singleton<Player>
 
         Gizmos.DrawLine(transform.position, transform.position + Vector3.right * direction * attack.range);
     }
+
+    private void OnValidate() => CalculateJumpVelocity();
 
     #endregion
     #region Input
@@ -357,4 +363,6 @@ public class Player : Singleton<Player>
                     hearts[i].sprite = lives.heartEmpty;
         }
     }
+
+    void CalculateJumpVelocity() => jump.initialVelocity = Mathf.Sqrt(2 * -Physics2D.gravity.y * jump.height);
 }
