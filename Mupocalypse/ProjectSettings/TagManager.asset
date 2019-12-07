@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Pickup
+  - Platform
   layers:
   - Default
   - TransparentFX
