@@ -15,6 +15,7 @@ public class Collectable : ScriptableObject
     }
 
     public Sprite sprite;
+    public Color color = Color.white;
     public Effect effect;
 
     [ConditionalHide("effect", 3)]

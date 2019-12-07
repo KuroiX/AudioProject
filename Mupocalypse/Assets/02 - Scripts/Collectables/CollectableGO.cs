@@ -12,7 +12,9 @@ public class CollectableGO : MonoBehaviour
 
     void Start()
     {
-        GetComponentInChildren<SpriteRenderer>().sprite = collectable.sprite;
+        var sr = GetComponentInChildren<SpriteRenderer>();
+        sr.sprite = collectable.sprite;
+        sr.color = collectable.color;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

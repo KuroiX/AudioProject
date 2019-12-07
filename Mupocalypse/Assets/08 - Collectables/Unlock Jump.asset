@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c993c53ee60164e31bcdd32cd5a66289, type: 3}
   m_Name: Unlock Jump
   m_EditorClassIdentifier: 
-  effect: 3
   sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  color: {r: 0.3137255, g: 0, b: 0.9372549, a: 1}
+  effect: 3
   ability: 1
+  id: 
