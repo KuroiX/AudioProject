@@ -12,6 +12,14 @@ using UnityEngine.SceneManagement;
  RequireComponent(typeof(AudioSource))]
 public class Player : Singleton<Player>
 {
+    public enum Ability
+    {
+        dash,
+        jump,
+        attack,
+        sprint
+    }
+
     // ? the following are 'protected' to avoid unity warnings
     [Serializable]
     protected struct GroundCheck
@@ -110,6 +118,12 @@ public class Player : Singleton<Player>
     bool dashing;
     bool invulnerable;
 
+    // Abilities unlocked
+    bool jumpUnlocked;
+    bool dashUnlocked;
+    bool attackUnlocked;
+    bool sprintUnlocked;
+
     #region Singleton
 
     protected override void OnEnableCallback()
@@ -197,7 +211,7 @@ public class Player : Singleton<Player>
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && jumpUnlocked)
         {
             jumpButtonPressed = true;
             if (grounded && canMove && !dashing)
@@ -209,14 +223,14 @@ public class Player : Singleton<Player>
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && dashUnlocked)
             if (canMove && (canDash || grounded) && !dashing)
                 Dash();
     }
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && sprintUnlocked)
             sprinting = true;
         else if (context.canceled)
             sprinting = false;
@@ -224,7 +238,7 @@ public class Player : Singleton<Player>
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && attackUnlocked)
             Attack();
     }
 
@@ -257,6 +271,25 @@ public class Player : Singleton<Player>
     {
         lives.maxLives++;
         UpdateDisplay();
+    }
+
+    public void UnlockAbility(Ability ability)
+    {
+        switch (ability)
+        {
+            case Ability.attack:
+                attackUnlocked = true;
+                break;
+            case Ability.jump:
+                jumpUnlocked = true;
+                break;
+            case Ability.dash:
+                dashUnlocked = true;
+                break;
+            case Ability.sprint:
+                sprintUnlocked = true;
+                break;
+        }
     }
 
     #endregion
