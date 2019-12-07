@@ -5,7 +5,10 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField]
-    Vector2 innerBounds = default(Vector2);
+    Vector2 innerBounds = new Vector2(1, 1);
+    [SerializeField]
+    Vector2 innerBoundsOffset = new Vector2(0, 0);
+    [SerializeField]
     Transform player = null;
     [SerializeField]
     float followSpeed = 1;
@@ -22,13 +25,8 @@ public class CameraController : MonoBehaviour
         player = Player.Instance.transform;
     }
 
-    private void OnValidate()
-    {
-        innerBoundsRect = new Rect(transform.Position2D() - innerBounds / 2, innerBounds);
-    }
-
     private void Update() {
-        innerBoundsRect = new Rect(transform.Position2D() - innerBounds / 2, innerBounds);
+        innerBoundsRect = new Rect(innerBoundsOffset + transform.Position2D() - innerBounds / 2, innerBounds);
 
         if (!innerBoundsRect.Contains(player.transform.Position2D()))
         {
@@ -52,6 +50,6 @@ public class CameraController : MonoBehaviour
 
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.Position2D().ToVec3(), new Vector3(innerBounds.x, innerBounds.y, 1));
+        Gizmos.DrawWireCube(innerBoundsOffset.ToVec3() + transform.Position2D().ToVec3(), new Vector3(innerBounds.x, innerBounds.y, 1));
     }
 }
