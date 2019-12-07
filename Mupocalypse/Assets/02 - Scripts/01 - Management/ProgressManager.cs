@@ -34,4 +34,10 @@ public class ProgressManager : Singleton<ProgressManager>
     {
         activeCollectables[SceneManager.GetActiveScene()][id] = true;
     }
+
+    public void Reset()
+    {
+        collectables = new List<Collectable>();
+        activeCollectables = new Dictionary<Scene, bool[]>();
+    }
 }
