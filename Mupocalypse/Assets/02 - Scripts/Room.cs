@@ -58,7 +58,7 @@ public class Room : MonoBehaviour
 
         Vector3 temp = Player.Instance.transform.Position2D().ToVec3();
         temp.z = -10;
-        cam.transform.position = temp; 
+        cam.transform.position = temp + new Vector3(0, 3.5f, 0); 
         cam.max = cameraMax;
         cam.min = cameraMin;
 

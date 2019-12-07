@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(Animator))]
 public class LevelManager : Singleton<LevelManager>
 {
 
 
     private int _roomID;
-    public Animator fade;
+    private Animator fade;
+
+    void Start()
+    {
+        fade = GetComponent<Animator>();
+    }
+    
     public void LoadScene()
     {
         SceneManager.LoadScene(_roomID);
