@@ -35,9 +35,33 @@ public class JumpedOnBoss : MonoBehaviour
         StartCoroutine(Move());
     }
 
-    void Update()
+    void Die()
     {
+        lives -= 1;
+        print("You lost a live: Remaining lives: " + lives);
+        if (lives == 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        GameObject otherObject = other.gameObject;
+        if (otherObject.CompareTag("Player"))
+        {
+            float x = Mathf.Abs(transform.position.x - otherObject.transform.position.x);
+            float y = Mathf.Abs(transform.position.y - otherObject.transform.position.y);
+
+            if (x <= y && transform.position.y < otherObject.transform.position.y)
+            {
+                Die();
+            }
+            else
+            {
+                print("Hit");
+            }
+        }
     }
 
     void Turn()
@@ -59,7 +83,7 @@ public class JumpedOnBoss : MonoBehaviour
     {
         while (lives > 0)
         {
-            // walking
+            // Walking
             float distance = walkSpeed * Time.deltaTime;
             float x = transform.position.x;
             if (goRight)
@@ -79,7 +103,7 @@ public class JumpedOnBoss : MonoBehaviour
                 }
             }
 
-            // jumping
+            // Jumping
             float y = transform.position.y;
             if (jumping > 0)
             {
@@ -90,6 +114,5 @@ public class JumpedOnBoss : MonoBehaviour
             transform.position = new Vector3(x, y, transform.position.z);
             yield return new WaitForFixedUpdate();
         }
-        // Dead
     }
 }

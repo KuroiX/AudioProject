@@ -23,11 +23,6 @@ public class JumpedOnEnemy : MonoBehaviour
         StartCoroutine(Walk());
     }
     
-    void Update()
-    {
-        
-    }
-
     void Die()
     {
         print("Dead");
@@ -78,6 +73,5 @@ public class JumpedOnEnemy : MonoBehaviour
             transform.position = new Vector3(x, transform.position.y, transform.position.z);
             yield return new WaitForFixedUpdate();
         }
-        // Dead
     }
 }
