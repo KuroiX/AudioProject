@@ -319,6 +319,14 @@ public class Player : Singleton<Player>
     {
         lives.display = GameObject.FindGameObjectWithTag(lives.displayTagName)?.transform;
         notes.notes = GameObject.FindGameObjectWithTag(notes.notesTag)?.GetComponent<Animator>();
+        if (attackUnlocked)
+            notes.notes.SetTrigger(notes.attackTrigger);
+        if (jumpUnlocked)
+            notes.notes.SetTrigger(notes.jumpTrigger);
+        if (sprintUnlocked)
+            notes.notes.SetTrigger(notes.sprintTrigger);
+        if (dashUnlocked)
+            notes.notes.SetTrigger(notes.dashTrigger);
         UpdateDisplay();
     }
 
