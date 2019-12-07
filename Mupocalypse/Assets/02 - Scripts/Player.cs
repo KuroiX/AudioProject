@@ -251,7 +251,7 @@ public class Player : Singleton<Player>
 
     bool IsGrounded()
     {
-        var col = Physics2D.OverlapCircle(transform.position2D() + groundCheck.position, groundCheck.distance, groundCheck.layers);
+        var col = Physics2D.OverlapCircle(transform.Position2D() + groundCheck.position, groundCheck.distance, groundCheck.layers);
         if (col != null)
         {
             if (col.gameObject.tag == "Platform") // ?
