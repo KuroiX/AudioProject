@@ -953,20 +953,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   move:
     speed: 5
-    sprintMultiplier: 0
+    sprintMultiplier: 1.6
   jump:
     initialVelocity: 5
     fallMultiplier: 2.5
     lowJumpMultiplier: 2
+  dashSpeed: 5
+  attack:
+    range: 1
+    layers:
+      serializedVersion: 2
+      m_Bits: 4294967295
   groundCheck:
     position: {x: 0, y: -0.44}
     distance: 0.045
     layers:
       serializedVersion: 2
       m_Bits: 256
-  dashSpeed: 10
   lives: 3
   maxLives: 3
+  timeInvulnerable: 0.4
   livesDisplay: {fileID: 686542772}
   flip: {fileID: 1997717678}
 --- !u!82 &1406785345

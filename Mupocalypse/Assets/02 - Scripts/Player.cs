@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator))]
 public class Player : Singleton<Player>
 {
+    // ? the following are 'protected' to avoid unity warnings
     [Serializable]
     protected struct GroundCheck
     {
@@ -32,14 +33,23 @@ public class Player : Singleton<Player>
         public float lowJumpMultiplier;
     }
 
+    [Serializable]
+    protected struct AttackSettings
+    {
+        public float range;
+        public LayerMask layers;
+    }
+
     [SerializeField]
     protected MoveSettings move;
     [SerializeField]
     protected JumpSettings jump;
     [SerializeField]
-    protected GroundCheck groundCheck;
-    [SerializeField]
     float dashSpeed = 10;
+    [SerializeField, Tooltip("Red Line shows current range")]
+    protected AttackSettings attack;
+    [SerializeField, Tooltip("Red Wire-Sphere shows current ground check")]
+    protected GroundCheck groundCheck;
     [SerializeField]
     int lives = 3;
     [SerializeField]
@@ -48,7 +58,7 @@ public class Player : Singleton<Player>
     float timeInvulnerable = .4f;
     [SerializeField]
     Text livesDisplay = null;
-    [SerializeField]
+    [SerializeField, Tooltip("Transform to be turned towards direction.")]
     Transform flip = null;
 
     Rigidbody2D rb;
@@ -115,7 +125,7 @@ public class Player : Singleton<Player>
         var pos = transform.position + new Vector3(groundCheck.position.x, groundCheck.position.y, 0);
         Gizmos.DrawWireSphere(pos, groundCheck.distance);
 
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * direction);
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * direction * attack.range);
     }
 
     #endregion
@@ -155,7 +165,7 @@ public class Player : Singleton<Player>
     public void OnDash(InputAction.CallbackContext context)
     {
         if (context.started)
-            if ((canDash || grounded) && !dashing)
+            if (canMove && (canDash || grounded) && !dashing)
                 Dash();
     }
 
@@ -234,10 +244,12 @@ public class Player : Singleton<Player>
         rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
     }
 
+    // called from the animation
     void DashEnd()
     {
         dashing = false;
         rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        // ? reduce velocity
     }
 
     void Move()
@@ -250,7 +262,14 @@ public class Player : Singleton<Player>
 
     void Attack()
     {
-        // TODO
+        var hit = Physics2D.Raycast(rb.position, Vector2.right * direction, attack.range, attack.layers);
+        if (hit)
+        {
+            // TODO damage enemy
+            // ? hit.collider.GetComponent<Enemy>();
+            animator.SetTrigger("attack");
+            canMove = false;
+        }
     }
 
     void Die()
