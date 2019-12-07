@@ -6,7 +6,9 @@ using UnityEngine;
 public class Collectable : ScriptableObject
 {
     public enum Effect {
-        heal
+        none,
+        heal,
+        heart
     }
 
     public Effect effect;
@@ -18,6 +20,9 @@ public class Collectable : ScriptableObject
         {
             case Effect.heal:
                 player.Heal();
+                break;
+            case Effect.heart:
+                player.IncreaseMaxHealth();
                 break;
         }
     }

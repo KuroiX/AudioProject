@@ -243,6 +243,12 @@ public class Player : Singleton<Player>
         }
     }
 
+    public void IncreaseMaxHealth()
+    {
+        lives.maxLives++;
+        UpdateDisplay();
+    }
+
     #endregion
 
     IEnumerator Invulnerability()
@@ -353,14 +359,26 @@ public class Player : Singleton<Player>
     {
         if (lives.display != null)
         {
-            var hearts = lives.display.GetComponentsInChildren<Image>();
+            var hearts = lives.display.GetComponentsInChildren<Image>(true);
             var i = 0;
             if (lives.heartFull != null)
+            {
                 for (; i < Mathf.Min(hearts.Length, lives.lives); i++)
+                {
+                    hearts[i].gameObject.SetActive(true);
                     hearts[i].sprite = lives.heartFull;
+                }
+            }
             if (lives.heartEmpty != null)
+            {
                 for (; i < Mathf.Min(hearts.Length, lives.maxLives); i++)
+                {
+                    hearts[i].gameObject.SetActive(true);
                     hearts[i].sprite = lives.heartEmpty;
+                }
+            }
+            for (; i < hearts.Length; i++)
+                hearts[i].gameObject.SetActive(false);
         }
     }
 
