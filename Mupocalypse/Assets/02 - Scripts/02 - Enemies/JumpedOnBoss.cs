@@ -57,7 +57,14 @@ public class JumpedOnBoss : MonoBehaviour
 
             if (x <= y && transform.position.y < otherObject.transform.position.y)
             {
-                Die();
+                if (attacking)
+                {
+                    // TODO: Player can walk on Boss regularly/gets thrown off
+                }
+                else
+                {
+                    Die();
+                }
             }
             else
             {
