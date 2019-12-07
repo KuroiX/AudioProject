@@ -50,6 +50,17 @@ public class Player : Singleton<Player>
     }
 
     [Serializable]
+    protected struct LivesSettings
+    {
+        public int lives;
+        public int maxLives;
+        [Tooltip("Container for the images")]
+        public Transform display;
+        public Sprite heartFull;
+        public Sprite heartEmpty;
+    }
+
+    [Serializable]
     protected struct SoundEffects
     {
         public AudioClip attackHit;
@@ -71,13 +82,9 @@ public class Player : Singleton<Player>
     [SerializeField, Tooltip("Red Wire-Sphere shows current ground check")]
     protected GroundCheck groundCheck;
     [SerializeField]
-    int lives = 3;
-    [SerializeField]
-    int maxLives = 3;
+    protected LivesSettings lives;
     [SerializeField]
     float timeInvulnerable = .4f;
-    [SerializeField]
-    Text livesDisplay = null;
     [SerializeField, Tooltip("Transform to be turned towards direction.")]
     Transform flip = null;
     [SerializeField]
@@ -211,11 +218,11 @@ public class Player : Singleton<Player>
     public void Damage()
     {
         if (invulnerable) return;
-        if (lives == 0)
+        if (lives.lives == 0)
             Die();
         else
         {
-            lives--;
+            lives.lives--;
             StartCoroutine(Invulnerability());
             UpdateDisplay();
         }
@@ -223,9 +230,9 @@ public class Player : Singleton<Player>
 
     public void Heal()
     {
-        if (lives != maxLives)
+        if (lives.lives != lives.maxLives)
         {
-            lives++;
+            lives.lives++;
             UpdateDisplay();
         }
     }
@@ -326,7 +333,16 @@ public class Player : Singleton<Player>
 
     void UpdateDisplay()
     {
-        if (livesDisplay != null)
-            livesDisplay.text = string.Format("Lives: {0}", lives);
+        if (lives.display != null)
+        {
+            var hearts = lives.display.GetComponentsInChildren<Image>();
+            var i = 0;
+            if (lives.heartFull != null)
+                for (; i < Mathf.Min(hearts.Length, lives.lives); i++)
+                    hearts[i].sprite = lives.heartFull;
+            if (lives.heartEmpty != null)
+                for (; i < Mathf.Min(hearts.Length, lives.maxLives); i++)
+                    hearts[i].sprite = lives.heartEmpty;
+        }
     }
 }
