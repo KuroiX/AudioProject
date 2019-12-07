@@ -8,28 +8,35 @@ public class DashedEnemy : MonoBehaviour, IDamageable
     private float extraLength;
     [SerializeField]
     private float withdrawSpeed;
-
+    
     private float idleLowness;
     private float extendedLowness;
+    private bool withdrawNext;
     private int lives;
-
-    public bool doSnap;
-
+    
     void Start()
     {
         idleLowness = transform.position.y;
         extendedLowness = idleLowness - extraLength;
+        withdrawNext = false;
         lives = 2;
-
-        doSnap = false;
     }
 
-    void Update()
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (doSnap)
+        if (other.gameObject.CompareTag("Player") && withdrawNext == false)
         {
+            print("Snap");
             StartCoroutine(Snap());
-            doSnap = false;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            print("Withdraw");
+            withdrawNext = true;
         }
     }
     
@@ -38,28 +45,41 @@ public class DashedEnemy : MonoBehaviour, IDamageable
         lives--;
         if (lives == 0)
         {
+            print("Dead");
             Destroy(this.gameObject);
+        }
+        else
+        {
+            print("Hit! But there's still one live left.");
         }
     }
 
     IEnumerator Snap()
     {
-        // Snap
         while (transform.position.y > extendedLowness)
         {
-            yield return new WaitForFixedUpdate();
             float y = transform.position.y - withdrawSpeed * Time.deltaTime * 8;
             y = y > extendedLowness ? y : extendedLowness;
             transform.position = new Vector3(transform.position.x, y, transform.position.z);
+            yield return new WaitForFixedUpdate();
         }
-        yield return new WaitForSeconds(1);
-        // Return to idle
-        while (transform.position.y < idleLowness)
+        while (!withdrawNext)
         {
             yield return new WaitForFixedUpdate();
-            float y = transform.position.y + withdrawSpeed * Time.deltaTime;
+        }
+        StartCoroutine(Withdraw());
+    }
+
+    IEnumerator Withdraw()
+    {
+        float y = transform.position.y;
+        while (y < idleLowness)
+        {
+            yield return new WaitForFixedUpdate();
+            y += withdrawSpeed * Time.deltaTime;
             y = y < idleLowness ? y : idleLowness;
             transform.position = new Vector3(transform.position.x, y, transform.position.z);
         }
+        withdrawNext = false;
     }
 }

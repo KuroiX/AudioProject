@@ -80,8 +80,8 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             }
             else
             {
-                print("Hit");
-                // TODO: Hit player
+                col.gameObject.GetComponent<Player>().Damage();
+                // TODO: Maybe let player bounce off
             }
         }
     }
