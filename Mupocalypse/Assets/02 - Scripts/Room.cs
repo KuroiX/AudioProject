@@ -10,7 +10,7 @@ public class Room : MonoBehaviour
 
     private SpawnPoint currentSpawnPoint;
     
-    public Camera camera;
+    public Camera cam;
     
     // Start is called before the first frame update
     void Start()
@@ -43,8 +43,8 @@ public class Room : MonoBehaviour
 
     public void SetCameraPos()
     {
-        /*Camera.cameraMaxX  = currentSpawnPoint.cameraMaxPosX;
-        Camera.cameraMaxY = currentSpawnPoint.CameraMaxPosY;*/
+        /*cam.SetMax(currentSpawnPoint.cameraMax);  
+        cam.SetMin(currentSpawnPoint.cameraMin);  */
     }
     
 }

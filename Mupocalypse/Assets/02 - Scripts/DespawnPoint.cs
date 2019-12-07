@@ -14,7 +14,7 @@ public class DespawnPoint : MonoBehaviour
         if (player.tag == "Player")
         {
             setNextSpawnID();
-            LevelManager.Instance.LoadScene(nextRoom);
+            LevelManager.Instance.FadeOut(nextRoom);
         }
     }
 
