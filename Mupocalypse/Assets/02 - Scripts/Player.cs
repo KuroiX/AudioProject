@@ -5,11 +5,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
+using UnityEngine.SceneManagement;
+
 [RequireComponent(typeof(Rigidbody2D)),
  RequireComponent(typeof(Animator)),
  RequireComponent(typeof(AudioSource))]
 public class Player : Singleton<Player>
 {
+    public enum Ability
+    {
+        dash,
+        jump,
+        attack,
+        sprint
+    }
+
     // ? the following are 'protected' to avoid unity warnings
     [Serializable]
     protected struct GroundCheck
@@ -56,8 +66,10 @@ public class Player : Singleton<Player>
     {
         public int lives;
         public int maxLives;
-        [Tooltip("Container for the images")]
+        [NonSerialized]
         public Transform display;
+        [Tooltip("Container for the images")]
+        public string displayTagName;
         public Sprite heartFull;
         public Sprite heartEmpty;
     }
@@ -71,6 +83,20 @@ public class Player : Singleton<Player>
         public AudioClip death;
         public AudioClip jump;
         public AudioClip land;
+        public AudioClip unlock;
+    }
+
+    [Serializable]
+    protected struct NotesSettings
+    {
+        [NonSerialized]
+        public Animator notes;
+        [Tooltip("Container for the notes")]
+        public string notesTag;
+        public string dashTrigger;
+        public string attackTrigger;
+        public string jumpTrigger;
+        public string sprintTrigger;
     }
 
     [SerializeField]
@@ -91,6 +117,8 @@ public class Player : Singleton<Player>
     Transform flip = null;
     [SerializeField]
     protected SoundEffects sfx;
+    [SerializeField]
+    protected NotesSettings notes;
 
     Rigidbody2D rb;
     Animator animator;
@@ -106,6 +134,20 @@ public class Player : Singleton<Player>
     bool dashing;
     bool invulnerable;
 
+    // Abilities unlocked
+    bool jumpUnlocked;
+    bool dashUnlocked;
+    bool attackUnlocked;
+    bool sprintUnlocked;
+
+    #region Singleton
+
+    protected override void OnEnableCallback()
+    {
+        SceneManager.sceneLoaded += OnLoad;
+    }
+
+    #endregion
     #region MonoBehavior
 
     private void Start() {
@@ -114,8 +156,6 @@ public class Player : Singleton<Player>
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
-
-        UpdateDisplay();
     }
 
     private void FixedUpdate()
@@ -187,7 +227,7 @@ public class Player : Singleton<Player>
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && jumpUnlocked)
         {
             jumpButtonPressed = true;
             if (grounded && canMove && !dashing)
@@ -199,14 +239,14 @@ public class Player : Singleton<Player>
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && dashUnlocked)
             if (canMove && (canDash || grounded) && !dashing)
                 Dash();
     }
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && sprintUnlocked)
             sprinting = true;
         else if (context.canceled)
             sprinting = false;
@@ -214,7 +254,7 @@ public class Player : Singleton<Player>
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && attackUnlocked)
             Attack();
     }
 
@@ -243,7 +283,52 @@ public class Player : Singleton<Player>
         }
     }
 
+    public void IncreaseMaxHealth()
+    {
+        lives.maxLives++;
+        UpdateDisplay();
+    }
+
+    public void UnlockAbility(Ability ability)
+    {
+        switch (ability)
+        {
+            case Ability.attack:
+                attackUnlocked = true;
+                notes.notes.SetTrigger(notes.attackTrigger);
+                break;
+            case Ability.jump:
+                jumpUnlocked = true;
+                notes.notes.SetTrigger(notes.jumpTrigger);
+                break;
+            case Ability.dash:
+                dashUnlocked = true;
+                notes.notes.SetTrigger(notes.dashTrigger);
+                break;
+            case Ability.sprint:
+                sprintUnlocked = true;
+                notes.notes.SetTrigger(notes.sprintTrigger);
+                break;
+        }
+        audioSource.PlayOneShot(sfx.unlock);
+    }
+
     #endregion
+
+    private void OnLoad(Scene scene, LoadSceneMode mode)
+    {
+        lives.display = GameObject.FindGameObjectWithTag(lives.displayTagName)?.transform;
+        notes.notes = GameObject.FindGameObjectWithTag(notes.notesTag)?.GetComponent<Animator>();
+        if (attackUnlocked)
+            notes.notes.SetTrigger(notes.attackTrigger);
+        if (jumpUnlocked)
+            notes.notes.SetTrigger(notes.jumpTrigger);
+        if (sprintUnlocked)
+            notes.notes.SetTrigger(notes.sprintTrigger);
+        if (dashUnlocked)
+            notes.notes.SetTrigger(notes.dashTrigger);
+        UpdateDisplay();
+    }
 
     IEnumerator Invulnerability()
     {
@@ -334,6 +419,10 @@ public class Player : Singleton<Player>
         Debug.Log("You died!");
         if (sfx.death != null)
             audioSource.PlayOneShot(sfx.death);
+
+        lives.lives++;
+
+        //SceneManager.LoadScene("ImmedialtelyGoBackScene");
     }
 
     void DirectionFlipped()
@@ -355,14 +444,26 @@ public class Player : Singleton<Player>
     {
         if (lives.display != null)
         {
-            var hearts = lives.display.GetComponentsInChildren<Image>();
+            var hearts = lives.display.GetComponentsInChildren<Image>(true);
             var i = 0;
             if (lives.heartFull != null)
+            {
                 for (; i < Mathf.Min(hearts.Length, lives.lives); i++)
+                {
+                    hearts[i].gameObject.SetActive(true);
                     hearts[i].sprite = lives.heartFull;
+                }
+            }
             if (lives.heartEmpty != null)
+            {
                 for (; i < Mathf.Min(hearts.Length, lives.maxLives); i++)
+                {
+                    hearts[i].gameObject.SetActive(true);
                     hearts[i].sprite = lives.heartEmpty;
+                }
+            }
+            for (; i < hearts.Length; i++)
+                hearts[i].gameObject.SetActive(false);
         }
     }
 

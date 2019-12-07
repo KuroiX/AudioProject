@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Pickup
   - Platform
+  - Lives
+  - Notes
   layers:
   - Default
   - TransparentFX
