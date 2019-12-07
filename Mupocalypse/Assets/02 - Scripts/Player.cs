@@ -34,6 +34,14 @@ public class Player : Singleton<Player>
     }
 
     [Serializable]
+    protected struct DashSettings
+    {
+        public float speed;
+        [Range(0, 1), Tooltip("Factor of the original force")]
+        public float slowdown;
+    }
+
+    [Serializable]
     protected struct AttackSettings
     {
         public float range;
@@ -45,7 +53,7 @@ public class Player : Singleton<Player>
     [SerializeField]
     protected JumpSettings jump;
     [SerializeField]
-    float dashSpeed = 10;
+    protected DashSettings dash;
     [SerializeField, Tooltip("Red Line shows current range")]
     protected AttackSettings attack;
     [SerializeField, Tooltip("Red Wire-Sphere shows current ground check")]
@@ -240,7 +248,7 @@ public class Player : Singleton<Player>
         animator.SetTrigger("dash");
         dashing = true;
         canDash = false;
-        rb.velocity += dashSpeed * direction * Vector2.right;
+        rb.velocity += dash.speed * direction * Vector2.right;
         rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
     }
 
@@ -249,7 +257,9 @@ public class Player : Singleton<Player>
     {
         dashing = false;
         rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-        // ? reduce velocity
+        rb.velocity -= dash.speed * direction * Vector2.right * dash.slowdown;
+        if (Vector2.Dot(rb.velocity, Vector2.right * direction) < 0) // dont move backwards
+            rb.velocity = new Vector2(0, rb.velocity.y);
     }
 
     void Move()
