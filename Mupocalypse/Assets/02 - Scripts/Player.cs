@@ -61,6 +61,7 @@ public class Player : Singleton<Player>
     bool sprinting;
     bool canMove = true;
     bool canDash;
+    bool dashing;
     bool invulnerable;
 
     #region MonoBehavior
@@ -144,7 +145,7 @@ public class Player : Singleton<Player>
         if (context.started)
         {
             jumpButtonPressed = true;
-            if (grounded && canMove)
+            if (grounded && canMove && !dashing)
                 Jump();
         }
         else if (context.canceled)
@@ -154,14 +155,8 @@ public class Player : Singleton<Player>
     public void OnDash(InputAction.CallbackContext context)
     {
         if (context.started)
-        {
-            if (canDash || grounded)
-            {
-                canDash = false;
-                rb.velocity += dashSpeed * direction * Vector2.right;
-                rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
-            }
-        }
+            if ((canDash || grounded) && !dashing)
+                Dash();
     }
 
     public void OnSprint(InputAction.CallbackContext context)
@@ -229,6 +224,22 @@ public class Player : Singleton<Player>
         animator.ResetTrigger("hit ground");
     }
 
+    void Dash()
+    {
+        animator.ResetTrigger("hit ground");
+        animator.SetTrigger("dash");
+        dashing = true;
+        canDash = false;
+        rb.velocity += dashSpeed * direction * Vector2.right;
+        rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
+    }
+
+    void DashEnd()
+    {
+        dashing = false;
+        rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+    }
+
     void Move()
     {
         var v = moveInput * Vector2.right * Time.fixedDeltaTime * move.speed;
@@ -257,8 +268,6 @@ public class Player : Singleton<Player>
     {
         animator.SetTrigger("hit ground");
     }
-
-    void EnableYMovement() => rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
 
     void EnableMovement() => canMove = true;
     void DisableMovement() => canMove = false;
