@@ -5,8 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Rigidbody2D)),
+ RequireComponent(typeof(Animator)),
+ RequireComponent(typeof(AudioSource))]
 public class Player : Singleton<Player>
 {
     // ? the following are 'protected' to avoid unity warnings
@@ -48,6 +49,17 @@ public class Player : Singleton<Player>
         public LayerMask layers;
     }
 
+    [Serializable]
+    protected struct SoundEffects
+    {
+        public AudioClip attackHit;
+        public AudioClip attackMiss;
+        public AudioClip dash;
+        public AudioClip death;
+        public AudioClip jump;
+        public AudioClip land;
+    }
+
     [SerializeField]
     protected MoveSettings move;
     [SerializeField]
@@ -68,6 +80,8 @@ public class Player : Singleton<Player>
     Text livesDisplay = null;
     [SerializeField, Tooltip("Transform to be turned towards direction.")]
     Transform flip = null;
+    [SerializeField]
+    protected SoundEffects sfx;
 
     Rigidbody2D rb;
     Animator animator;
@@ -237,7 +251,8 @@ public class Player : Singleton<Player>
     {
         canDash = true;
         rb.velocity += Vector2.up * jump.initialVelocity;
-        audioSource.Play();
+        if (sfx.jump != null)
+            audioSource.PlayOneShot(sfx.jump);
         animator.SetTrigger("jump");
         animator.ResetTrigger("hit ground");
     }
@@ -250,6 +265,8 @@ public class Player : Singleton<Player>
         canDash = false;
         rb.velocity += dash.speed * direction * Vector2.right;
         rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
+        if (sfx.dash != null)
+            audioSource.PlayOneShot(sfx.dash);
     }
 
     // called from the animation
@@ -279,12 +296,18 @@ public class Player : Singleton<Player>
             // ? hit.collider.GetComponent<Enemy>();
             animator.SetTrigger("attack");
             canMove = false;
+            if (sfx.attackHit != null)
+                audioSource.PlayOneShot(sfx.attackHit);
         }
+        else if (sfx.attackMiss != null)
+            audioSource.PlayOneShot(sfx.attackMiss);
     }
 
     void Die()
     {
         Debug.Log("You died!");
+        if (sfx.death != null)
+            audioSource.PlayOneShot(sfx.death);
     }
 
     void DirectionFlipped()

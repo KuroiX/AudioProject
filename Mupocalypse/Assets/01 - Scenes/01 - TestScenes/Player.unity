@@ -958,7 +958,9 @@ MonoBehaviour:
     initialVelocity: 5
     fallMultiplier: 2.5
     lowJumpMultiplier: 2
-  dashSpeed: 5
+  dash:
+    speed: 5
+    slowdown: 0.5
   attack:
     range: 1
     layers:
@@ -975,6 +977,11 @@ MonoBehaviour:
   timeInvulnerable: 0.4
   livesDisplay: {fileID: 686542772}
   flip: {fileID: 1997717678}
+  sfx:
+    attack: {fileID: 0}
+    dash: {fileID: 0}
+    jump: {fileID: 8300000, guid: 6015e26c4697c489da10c6ab4a8a5bb0, type: 3}
+    land: {fileID: 0}
 --- !u!82 &1406785345
 AudioSource:
   m_ObjectHideFlags: 0
