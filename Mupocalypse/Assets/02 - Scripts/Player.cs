@@ -83,6 +83,7 @@ public class Player : Singleton<Player>
         public AudioClip death;
         public AudioClip jump;
         public AudioClip land;
+        public AudioClip unlock;
     }
 
     [SerializeField]
@@ -290,6 +291,7 @@ public class Player : Singleton<Player>
                 sprintUnlocked = true;
                 break;
         }
+        audioSource.PlayOneShot(sfx.unlock);
     }
 
     #endregion
