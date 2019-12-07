@@ -58,8 +58,10 @@ public class Player : Singleton<Player>
     {
         public int lives;
         public int maxLives;
-        [Tooltip("Container for the images")]
+        [NonSerialized]
         public Transform display;
+        [Tooltip("Container for the images")]
+        public string displayTagName;
         public Sprite heartFull;
         public Sprite heartEmpty;
     }
@@ -261,6 +263,7 @@ public class Player : Singleton<Player>
 
     private void OnLoad(Scene scene, LoadSceneMode mode)
     {
+        lives.display = GameObject.FindGameObjectWithTag(lives.displayTagName)?.transform;
         UpdateDisplay();
     }
 
@@ -354,7 +357,7 @@ public class Player : Singleton<Player>
 
         lives.lives++;
 
-        SceneManager.LoadScene("ImmedialtelyGoBackScene");
+        //SceneManager.LoadScene("ImmedialtelyGoBackScene");
     }
 
     void DirectionFlipped()
