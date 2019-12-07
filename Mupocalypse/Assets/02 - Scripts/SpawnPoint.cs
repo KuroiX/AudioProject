@@ -7,6 +7,5 @@ public class SpawnPoint
 {
   public int spawnID;
   public Vector2 spawnPosition;
-  public Vector2 cameraMax;
-  public Vector2 cameraMin;
+
 }
