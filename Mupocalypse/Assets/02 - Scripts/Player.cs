@@ -96,6 +96,7 @@ public class Player : Singleton<Player>
     float moveInput = 0;
     int direction = 1;
     bool grounded;
+    Transform platform;
     bool jumpButtonPressed;
     bool sprinting;
     bool canMove = true;
@@ -250,8 +251,16 @@ public class Player : Singleton<Player>
 
     bool IsGrounded()
     {
-        var cols = Physics2D.OverlapCircle(transform.position2D() + groundCheck.position, groundCheck.distance, groundCheck.layers);
-        return cols != null;
+        var col = Physics2D.OverlapCircle(transform.position2D() + groundCheck.position, groundCheck.distance, groundCheck.layers);
+        if (col != null)
+        {
+            if (col.gameObject.tag == "Platform") // ?
+                platform = col.transform;
+            else
+                platform = null;
+            return true;
+        }
+        return false;
     }
 
     void Jump()
@@ -299,8 +308,9 @@ public class Player : Singleton<Player>
         var hit = Physics2D.Raycast(rb.position, Vector2.right * direction, attack.range, attack.layers);
         if (hit)
         {
-            // TODO damage enemy
-            // ? hit.collider.GetComponent<Enemy>();
+            // var damagable = hit.collider.GetComponent<IDamagable>();
+            // if (damagable != null)
+            //     damagable.Damage();
             animator.SetTrigger("attack");
             canMove = false;
             if (sfx.attackHit != null)
@@ -326,6 +336,7 @@ public class Player : Singleton<Player>
     void Landed()
     {
         animator.SetTrigger("hit ground");
+        animator.SetBool("on platform", platform != null);
     }
 
     void EnableMovement() => canMove = true;
