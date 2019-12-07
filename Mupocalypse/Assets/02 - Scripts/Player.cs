@@ -86,6 +86,19 @@ public class Player : Singleton<Player>
         public AudioClip unlock;
     }
 
+    [Serializable]
+    protected struct NotesSettings
+    {
+        [NonSerialized]
+        public Animator notes;
+        [Tooltip("Container for the notes")]
+        public string notesTag;
+        public string dashTrigger;
+        public string attackTrigger;
+        public string jumpTrigger;
+        public string sprintTrigger;
+    }
+
     [SerializeField]
     protected MoveSettings move;
     [SerializeField]
@@ -104,6 +117,8 @@ public class Player : Singleton<Player>
     Transform flip = null;
     [SerializeField]
     protected SoundEffects sfx;
+    [SerializeField]
+    protected NotesSettings notes;
 
     Rigidbody2D rb;
     Animator animator;
@@ -280,15 +295,19 @@ public class Player : Singleton<Player>
         {
             case Ability.attack:
                 attackUnlocked = true;
+                notes.notes.SetTrigger(notes.attackTrigger);
                 break;
             case Ability.jump:
                 jumpUnlocked = true;
+                notes.notes.SetTrigger(notes.jumpTrigger);
                 break;
             case Ability.dash:
                 dashUnlocked = true;
+                notes.notes.SetTrigger(notes.dashTrigger);
                 break;
             case Ability.sprint:
                 sprintUnlocked = true;
+                notes.notes.SetTrigger(notes.sprintTrigger);
                 break;
         }
         audioSource.PlayOneShot(sfx.unlock);
@@ -299,6 +318,7 @@ public class Player : Singleton<Player>
     private void OnLoad(Scene scene, LoadSceneMode mode)
     {
         lives.display = GameObject.FindGameObjectWithTag(lives.displayTagName)?.transform;
+        notes.notes = GameObject.FindGameObjectWithTag(notes.notesTag)?.GetComponent<Animator>();
         UpdateDisplay();
     }
 

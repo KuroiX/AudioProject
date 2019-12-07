@@ -2238,6 +2238,12 @@ MonoBehaviour:
     jump: {fileID: 8300000, guid: 6015e26c4697c489da10c6ab4a8a5bb0, type: 3}
     land: {fileID: 0}
     unlock: {fileID: 0}
+  notes:
+    notesTag: Notes
+    dashTrigger: g
+    attackTrigger: c
+    jumpTrigger: f
+    sprintTrigger: h
 --- !u!82 &1406785345
 AudioSource:
   m_ObjectHideFlags: 0
