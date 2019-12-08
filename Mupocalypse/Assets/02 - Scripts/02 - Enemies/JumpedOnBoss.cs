@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class JumpedOnBoss : MonoBehaviour, IDamageable
 {
     [SerializeField]
@@ -18,6 +19,8 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
     private int jumpOdd;
     [SerializeField]
     private int attackOdd;
+    [SerializeField]
+    private float timeInvulnerable = .3f;
 
     private float leftBorder;
     private float rightBorder;
@@ -27,6 +30,8 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
     private int lives;
     private float jumping;
     private bool attacking;
+
+    private bool invulnerable;
 
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -55,14 +60,29 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
 
     void LoseLive()
     {
-        lives -= 1;
-        if (lives == 0)
+        if (!invulnerable)
         {
-            print("Dead");
-            Destroy(this.gameObject);
+            lives -= 1;
+            if (lives == 0)
+            {
+                print("Dead");
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                print("Lost a live: " + lives + "left");
+                StartCoroutine(LoseLifeEnd());
+            }
         }
-        else
-            print("Lost a live: " + lives + "left");
+    }
+
+    IEnumerator LoseLifeEnd()
+    {
+        animator.SetTrigger("invincible");
+        invulnerable = true;
+        yield return new WaitForSeconds(timeInvulnerable);
+        animator.SetTrigger("invincible");
+        invulnerable = false;
     }
 
     void OnCollisionEnter2D(Collision2D col)
