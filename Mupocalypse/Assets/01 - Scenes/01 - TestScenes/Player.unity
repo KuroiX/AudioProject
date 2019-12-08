@@ -2052,7 +2052,7 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: e9cec82c-8a90-4100-bd76-a0aa235a87bd
     m_ActionName: Player/Dash[/Keyboard/s]
-  m_NeverAutoSwitchControlSchemes: 1
+  m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
