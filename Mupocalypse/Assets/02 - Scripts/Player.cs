@@ -29,6 +29,7 @@ public class Player : Singleton<Player>
         public LayerMask layers;
     }
 
+
     [Serializable]
     protected struct MoveSettings
     {
@@ -402,6 +403,12 @@ public class Player : Singleton<Player>
             audioSource.PlayOneShot(sfx.attackHit);
         if (hit)
         {
+            GameObject destroyable = hit.collider.gameObject;
+            if (destroyable.tag =="DestroyableObject")
+            {
+                destroyable.GetComponent<DestroyableObject>().GetDestroyed();
+            }
+            
             var damagable = hit.collider.GetComponent<IDamageable>();
             if (damagable != null)
             {

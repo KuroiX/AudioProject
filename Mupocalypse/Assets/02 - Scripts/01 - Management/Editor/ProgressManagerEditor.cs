@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class ProgressManagerEditor : Editor
 {
     Scene scene;
-
+    
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
