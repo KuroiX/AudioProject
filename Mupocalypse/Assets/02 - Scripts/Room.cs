@@ -54,7 +54,7 @@ public class Room : MonoBehaviour
                 }
             } 
             
-            }
+        }
             
             
 

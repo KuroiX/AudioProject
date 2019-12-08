@@ -59,6 +59,11 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
         if (lives == 0)
         {
             Destroy(this.gameObject);
+            GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
+            foreach (GameObject go in doors)
+            {
+                go.GetComponent<Door>().UnLock();
+            }
         }
     }
 
