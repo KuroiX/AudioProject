@@ -59,6 +59,7 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
         lives -= 1;
         if (lives == 0)
         {
+            //TODO spawn
             Destroy(this.gameObject);
             ProgressManager.Instance.defeatedBosses.Add(SceneManager.GetActiveScene().buildIndex, true);
             GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
