@@ -183,9 +183,9 @@ public class Player : Singleton<Player>
         // ! Test code
         switch (other.collider.tag)
         {
-            case "Enemy":
+            /*case "Enemy":
                 Damage();
-                break;
+                break;*/
             case "Pickup":
                 Heal();
                 break;

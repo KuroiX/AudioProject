@@ -58,11 +58,8 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
         lives -= 1;
         if (lives == 0)
         {
-            print("Dead");
             Destroy(this.gameObject);
         }
-        else
-            print("Lost a live: " + lives + "left");
     }
 
     void OnCollisionEnter2D(Collision2D col)
