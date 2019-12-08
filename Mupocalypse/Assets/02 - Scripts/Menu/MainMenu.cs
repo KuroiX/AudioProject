@@ -16,4 +16,10 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+
+    private void Start() {
+        Destroy(GameManager.Instance.gameObject);
+        Destroy(LevelManager.Instance.gameObject);
+        Destroy(ProgressManager.Instance.gameObject);
+    }
 }

@@ -22,6 +22,10 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
     private int attackOdd;
     [SerializeField]
     private float timeInvulnerable = .3f;
+    [SerializeField]
+    private GameObject drop;
+    [SerializeField]
+    private float bounce = .6f;
 
     private float leftBorder;
     private float rightBorder;
@@ -51,6 +55,8 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
         animator = GetComponent<Animator>();
 
         StartCoroutine(Move());
+
+        drop.SetActive(false);
     }
 
     void IDamageable.GetDamage()
@@ -66,8 +72,18 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             lives -= 1;
             if (lives == 0)
             {
-                GameManager.Instance.GetComponent<AudioSource>().clip = GameManager.Instance.clips[0];
-                GameManager.Instance.GetComponent<AudioSource>().Play();
+                GameManager gm = GameManager.Instance;
+                AudioSource source = gm.GetComponent<AudioSource>();
+                gm.clips[0] = gm.clips[2];
+                source.clip = GameManager.Instance.clips[0];
+                source.Play();
+
+                if (drop != null)
+                {
+                    drop.SetActive(true);
+                    drop.transform.position = transform.position;
+                }
+
                 Destroy(this.gameObject);
                 ProgressManager.Instance.defeatedBosses.Add(SceneManager.GetActiveScene().buildIndex, true);
                 GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
@@ -110,7 +126,7 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
                 else
                 {
                     LoseLive();
-                    // TODO: Maybe jump
+                    Player.Instance.Jump(bounce);
                 }
             }
             else

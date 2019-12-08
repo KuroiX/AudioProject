@@ -314,6 +314,16 @@ public class Player : Singleton<Player>
         audioSource.PlayOneShot(sfx.unlock);
     }
 
+    public void Jump(float factor = 1)
+    {
+        canDash = true;
+        rb.velocity += Vector2.up * jump.initialVelocity * factor;
+        if (sfx.jump != null)
+            audioSource.PlayOneShot(sfx.jump);
+        animator.SetTrigger("jump");
+        animator.ResetTrigger("hit ground");
+    }
+
     #endregion
 
     private void OnLoad(Scene scene, LoadSceneMode mode)
@@ -352,16 +362,6 @@ public class Player : Singleton<Player>
             return true;
         }
         return false;
-    }
-
-    void Jump()
-    {
-        canDash = true;
-        rb.velocity += Vector2.up * jump.initialVelocity;
-        if (sfx.jump != null)
-            audioSource.PlayOneShot(sfx.jump);
-        animator.SetTrigger("jump");
-        animator.ResetTrigger("hit ground");
     }
 
     void Dash()
