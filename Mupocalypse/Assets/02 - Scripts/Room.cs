@@ -1,34 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Room : MonoBehaviour
 {
     public SpawnPoint[] spawnPoint;
     
     public DespawnPoint[] despawnPoint;
-
+    
     private SpawnPoint currentSpawnPoint;
 
-   
+    public Vector2 cameraMin;
+    public Vector2 cameraMax;
+    public CameraController cam;
+
+    public bool savePointRoom = false;
+    private GameObject[] doors;
     
     // Start is called before the first frame update
     void Start()
     {
+        
         foreach (SpawnPoint sp in spawnPoint)
         {
             if (sp.spawnID == GameManager.Instance.spawnID)
                 currentSpawnPoint = sp;
         }
+
+
+        if(savePointRoom)
+          GameManager.Instance.savePoint = SceneManager.GetActiveScene().buildIndex;
+
+
+        //if boss room
+        if (ProgressManager.Instance.defeatedBosses.ContainsKey(SceneManager.GetActiveScene().buildIndex))
+        {
+
+            doors = GameObject.FindGameObjectsWithTag("Door");
+            // if Boss hasn't been defeated
+            if (!ProgressManager.Instance.defeatedBosses[SceneManager.GetActiveScene().buildIndex])
+            {
+                foreach (GameObject door in doors)
+                {
+                    door.GetComponent<Door>().Lock();
+                }
+            }
+            else
+            {
+                foreach (GameObject door in doors)
+                {
+                    door.GetComponent<Door>().UnLock();
+                }
+            } 
+            
+            }
+            
+            
+
         SetPlayerPos();
         SetCameraPos();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         
+        LevelManager.Instance.FadeIn();
     }
+    
 
     public void DespawnCollectables()
     {
@@ -42,9 +77,13 @@ public class Room : MonoBehaviour
 
     public void SetCameraPos()
     {
-        Camera main = Camera.main;
-        if(main!=null)
-            main.transform.position = currentSpawnPoint.cameraMaxPos;
+
+        Vector3 temp = Player.Instance.transform.Position2D().ToVec3();
+        temp.z = -10;
+        cam.transform.position = temp + new Vector3(0, 3.5f, 0); 
+        cam.max = cameraMax;
+        cam.min = cameraMin;
+
     }
     
 }
