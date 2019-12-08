@@ -28,6 +28,9 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
     private float jumping;
     private bool attacking;
 
+    private SpriteRenderer spriteRenderer;
+    private Animator animator;
+
     void Start()
     {
         leftBorder = transform.position.x - variance;
@@ -36,6 +39,10 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
         goRight = true;
         lives = 3;
         jumping = 0;
+        attacking = false;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
 
         StartCoroutine(Move());
     }
@@ -80,8 +87,8 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             }
             else
             {
-                print("Hit");
-                // TODO: Hit player
+                col.gameObject.GetComponent<Player>().Damage();
+                // TODO: Maybe let player bounce off
             }
         }
     }
@@ -89,6 +96,7 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
     void Turn()
     {
         goRight = !goRight;
+        spriteRenderer.flipX = !spriteRenderer.flipX;
         SetRandomJumps();
         SetRandomAttacks();
     }
@@ -99,6 +107,11 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
         if (rand == 0)
         {
             jumping = jumpDuration;
+            animator.SetInteger("State", 1);
+        }
+        else
+        {
+            animator.SetInteger("State", 0);
         }
     }
 
@@ -114,8 +127,17 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
 
     IEnumerator Attack()
     {
+        animator.SetInteger("State", 2);
         yield return new WaitForSeconds(1);
         attacking = false;
+        if (jumping > 0)
+        {
+            animator.SetInteger("State", 1);
+        }
+        else
+        {
+            animator.SetInteger("State", 0);
+        }
     }
 
     IEnumerator Move()
@@ -160,6 +182,10 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             {
                 y = Mathf.Sin(jumping * Mathf.PI) * jumpHeight;
                 jumping -= Time.deltaTime;
+                if (jumping <= 0)
+                {
+                    animator.SetInteger("State", 0);
+                }
             }
 
             transform.position = new Vector3(x, y, transform.position.z);
