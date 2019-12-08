@@ -178,21 +178,7 @@ public class Player : Singleton<Player>
         if (canMove)
             Move();
     }
-
-    private void OnCollisionEnter2D(Collision2D other) {
-        // ! Test code
-        switch (other.collider.tag)
-        {
-            /*case "Enemy":
-                Damage();
-                break;*/
-            case "Pickup":
-                Heal();
-                break;
-        }
-        // ! end
-    }
-
+    
     protected void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
