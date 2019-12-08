@@ -30,7 +30,7 @@ public class Room : MonoBehaviour
 
 
         if(savePointRoom)
-          GameManager.Instance.savePoint = currentSpawnPoint.spawnID;
+          GameManager.Instance.savePoint = SceneManager.GetActiveScene().buildIndex;
 
 
         //if boss room

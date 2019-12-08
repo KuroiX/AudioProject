@@ -142,7 +142,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2327344997608579312}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.46, y: -10.05, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 2327344997529598543}
@@ -218,7 +218,7 @@ MonoBehaviour:
     distance: 0.06
     layers:
       serializedVersion: 2
-      m_Bits: 256
+      m_Bits: 1280
   lives:
     lives: 3
     maxLives: 3
