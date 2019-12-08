@@ -9,6 +9,8 @@ TagManager:
   - Platform
   - Lives
   - Notes
+  - DestroyableObject
+  - Door
   layers:
   - Default
   - TransparentFX

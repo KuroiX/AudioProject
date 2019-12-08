@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Room : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class Room : MonoBehaviour
     public CameraController cam;
 
     public bool savePointRoom = false;
+    private GameObject[] doors;
     
     // Start is called before the first frame update
     void Start()
@@ -29,8 +31,33 @@ public class Room : MonoBehaviour
 
         if(savePointRoom)
           GameManager.Instance.savePoint = currentSpawnPoint.spawnID;
-        
-        
+
+
+        //if boss room
+        if (ProgressManager.Instance.defeatedBosses.ContainsKey(SceneManager.GetActiveScene().buildIndex))
+        {
+
+            doors = GameObject.FindGameObjectsWithTag("Door");
+            // if Boss hasn't been defeated
+            if (!ProgressManager.Instance.defeatedBosses[SceneManager.GetActiveScene().buildIndex])
+            {
+                foreach (GameObject door in doors)
+                {
+                    door.GetComponent<Door>().Lock();
+                }
+            }
+            else
+            {
+                foreach (GameObject door in doors)
+                {
+                    door.GetComponent<Door>().UnLock();
+                }
+            } 
+            
+            }
+            
+            
+
         SetPlayerPos();
         SetCameraPos();
         

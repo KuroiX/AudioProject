@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class ProgressManager : Singleton<ProgressManager>
 {
+    public Dictionary<int, bool> defeatedBosses = new Dictionary<int, bool>()
+    {
+        // roomId, bossIsDefeated 
+        {0, false}
+    };
+
     public List<Collectable> collectables = new List<Collectable>();
 
     public Dictionary<string, bool[]> activeCollectables = new Dictionary<string, bool[]>();

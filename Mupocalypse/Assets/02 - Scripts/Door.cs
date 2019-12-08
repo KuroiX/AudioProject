@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class Door : MonoBehaviour
 {
 
@@ -12,13 +13,13 @@ public class Door : MonoBehaviour
     public void Lock()
     {
         condition = false;
-        GetComponent<Collider>().isTrigger = false;
+        GetComponent<Collider2D>().isTrigger = false;
     }
     
     public void UnLock()
     {
         condition = true;
-        GetComponent<Collider>().isTrigger = true;
+        GetComponent<Collider2D>().isTrigger = true;
     }
     
     private void OnTriggerEnter2D(Collider2D player)
