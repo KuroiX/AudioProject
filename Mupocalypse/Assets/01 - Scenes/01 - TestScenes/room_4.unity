@@ -40209,6 +40209,11 @@ PrefabInstance:
       propertyPath: nextRoom
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 940964661192244323, guid: 1588ae0eb63fc06498fcdffd8873b469,
+        type: 3}
+      propertyPath: nextSpawnID
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
         type: 3}
       propertyPath: m_LocalPosition.x

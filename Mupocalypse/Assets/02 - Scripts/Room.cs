@@ -17,11 +17,12 @@ public class Room : MonoBehaviour
 
     public bool savePointRoom = false;
     private GameObject[] doors;
+    public bool bossRoom;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+
         foreach (SpawnPoint sp in spawnPoint)
         {
             if (sp.spawnID == GameManager.Instance.spawnID)
@@ -29,10 +30,22 @@ public class Room : MonoBehaviour
         }
 
 
-        if(savePointRoom)
-          GameManager.Instance.savePoint = SceneManager.GetActiveScene().buildIndex;
+        if (savePointRoom)
+            GameManager.Instance.savePoint = SceneManager.GetActiveScene().buildIndex - 1;
 
 
+        GameManager gm = GameManager.Instance;
+        AudioSource source = gm.GetComponent<AudioSource>();
+        if (bossRoom && source.clip != gm.clips[1])
+        {
+            source.clip = GameManager.Instance.clips[1];
+            source.Play();
+        } else if (!bossRoom && source.clip == gm.clips[1])
+        {
+            source.clip = gm.clips[0];
+            source.Play();
+        }
+        
         //if boss room
         if (ProgressManager.Instance.defeatedBosses.ContainsKey(SceneManager.GetActiveScene().buildIndex))
         {
@@ -41,6 +54,7 @@ public class Room : MonoBehaviour
             // if Boss hasn't been defeated
             if (!ProgressManager.Instance.defeatedBosses[SceneManager.GetActiveScene().buildIndex])
             {
+
                 foreach (GameObject door in doors)
                 {
                     door.GetComponent<Door>().Lock();

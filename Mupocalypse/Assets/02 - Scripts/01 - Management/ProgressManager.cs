@@ -17,6 +17,7 @@ public class ProgressManager : Singleton<ProgressManager>
 
     protected override void OnEnableCallback() {
         SceneManager.sceneLoaded += OnLoad;
+        SceneManager.sceneLoaded += OnSceneLoad;
     }
 
     private void OnLoad(Scene scene, LoadSceneMode mode)
@@ -45,5 +46,19 @@ public class ProgressManager : Singleton<ProgressManager>
     {
         collectables = new List<Collectable>();
         activeCollectables = new Dictionary<string, bool[]>();
+        defeatedBosses = new Dictionary<int, bool>()
+        {
+            // roomId, bossIsDefeated 
+            {0, false}
+        };
+    }
+    
+
+    private void OnSceneLoad(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.buildIndex == 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

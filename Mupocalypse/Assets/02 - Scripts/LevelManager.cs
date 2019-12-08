@@ -18,7 +18,7 @@ public class LevelManager : Singleton<LevelManager>
     
     public void LoadScene()
     {
-        SceneManager.LoadScene(_roomID);
+        SceneManager.LoadScene(_roomID + 1);
         
     }
 
@@ -31,6 +31,19 @@ public class LevelManager : Singleton<LevelManager>
     {
         this._roomID = roomID;
         fade.SetTrigger("FadeOut");
+    }
+    
+    protected override void OnEnableCallback()
+    {
+        SceneManager.sceneLoaded += OnSceneLoad;
+    }
+
+    private void OnSceneLoad(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.buildIndex == 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     

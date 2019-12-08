@@ -647,6 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fae5357058e5f4479bcd1d2b0cdc652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scene: 10
 --- !u!1 &1131304081
 GameObject:
   m_ObjectHideFlags: 0
@@ -1310,6 +1311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fae5357058e5f4479bcd1d2b0cdc652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scene: 0
 --- !u!1 &1768548023
 GameObject:
   m_ObjectHideFlags: 0

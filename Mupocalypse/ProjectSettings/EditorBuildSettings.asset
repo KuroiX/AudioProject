@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/01 - Scenes/MainMenu.unity
+    guid: 6f7c0acc984dbf34bb8c108a89a35026
+  - enabled: 1
     path: Assets/01 - Scenes/01 - TestScenes/room_00.unity
     guid: 6889c4fc925110249a08249908e4e07b
   - enabled: 1
@@ -33,14 +36,8 @@ EditorBuildSettings:
     path: Assets/01 - Scenes/01 - TestScenes/room_8.unity
     guid: 8cfb0af1161ea4149a9f9c138ddbcb69
   - enabled: 1
-    path: Assets/01 - Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
-    path: Assets/01 - Scenes/01 - TestScenes/Player.unity
-    guid: b1dff6a0f92b547428cb72ebccd23941
-  - enabled: 1
-    path: Assets/01 - Scenes/01 - TestScenes/ImmedialtelyGoBackScene.unity
-    guid: 094cfaca371ef4a23a43beb34d13cb3b
+    path: Assets/01 - Scenes/Intro Cutscene.unity
+    guid: 96a2587341de9f94ea2140428a6accf9
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 08bb1ddc3d50f4611b559c106239058f,
       type: 2}

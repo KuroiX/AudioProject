@@ -6,9 +6,10 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 
+    public int scene;
     public void StartGame()
-    {
-     //   SceneManager.LoadScene("room_0");
+    { 
+        SceneManager.LoadScene(scene);
     }
 
     public void Quit()
