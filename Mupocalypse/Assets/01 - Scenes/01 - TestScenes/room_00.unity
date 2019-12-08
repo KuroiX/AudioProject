@@ -160,6 +160,7 @@ MonoBehaviour:
   cameraMax: {x: 16.91, y: -3.03}
   cam: {fileID: 2130336921}
   savePointRoom: 1
+  bossRoom: 0
 --- !u!4 &154795503
 Transform:
   m_ObjectHideFlags: 0
@@ -26805,9 +26806,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6770001463898265153, guid: 572d87a11591d7b4c982b1bb4270438c,
         type: 3}
+      propertyPath: sources.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6770001463898265153, guid: 572d87a11591d7b4c982b1bb4270438c,
+        type: 3}
+      propertyPath: clips.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6770001463898265153, guid: 572d87a11591d7b4c982b1bb4270438c,
+        type: 3}
       propertyPath: spawnID
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 6770001463898265153, guid: 572d87a11591d7b4c982b1bb4270438c,
+        type: 3}
+      propertyPath: clips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 4f6ce5c4989561b499542512d1937eb6, type: 3}
+    - target: {fileID: 6770001463898265153, guid: 572d87a11591d7b4c982b1bb4270438c,
+        type: 3}
+      propertyPath: clips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: f1dff1b651c215d44ab66349677cefd6, type: 3}
     - target: {fileID: 6770001463898265154, guid: 572d87a11591d7b4c982b1bb4270438c,
         type: 3}
       propertyPath: m_Name
@@ -26920,9 +26941,9 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: bee01d7e0c51f9346a498a70561341c4, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.157
+  m_Volume: 0.2
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -27189,6 +27210,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608579314, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
         type: 3}

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
 public class JumpedOnBoss : MonoBehaviour, IDamageable
@@ -65,12 +66,19 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             lives -= 1;
             if (lives == 0)
             {
-                print("Dead");
+                GameManager.Instance.GetComponent<AudioSource>().clip = GameManager.Instance.clips[0];
+                GameManager.Instance.GetComponent<AudioSource>().Play();
                 Destroy(this.gameObject);
+                ProgressManager.Instance.defeatedBosses.Add(SceneManager.GetActiveScene().buildIndex, true);
+                GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
+                foreach (GameObject go in doors)
+                {
+                    go.GetComponent<Door>().UnLock();
+                }
             }
             else
             {
-                print("Lost a live: " + lives + "left");
+                // print("Lost a live: " + lives + "left");
                 StartCoroutine(LoseLifeEnd());
             }
         }
@@ -197,10 +205,10 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             }
 
             // Jumping
-            float y = transform.position.y;
+            float y = groundHeight;
             if (jumping > 0)
             {
-                y = Mathf.Sin(jumping * Mathf.PI) * jumpHeight;
+                y += Mathf.Sin(jumping * Mathf.PI) * jumpHeight;
                 jumping -= Time.deltaTime;
                 if (jumping <= 0)
                 {

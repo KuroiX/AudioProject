@@ -18,6 +18,8 @@ public class Door : MonoBehaviour
     
     public void UnLock()
     {
+        
+        disappear.SetTrigger("Unlock");
         condition = true;
         GetComponent<Collider2D>().isTrigger = true;
     }
