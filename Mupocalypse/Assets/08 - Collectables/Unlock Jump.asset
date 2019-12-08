@@ -17,3 +17,5 @@ MonoBehaviour:
   effect: 3
   ability: 1
   id: 
+  showMessage: 1
+  message: Jump Unlocked

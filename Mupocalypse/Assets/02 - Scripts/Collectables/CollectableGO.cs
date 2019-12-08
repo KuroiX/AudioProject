@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Utils;
 
 [RequireComponent(typeof(Collider2D))]
 public class CollectableGO : MonoBehaviour
@@ -21,6 +23,15 @@ public class CollectableGO : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (collectable.showMessage)
+            {
+                var text = GameObject.FindGameObjectWithTag("Collect Message")?.GetComponent<Text>();
+                if (text != null)
+                    Player.Instance.StartCoroutine(TextUtil.Type(text, collectable.message, 0, 1));
+                else
+                    Debug.LogWarning("Collect Message not found.");
+            }
+            else Debug.LogWarning("Dont show");
             var pm = ProgressManager.Instance;
             collectable.ApplyEffect(other.GetComponent<Player>());
             pm.collectables.Add(collectable);

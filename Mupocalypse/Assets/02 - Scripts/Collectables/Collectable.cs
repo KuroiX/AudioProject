@@ -22,6 +22,9 @@ public class Collectable : ScriptableObject
     public Player.Ability ability;
     [ConditionalHide("effect", 4)]
     public string id;
+    public bool showMessage = true;
+    [ConditionalHide("showMessage")]
+    public string message;
 
     public void ApplyEffect(Player player)
     {

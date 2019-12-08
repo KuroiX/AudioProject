@@ -17,3 +17,5 @@ MonoBehaviour:
   effect: 3
   ability: 3
   id: 
+  showMessage: 1
+  message: Sprint Unlocked

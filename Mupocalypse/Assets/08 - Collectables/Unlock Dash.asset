@@ -17,3 +17,5 @@ MonoBehaviour:
   effect: 3
   ability: 0
   id: 
+  showMessage: 1
+  message: Dash Unlocked

@@ -17,3 +17,5 @@ MonoBehaviour:
   effect: 1
   ability: 0
   id: 
+  showMessage: 0
+  message: 
