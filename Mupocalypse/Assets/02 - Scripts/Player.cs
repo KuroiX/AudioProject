@@ -264,7 +264,7 @@ public class Player : Singleton<Player>
     public void Damage()
     {
         if (invulnerable) return;
-        if (lives.lives == 0)
+        if (lives.lives == 1)
             Die();
         else
         {
@@ -414,14 +414,14 @@ public class Player : Singleton<Player>
 
     void Die()
     {
-        GameManager.Instance.spawnID = GameManager.Instance.savePoint;
+        GameManager.Instance.spawnID = -1;
         LevelManager.Instance.FadeOut(GameManager.Instance.savePoint);
         
         Debug.Log("You died!");
         if (sfx.death != null)
             audioSource.PlayOneShot(sfx.death);
 
-        lives.lives++;
+        lives.lives = lives.maxLives;
 
         //SceneManager.LoadScene("ImmedialtelyGoBackScene");
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Room : MonoBehaviour
 {
@@ -27,8 +28,8 @@ public class Room : MonoBehaviour
         }
 
 
-        if(savePointRoom)
-          GameManager.Instance.savePoint = currentSpawnPoint.spawnID;
+        if (savePointRoom)
+            GameManager.Instance.savePoint = SceneManager.GetActiveScene().buildIndex;
         
         
         SetPlayerPos();
@@ -36,12 +37,7 @@ public class Room : MonoBehaviour
         
         LevelManager.Instance.FadeIn();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
     public void DespawnCollectables()
     {

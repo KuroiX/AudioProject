@@ -223,18 +223,18 @@ MonoBehaviour:
     lives: 3
     maxLives: 3
     displayTagName: Lives
-    heartFull: {fileID: 21300000, guid: 3e2be6c06186240a89be0a079607b454, type: 3}
-    heartEmpty: {fileID: 21300000, guid: 35f4724a3f81148928613d5642b71146, type: 3}
+    heartFull: {fileID: 21300000, guid: 35f4724a3f81148928613d5642b71146, type: 3}
+    heartEmpty: {fileID: 21300000, guid: e9111471fa295664d9f823752b3b163e, type: 3}
   timeInvulnerable: 0.4
   flip: {fileID: 2327344997529598543}
   sfx:
     attackHit: {fileID: 8300000, guid: f48ee663a210de24091f2edf88e460ad, type: 3}
-    attackMiss: {fileID: 0}
+    attackMiss: {fileID: 8300000, guid: f48ee663a210de24091f2edf88e460ad, type: 3}
     dash: {fileID: 0}
     death: {fileID: 0}
-    jump: {fileID: 0}
+    jump: {fileID: 8300000, guid: 3d89918ad84d12d45b07be5ebac608d8, type: 3}
     land: {fileID: 0}
-    unlock: {fileID: 0}
+    unlock: {fileID: 8300000, guid: 91f5172d2f9682c46b68d5ab24b81b7c, type: 3}
   notes:
     notesTag: Notes
     dashTrigger: e

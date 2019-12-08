@@ -32,6 +32,7 @@ public class Collectable : ScriptableObject
                 break;
             case Effect.heart:
                 player.IncreaseMaxHealth();
+                player.Heal();
                 break;
             case Effect.unlockAbility:
                 player.UnlockAbility(ability);
