@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Animator))]
 public class LevelManager : Singleton<LevelManager>
@@ -33,5 +34,9 @@ public class LevelManager : Singleton<LevelManager>
         fade.SetTrigger("FadeOut");
     }
 
-    
+    public void OnEscape(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            SceneManager.LoadScene(0);
+    }
 }
