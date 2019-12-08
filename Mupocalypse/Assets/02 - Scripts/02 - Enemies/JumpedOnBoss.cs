@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class JumpedOnBoss : MonoBehaviour, IDamageable
 {
@@ -59,6 +60,7 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
         if (lives == 0)
         {
             Destroy(this.gameObject);
+            ProgressManager.Instance.defeatedBosses.Add(SceneManager.GetActiveScene().buildIndex, true);
             GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
             foreach (GameObject go in doors)
             {

@@ -48,12 +48,15 @@ public class Room : MonoBehaviour
             }
             else
             {
+                Destroy(GameObject.Find("Boss"));
                 foreach (GameObject door in doors)
                 {
                     door.GetComponent<Door>().UnLock();
                 }
-            } 
+            }
+
             
+
         }
             
             
