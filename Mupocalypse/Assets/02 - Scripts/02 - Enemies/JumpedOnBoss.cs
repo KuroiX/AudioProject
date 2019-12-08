@@ -33,10 +33,10 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
 
     void Start()
     {
-        leftBorder = transform.position.x - variance;
-        rightBorder = transform.position.x + variance;
+        leftBorder = transform.position.x - 2 * variance;
+        rightBorder = transform.position.x;
         groundHeight = transform.position.y;
-        goRight = true;
+        goRight = false;
         lives = 3;
         jumping = 0;
         attacking = false;
