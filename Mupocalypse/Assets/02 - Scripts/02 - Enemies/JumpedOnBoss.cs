@@ -177,10 +177,10 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             }
 
             // Jumping
-            float y = transform.position.y;
+            float y = groundHeight;
             if (jumping > 0)
             {
-                y = Mathf.Sin(jumping * Mathf.PI) * jumpHeight;
+                y += Mathf.Sin(jumping * Mathf.PI) * jumpHeight;
                 jumping -= Time.deltaTime;
                 if (jumping <= 0)
                 {
