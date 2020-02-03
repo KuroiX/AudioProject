@@ -9,7 +9,7 @@ public class LevelManager : Singleton<LevelManager>
 {
 
 
-    private int _roomID;
+    private int roomId;
     private Animator fade;
 
     void Start()
@@ -19,7 +19,7 @@ public class LevelManager : Singleton<LevelManager>
     
     public void LoadScene()
     {
-        SceneManager.LoadScene(_roomID + 1);
+        SceneManager.LoadScene(roomId + 1);
         
     }
 
@@ -30,7 +30,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public void FadeOut(int roomID)
     {
-        this._roomID = roomID;
+        this.roomId = roomID;
         fade.SetTrigger("FadeOut");
     }
     

@@ -238,7 +238,7 @@ Transform:
   - {fileID: 1244094634}
   - {fileID: 1071196591}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &196677147
 PrefabInstance:
@@ -549,6 +549,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DestroyableObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 8889300677666378234, guid: 8665089ed575ca34184228205ca4b18a,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.21005525
+      objectReference: {fileID: 0}
+    - target: {fileID: 8889300677666378234, guid: 8665089ed575ca34184228205ca4b18a,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.9150943
+      objectReference: {fileID: 0}
+    - target: {fileID: 8889300677666378234, guid: 8665089ed575ca34184228205ca4b18a,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.09927912
       objectReference: {fileID: 0}
     - target: {fileID: 8889300677666378237, guid: 8665089ed575ca34184228205ca4b18a,
         type: 3}
@@ -32490,12 +32505,12 @@ PrefabInstance:
     - target: {fileID: 568243722239449041, guid: a7e694d830416144ea8d63c7aa79d955,
         type: 3}
       propertyPath: m_Color.g
-      value: 1
+      value: 0.514151
       objectReference: {fileID: 0}
     - target: {fileID: 568243722239449041, guid: a7e694d830416144ea8d63c7aa79d955,
         type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.514151
       objectReference: {fileID: 0}
     - target: {fileID: 568243722239449043, guid: a7e694d830416144ea8d63c7aa79d955,
         type: 3}

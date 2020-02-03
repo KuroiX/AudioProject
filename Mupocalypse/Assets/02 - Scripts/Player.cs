@@ -10,8 +10,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Rigidbody2D)),
  RequireComponent(typeof(Animator)),
  RequireComponent(typeof(AudioSource))]
-public class Player : Singleton<Player>
-{
+public class Player : Singleton<Player> {
     public enum Ability
     {
         dash,
@@ -316,6 +315,11 @@ public class Player : Singleton<Player>
 
     public void Jump(float factor = 1)
     {
+        if (rb.velocity.y > 0)
+        {
+            GetComponent<TrailRenderer>().emitting = true;
+        }
+        
         canDash = true;
         rb.velocity += Vector2.up * jump.initialVelocity * factor;
         if (sfx.jump != null)
@@ -441,6 +445,7 @@ public class Player : Singleton<Player>
 
     void Landed()
     {
+        GetComponent<TrailRenderer>().emitting = false;
         animator.SetTrigger("hit ground");
         animator.SetBool("on platform", platform != null);
     }
