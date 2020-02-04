@@ -139,6 +139,15 @@ public class Player : Singleton<Player> {
     bool dashUnlocked;
     bool attackUnlocked;
     bool sprintUnlocked;
+    private static readonly int Jump1 = Animator.StringToHash("jump");
+
+    public void DisableAbilities()
+    {
+        jumpUnlocked = false;
+        dashUnlocked = false;
+        attackUnlocked = false;
+        sprintUnlocked = false;
+    }
 
     #region Singleton
 
@@ -324,7 +333,7 @@ public class Player : Singleton<Player> {
         rb.velocity += Vector2.up * jump.initialVelocity * factor;
         if (sfx.jump != null)
             audioSource.PlayOneShot(sfx.jump);
-        animator.SetTrigger("jump");
+        animator.SetTrigger(Jump1);
         animator.ResetTrigger("hit ground");
     }
 

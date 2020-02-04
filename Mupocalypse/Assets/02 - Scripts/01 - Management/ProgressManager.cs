@@ -44,6 +44,7 @@ public class ProgressManager : Singleton<ProgressManager>
 
     public void Reset()
     {
+        Player.Instance.DisableAbilities();
         collectables = new List<Collectable>();
         activeCollectables = new Dictionary<string, bool[]>();
         defeatedBosses = new Dictionary<int, bool>()
