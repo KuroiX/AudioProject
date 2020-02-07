@@ -47,10 +47,12 @@ public class Room : MonoBehaviour
             source.Play();
         }*/
         
+        
+        
         //if boss room
         if (ProgressManager.Instance.defeatedBosses.ContainsKey(SceneManager.GetActiveScene().buildIndex))
         {
-
+            Debug.Log("hallo?");
             doors = GameObject.FindGameObjectsWithTag("Door");
             // if Boss hasn't been defeated
             if (!ProgressManager.Instance.defeatedBosses[SceneManager.GetActiveScene().buildIndex])
@@ -60,7 +62,6 @@ public class Room : MonoBehaviour
                     door.GetComponent<Door>().Lock();
                 }
 
-                AudioManager.Instance.PlayClip(clip);
             }
             else
             {
@@ -70,11 +71,6 @@ public class Room : MonoBehaviour
                     door.GetComponent<Door>().UnLock();
                 }
             }
-        }
-        else if (AudioManager.Instance.GetCurrent() != AudioManager.Instance.GetCurrentClip())
-        {
-            Debug.Log("what");
-            AudioManager.Instance.PlayCurrent(); //TODO: ugly
         }
 
 

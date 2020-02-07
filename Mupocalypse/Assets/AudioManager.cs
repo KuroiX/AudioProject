@@ -20,6 +20,8 @@ public class AudioManager : Singleton<AudioManager>
         //SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    #region Menus & Sliders
+    
     public void SetPaused(bool pause)
     {
         if (pause)
@@ -31,7 +33,6 @@ public class AudioManager : Singleton<AudioManager>
             unpause.TransitionTo(.01f);
         }
     }
-
 
     public void OnMasterChanged(float value)
     {
@@ -50,6 +51,8 @@ public class AudioManager : Singleton<AudioManager>
         musicVolume = value;
         SetMusic(value);
     }
+    
+    #endregion
 
     void SetMaster(float value)
     {
@@ -68,16 +71,16 @@ public class AudioManager : Singleton<AudioManager>
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.buildIndex == 2)
+        Room room = GameObject.Find("Room").GetComponent<Room>();
+        if (room.bossRoom)
         {
-            GetComponent<AudioSource>().clip = audioClips[3];
+            //TODO if defeated
         }
-        
-        Debug.Log(GameObject.Find("Room").GetComponent<Room>().bossRoom);
     }
 
     public void PlayClip(AudioClip clip)
     {
+        Debug.Log("play clip");
         GetComponent<AudioSource>().clip = clip;
         GetComponent<AudioSource>().Play();
     }

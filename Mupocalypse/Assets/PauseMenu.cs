@@ -56,6 +56,18 @@ public class PauseMenu : MonoBehaviour
         abilites.SetActive(showAbilities);
     }
 
+    public GameObject volumePanel;
+
+    public void Volume(bool showVolume)
+    {
+        foreach (GameObject gO in buttons)
+        {
+            gO.SetActive(!showVolume);
+        }
+        
+        volumePanel.SetActive(showVolume);
+    }
+
     public void Exit()
     {
         LevelManager.Instance.OnEscape(); 
