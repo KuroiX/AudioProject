@@ -226,7 +226,7 @@ MonoBehaviour:
     heartFull: {fileID: 21300000, guid: 35f4724a3f81148928613d5642b71146, type: 3}
     heartEmpty: {fileID: 21300000, guid: e9111471fa295664d9f823752b3b163e, type: 3}
   timeInvulnerable: 0.4
-  flip: {fileID: 2327344997529598543}
+  flip: {fileID: 2327344997608035785}
   sfx:
     attackHit: {fileID: 8300000, guid: f48ee663a210de24091f2edf88e460ad, type: 3}
     attackMiss: {fileID: 8300000, guid: f48ee663a210de24091f2edf88e460ad, type: 3}
@@ -241,6 +241,7 @@ MonoBehaviour:
     attackTrigger: c
     jumpTrigger: a
     sprintTrigger: h
+  moonwalkUnlocked: 1
 --- !u!114 &2327344997608579317
 MonoBehaviour:
   m_ObjectHideFlags: 0

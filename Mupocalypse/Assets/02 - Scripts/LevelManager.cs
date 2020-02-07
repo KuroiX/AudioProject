@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Animator))]
 public class LevelManager : Singleton<LevelManager>
@@ -12,7 +11,7 @@ public class LevelManager : Singleton<LevelManager>
     private int roomId;
     private Animator fade;
 
-    void Start()
+    void Awake()
     {
         fade = GetComponent<Animator>();
     }
@@ -48,9 +47,14 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
 
-    public void OnEscape(InputAction.CallbackContext context)
+    /*public void OnEscape(InputAction.CallbackContext context)
     {
+        Debug.Log("ah ja");
         if (context.started)
             SceneManager.LoadScene(0);
+    }*/
+    public void OnEscape()
+    {
+        SceneManager.LoadScene(0);
     }
 }
