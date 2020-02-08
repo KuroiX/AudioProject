@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6186581617589087790}
   - component: {fileID: 6186581617589087791}
   - component: {fileID: 6186581617589087785}
+  - component: {fileID: 3871122114664247734}
   m_Layer: 0
   m_Name: AntiJumpBoss
   m_TagString: Untagged
@@ -102,6 +103,9 @@ MonoBehaviour:
   jumpDuration: 1
   jumpOdd: 2
   attackOdd: 2
+  timeInvulnerable: 0.3
+  drop: {fileID: 0}
+  bounce: 0.6
 --- !u!61 &6186581617589087791
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -147,3 +151,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!70 &3871122114664247734
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6186581617589087788}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -2}
+  m_Size: {x: 6, y: 4}
+  m_Direction: 1

@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Animator))]
 public class LevelManager : Singleton<LevelManager>
 {
-
-
     private int roomId;
     private Animator fade;
 

@@ -225,7 +225,7 @@ MonoBehaviour:
     displayTagName: Lives
     heartFull: {fileID: 21300000, guid: 35f4724a3f81148928613d5642b71146, type: 3}
     heartEmpty: {fileID: 21300000, guid: e9111471fa295664d9f823752b3b163e, type: 3}
-  timeInvulnerable: 0.4
+  timeInvulnerable: 1
   flip: {fileID: 2327344997608035785}
   sfx:
     attackHit: {fileID: 8300000, guid: f48ee663a210de24091f2edf88e460ad, type: 3}
@@ -235,12 +235,8 @@ MonoBehaviour:
     jump: {fileID: 8300000, guid: 3d89918ad84d12d45b07be5ebac608d8, type: 3}
     land: {fileID: 0}
     unlock: {fileID: 8300000, guid: 91f5172d2f9682c46b68d5ab24b81b7c, type: 3}
-  notes:
-    notesTag: Notes
-    dashTrigger: e
-    attackTrigger: c
-    jumpTrigger: a
-    sprintTrigger: h
+  rb: {fileID: 0}
+  paused: 0
   moonwalkUnlocked: 1
 --- !u!114 &2327344997608579317
 MonoBehaviour:
@@ -343,11 +339,11 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_MethodName: 
-        m_Mode: 1
+        m_MethodName: OnEscape
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -372,7 +368,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 6015e26c4697c489da10c6ab4a8a5bb0, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.75
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -545,7 +541,7 @@ TrailRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 0.042452812, b: 0.042452812, a: 1}
-      key1: {r: 0.25792095, g: 0.29710132, b: 0.7924528, a: 1}
+      key1: {r: 0.36258456, g: 0.39409325, b: 0.7924528, a: 1}
       key2: {r: 0.2216981, g: 1, b: 0.2335245, a: 1}
       key3: {r: 1, g: 1, b: 1, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}

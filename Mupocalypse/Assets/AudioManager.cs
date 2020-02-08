@@ -8,6 +8,7 @@ public class AudioManager : Singleton<AudioManager>
 {
     [Header("Safe")]
     public AudioClip[] audioClips;
+    public AudioClip current;
     public float masterVolume;
     public float effectVolume;
     public float musicVolume;
@@ -15,15 +16,76 @@ public class AudioManager : Singleton<AudioManager>
     public AudioMixerSnapshot unpause;
     public AudioMixerSnapshot pause;
 
+    private AudioSource[] sources;
+
+    #region MonoBehavior
+    
     void Start()
     {
-        //SceneManager.sceneLoaded += OnSceneLoaded;
+        current = audioClips[1];
+        sources = GetComponents<AudioSource>();
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        sources[0].mute = false;
+        
+        if (scene.buildIndex == SceneManager.sceneCountInBuildSettings - 1)
+        {
+            //Debug.Log("Here we play nothing because the intro plays");
+            sources[0].mute = true;
+        }
+        else if (scene.buildIndex == 0)
+        {
+            //Debug.Log("Here we play the menu music");
+            if (sources[0].clip != audioClips[0])
+            {
+                StartCoroutine(FadeTo(0.2f, audioClips[0]));
+            }
+        }
+        else
+        {
+            //Debug.Log("We are in a different room: " + scene.buildIndex);
+            Room room = GameObject.Find("Room").GetComponent<Room>();
+            if (room.bossRoom)
+            {
+                bool bossDefeated =
+                    ProgressManager.Instance.defeatedBosses.ContainsKey(SceneManager.GetActiveScene().buildIndex)
+                    && ProgressManager.Instance.defeatedBosses[SceneManager.GetActiveScene().buildIndex];
+                if (!bossDefeated)
+                {
+                    //Debug.Log("We play the boss music (of the right boss)");
+                    //TODO: use right boss fight music
+                    StartCoroutine(FadeTo(0.4f, audioClips[3]));
+                }
+                else
+                {
+                    //Debug.Log("We play normal music");
+                    if (sources[0].clip != current)
+                    {
+                        StartCoroutine(FadeTo(0.4f, current));
+                    }
+                }
+            }
+            else
+            {
+                //Debug.Log("We play normal music2");
+                if (sources[0].clip != current)
+                {
+                    StartCoroutine(FadeTo(0.4f, current));
+                }
+            }
+        }
+    }
+    
+    #endregion
 
     #region Menus & Sliders
     
     public void SetPaused(bool pause)
     {
+        //Debug.Log("SetPaused: " + pause);
         if (pause)
         {
             this.pause.TransitionTo(.01f);
@@ -57,51 +119,50 @@ public class AudioManager : Singleton<AudioManager>
     void SetMaster(float value)
     {
         mixer.SetFloat("VolumeMaster", value);
+        masterVolume = value;
     }
 
     void SetEffect(float value)
     {
         mixer.SetFloat("VolumeEffects", value);
+        effectVolume = value;
     }
 
     void SetMusic(float value)
     {
         mixer.SetFloat("VolumeMusic", value);
+        musicVolume = value;
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    void PlayClip(AudioClip clip)
     {
-        Room room = GameObject.Find("Room").GetComponent<Room>();
-        if (room.bossRoom)
+        sources[0].clip = clip;
+        sources[0].Play();
+    }
+
+    public void StartFade(float duration, AudioClip clip)
+    {
+        StartCoroutine(FadeTo(duration, clip));
+    }
+
+    IEnumerator FadeTo(float duration, AudioClip clip)
+    {
+        //Debug.Log("FadeTo");
+        float currentTime = 0;
+        float currentVolume = masterVolume;
+
+        while (currentTime < duration)
         {
-            //TODO if defeated
+            SetMaster(currentVolume-(currentTime/duration * (80f-currentVolume)));
+            currentTime += Time.deltaTime;
+            yield return null;
         }
-    }
-
-    public void PlayClip(AudioClip clip)
-    {
-        Debug.Log("play clip");
-        GetComponent<AudioSource>().clip = clip;
-        GetComponent<AudioSource>().Play();
-    }
-
-    public void PlayCurrent()
-    {
-        GetComponent<AudioSource>().clip = audioClips[1];
-        GetComponent<AudioSource>().Play();
-    }
-
-    public AudioClip GetCurrent()
-    {
-        return audioClips[1];
-    }
-
-    public AudioClip GetCurrentClip()
-    {
-        return GetComponent<AudioSource>().clip;
+        
+        SetMaster(currentVolume);
+        PlayClip(clip);
     }
     
-    
+
     public static IEnumerator StartFade(AudioMixer audioMixer, string exposedParam, float duration, float targetVolume)
     {
         float currentTime = 0;

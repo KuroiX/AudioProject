@@ -31980,12 +31980,12 @@ PrefabInstance:
     - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 34.27
+      value: 34.5
       objectReference: {fileID: 0}
     - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.79
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
         type: 3}
@@ -32031,6 +32031,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1588ae0eb63fc06498fcdffd8873b469, type: 3}
@@ -32367,12 +32372,12 @@ PrefabInstance:
     - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.02
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.55
+      value: -7.5
       objectReference: {fileID: 0}
     - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
         type: 3}
@@ -32418,6 +32423,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1588ae0eb63fc06498fcdffd8873b469, type: 3}

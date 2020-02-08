@@ -230,6 +230,7 @@ MonoBehaviour:
   cam: {fileID: 2130336921}
   savePointRoom: 1
   bossRoom: 0
+  clip: {fileID: 0}
 --- !u!4 &154795503
 Transform:
   m_ObjectHideFlags: 0
@@ -250,12 +251,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9147349975848653211, guid: 79a1a5ea26ac3a244870eedffdcea30d,
     type: 3}
   m_PrefabInstance: {fileID: 549963499}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &390169872 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 2327344997608035785, guid: 859e5b8820854e94cab15505b4087bf1,
-    type: 3}
-  m_PrefabInstance: {fileID: 2327344998414121705}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &450735936
 PrefabInstance:
@@ -26925,12 +26920,12 @@ PrefabInstance:
     - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.3199997
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -9.63
+      value: -9
       objectReference: {fileID: 0}
     - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
         type: 3}
@@ -26976,6 +26971,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 940964661192244326, guid: 1588ae0eb63fc06498fcdffd8873b469,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6369635764322544673, guid: 1588ae0eb63fc06498fcdffd8873b469,
         type: 3}
@@ -27520,11 +27520,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioClips: []
+  current: {fileID: 0}
   masterVolume: 0
   effectVolume: 0
   musicVolume: 0
   mixer: {fileID: 24100000, guid: fd03d885e4e5ef046a2ca85dacff741b, type: 2}
-  unpaused: {fileID: 0}
+  unpause: {fileID: 0}
   pause: {fileID: 0}
 --- !u!4 &1930948307
 Transform:
@@ -27662,24 +27663,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 464831702, guid: 859e5b8820854e94cab15505b4087bf1, type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.r
-      value: 0.36258456
-      objectReference: {fileID: 0}
-    - target: {fileID: 464831702, guid: 859e5b8820854e94cab15505b4087bf1, type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.g
-      value: 0.39409325
-      objectReference: {fileID: 0}
-    - target: {fileID: 464831702, guid: 859e5b8820854e94cab15505b4087bf1, type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.b
-      value: 0.7924528
-      objectReference: {fileID: 0}
-    - target: {fileID: 2327344997608035785, guid: 859e5b8820854e94cab15505b4087bf1,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 0a60e2ac0eff54c649de8345d813b776,
-        type: 3}
     - target: {fileID: 2327344997608579273, guid: 859e5b8820854e94cab15505b4087bf1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -27742,49 +27725,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2327344997608579314, guid: 859e5b8820854e94cab15505b4087bf1,
         type: 3}
-      propertyPath: m_Volume
-      value: 0.5
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -8173266279052503703, guid: fd03d885e4e5ef046a2ca85dacff741b,
+        type: 2}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: sfx.hit
+      value: 
+      objectReference: {fileID: 8300000, guid: c367fa738b9ad8041adcb3c017e4d6dd, type: 3}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: sfx.dash
+      value: 
+      objectReference: {fileID: 8300000, guid: 26d8748b7bd1f734ea757a042d418d17, type: 3}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: timeInvulnerable
+      value: 1.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
-        type: 3}
-      propertyPath: sfx.attackMiss
-      value: 
-      objectReference: {fileID: 8300000, guid: f48ee663a210de24091f2edf88e460ad, type: 3}
-    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
-        type: 3}
-      propertyPath: sfx.jump
-      value: 
-      objectReference: {fileID: 8300000, guid: 3d89918ad84d12d45b07be5ebac608d8, type: 3}
-    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
-        type: 3}
-      propertyPath: sfx.unlock
-      value: 
-      objectReference: {fileID: 8300000, guid: 91f5172d2f9682c46b68d5ab24b81b7c, type: 3}
-    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
-        type: 3}
-      propertyPath: flip
-      value: 
-      objectReference: {fileID: 390169872}
     - target: {fileID: 2327344997608579317, guid: 859e5b8820854e94cab15505b4087bf1,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1482653650}
-    - target: {fileID: 2327344997608579317, guid: 859e5b8820854e94cab15505b4087bf1,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnEscape
-      objectReference: {fileID: 0}
-    - target: {fileID: 2327344997608579317, guid: 859e5b8820854e94cab15505b4087bf1,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2327344997608579317, guid: 859e5b8820854e94cab15505b4087bf1,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 859e5b8820854e94cab15505b4087bf1, type: 3}
 --- !u!1001 &8482164791988900610

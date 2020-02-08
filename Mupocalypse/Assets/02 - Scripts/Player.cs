@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 using UnityEngine.SceneManagement;
+using Random = System.Random;
 
 [RequireComponent(typeof(Rigidbody2D)),
  RequireComponent(typeof(Animator)),
@@ -81,6 +82,7 @@ public class Player : Singleton<Player> {
         public AudioClip attackMiss;
         public AudioClip dash;
         public AudioClip death;
+        public AudioClip hit;
         public AudioClip jump;
         public AudioClip land;
         public AudioClip unlock;
@@ -282,6 +284,10 @@ public class Player : Singleton<Player> {
     public void Damage()
     {
         if (invulnerable) return;
+        
+        rb.AddForce(Vector2.left*(direction > 0 ? 500: -500));
+        audioSource.PlayOneShot(sfx.hit);
+        
         if (lives.lives == 1)
             Die();
         else
@@ -401,6 +407,7 @@ public class Player : Singleton<Player> {
         animator.SetTrigger("dash");
         dashing = true;
         canDash = false;
+        transform.position += Vector3.up * 0.05f;
         rb.velocity += dash.speed * direction * Vector2.right;
         rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
         if (sfx.dash != null)
@@ -473,60 +480,66 @@ public class Player : Singleton<Player> {
     
     
     #endregion
+
+    public void CheckAttack()
+    {
+        var hit = Physics2D.Raycast(rb.position, Vector2.right * direction, attack.range, attack.layers);
+        var hit2 = Physics2D.Raycast(rb.position+new Vector2(0, 0.5f), Vector2.right * direction, attack.range, attack.layers);
+        var hit3 = Physics2D.Raycast(rb.position-new Vector2(0, 0.5f), Vector2.right * direction, attack.range, attack.layers);
+
+        if (hit)
+        {
+            GameObject destroyable = hit.collider.gameObject;
+            if (destroyable.CompareTag("DestroyableObject"))
+            {
+                destroyable.GetComponent<DestroyableObject>().GetDestroyed();
+            }
+
+            var damagable = hit.collider.GetComponent<IDamageable>();
+            if (damagable != null)
+            {
+                damagable.GetDamage();
+            }
+        } else if (hit2)
+        {
+            GameObject destroyable = hit2.collider.gameObject;
+            if (destroyable.CompareTag("DestroyableObject"))
+            {
+                destroyable.GetComponent<DestroyableObject>().GetDestroyed();
+            }
+
+            var damagable = hit2.collider.GetComponent<IDamageable>();
+            if (damagable != null)
+            {
+                damagable.GetDamage();
+            }
+        } else if (hit3)
+        {
+            GameObject destroyable = hit3.collider.gameObject;
+            if (destroyable.CompareTag("DestroyableObject"))
+            {
+                destroyable.GetComponent<DestroyableObject>().GetDestroyed();
+            }
+
+            var damagable = hit3.collider.GetComponent<IDamageable>();
+            if (damagable != null)
+            {
+                damagable.GetDamage();
+            }
+        }
+        //else if (sfx.attackMiss != null)
+        //    audioSource.PlayOneShot(sfx.attackMiss);
+    }
     void Attack()
     {
         if (!isMoonwalking && !isAttacking)
         {
             isAttacking = true;
-            var hit = Physics2D.Raycast(rb.position, Vector2.right * direction, attack.range, attack.layers);
-            var hit2 = Physics2D.Raycast(rb.position+new Vector2(0, 0.5f), Vector2.right * direction, attack.range, attack.layers);
-            var hit3 = Physics2D.Raycast(rb.position-new Vector2(0, 0.5f), Vector2.right * direction, attack.range, attack.layers);
             animator.SetTrigger("attack");
             if (grounded) canMove = false;
             if (sfx.attackHit != null)
                 audioSource.PlayOneShot(sfx.attackHit);
-            if (hit)
-            {
-                GameObject destroyable = hit.collider.gameObject;
-                if (destroyable.CompareTag("DestroyableObject"))
-                {
-                    destroyable.GetComponent<DestroyableObject>().GetDestroyed();
-                }
-
-                var damagable = hit.collider.GetComponent<IDamageable>();
-                if (damagable != null)
-                {
-                    damagable.GetDamage();
-                }
-            } else if (hit2)
-            {
-                GameObject destroyable = hit2.collider.gameObject;
-                if (destroyable.CompareTag("DestroyableObject"))
-                {
-                    destroyable.GetComponent<DestroyableObject>().GetDestroyed();
-                }
-
-                var damagable = hit2.collider.GetComponent<IDamageable>();
-                if (damagable != null)
-                {
-                    damagable.GetDamage();
-                }
-            } else if (hit3)
-            {
-                GameObject destroyable = hit3.collider.gameObject;
-                if (destroyable.CompareTag("DestroyableObject"))
-                {
-                    destroyable.GetComponent<DestroyableObject>().GetDestroyed();
-                }
-
-                var damagable = hit3.collider.GetComponent<IDamageable>();
-                if (damagable != null)
-                {
-                    damagable.GetDamage();
-                }
-            }
-            else if (sfx.attackMiss != null)
-                audioSource.PlayOneShot(sfx.attackMiss);
+            CheckAttack();
         }
     }
 

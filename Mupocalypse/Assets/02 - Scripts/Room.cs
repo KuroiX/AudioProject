@@ -52,11 +52,12 @@ public class Room : MonoBehaviour
         //if boss room
         if (ProgressManager.Instance.defeatedBosses.ContainsKey(SceneManager.GetActiveScene().buildIndex))
         {
-            Debug.Log("hallo?");
+            //Debug.Log("Boss room");
             doors = GameObject.FindGameObjectsWithTag("Door");
             // if Boss hasn't been defeated
             if (!ProgressManager.Instance.defeatedBosses[SceneManager.GetActiveScene().buildIndex])
             {
+                //Debug.Log("Boss not defeated");
                 foreach (GameObject door in doors)
                 {
                     door.GetComponent<Door>().Lock();
@@ -65,6 +66,7 @@ public class Room : MonoBehaviour
             }
             else
             {
+                //Debug.Log("Boss defeated");
                 Destroy(GameObject.Find("Boss"));
                 foreach (GameObject door in doors)
                 {

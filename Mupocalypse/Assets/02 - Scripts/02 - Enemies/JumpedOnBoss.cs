@@ -72,11 +72,9 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             lives -= 1;
             if (lives == 0)
             {
-                GameManager gm = GameManager.Instance;
-                AudioSource source = gm.GetComponent<AudioSource>();
-                gm.clips[0] = gm.clips[2];
-                source.clip = GameManager.Instance.clips[0];
-                source.Play();
+                //TODO: right boss music
+                AudioManager.Instance.current = AudioManager.Instance.audioClips[2];
+                AudioManager.Instance.StartFade(0.4f, AudioManager.Instance.current);
 
                 if (drop != null)
                 {
@@ -117,11 +115,12 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             float x = Mathf.Abs(transform.position.x - otherObject.transform.position.x);
             float y = Mathf.Abs(transform.position.y - otherObject.transform.position.y);
 
-            if (x <= y && transform.position.y < otherObject.transform.position.y)
+            if (x <= y*10 && transform.position.y - 1 < otherObject.transform.position.y)
             {
                 if (attacking)
                 {
                     // TODO: Player can walk on Boss regularly/gets thrown off
+                    Player.Instance.Jump(bounce);
                 }
                 else
                 {

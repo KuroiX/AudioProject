@@ -28,7 +28,6 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenMenu()
     {
-        //TODO: turn down music
         AudioManager.Instance.SetPaused(true);
         Time.timeScale = 0;
         open = true;
@@ -38,11 +37,12 @@ public class PauseMenu : MonoBehaviour
 
     public void CloseMenu()
     {
-        //TODO: turn up music
-        AudioManager.Instance.SetPaused(false);
         Time.timeScale = 1;
         open = false;
         Player.Instance.paused = false;
+        Abilites(false);
+        Volume(false);
+        AudioManager.Instance.SetPaused(false);
         panel.SetActive(false);
     }
 
@@ -60,6 +60,9 @@ public class PauseMenu : MonoBehaviour
 
     public void Volume(bool showVolume)
     {
+        //TODO: ??
+        //AudioManager.Instance.SetPaused(showVolume);
+        
         foreach (GameObject gO in buttons)
         {
             gO.SetActive(!showVolume);
@@ -70,6 +73,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Exit()
     {
+        AudioManager.Instance.SetPaused(false);
         LevelManager.Instance.OnEscape(); 
     }
 }

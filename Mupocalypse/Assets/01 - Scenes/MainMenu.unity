@@ -3317,7 +3317,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f1dff1b651c215d44ab66349677cefd6, type: 3}
   masterVolume: 0
   effectVolume: -10
-  musicVolume: 0
+  musicVolume: -20
   mixer: {fileID: 24100000, guid: fd03d885e4e5ef046a2ca85dacff741b, type: 2}
   unpause: {fileID: 5299132429330769310, guid: fd03d885e4e5ef046a2ca85dacff741b, type: 2}
   pause: {fileID: -7810472008039901969, guid: fd03d885e4e5ef046a2ca85dacff741b, type: 2}
