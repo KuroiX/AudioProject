@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class AudioManager : Singleton<AudioManager>
 {
@@ -137,6 +138,7 @@ public class AudioManager : Singleton<AudioManager>
     void PlayClip(AudioClip clip)
     {
         sources[0].clip = clip;
+        sources[0].time = 5f;
         sources[0].Play();
     }
 
@@ -160,6 +162,52 @@ public class AudioManager : Singleton<AudioManager>
         
         SetMaster(currentVolume);
         PlayClip(clip);
+    }
+
+    private float moonwalk;
+    public void StartMoonwalk()
+    {
+        moonwalk = musicVolume;
+        SetMusic(-80);
+        int rand = (int)(Random.Range(0f, 1f) * 2);
+        sources[2].PlayOneShot(audioClips[6+rand]);
+    }
+
+    public void StopMoonwalk()
+    {
+        StartCoroutine(FadeMoonwalk(0.5f));
+        StartCoroutine(FadeMusic(0.5f, moonwalk));
+    }
+
+    IEnumerator FadeMoonwalk(float duration)
+    {
+        float currentTime = 0;
+
+        while (currentTime < duration)
+        {
+            sources[2].volume -= currentTime / duration;
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+
+        sources[2].Stop();
+        sources[2].volume = 1;
+    }
+
+    IEnumerator FadeMusic (float duration, float value)
+    {
+        float currentTime = 0;
+        float currentVolume = musicVolume;
+        float difference = currentVolume - value;
+        
+        while (currentTime < duration)
+        {
+            SetMusic(currentVolume - (currentTime/duration * difference));
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+
+        SetMusic(value);
     }
     
 

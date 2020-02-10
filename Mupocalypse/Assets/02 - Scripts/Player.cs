@@ -471,7 +471,7 @@ public class Player : Singleton<Player> {
     private bool isAttacking;
     private bool flipped;
 
-    public bool moonwalkUnlocked = true;
+    public bool moonwalkUnlocked;
     private bool isMoonwalking;
     
     public void FlipAfterAttack()
@@ -503,11 +503,14 @@ public class Player : Singleton<Player> {
 
     IEnumerator Moonwalk()
     {
-        Debug.Log("moonwalk started");
-        yield return new WaitForSeconds(4);
+        //Debug.Log("moonwalk started");
+        int rand = (int) (UnityEngine.Random.Range(0f, 1f) * 2);
+        AudioManager.Instance.StartMoonwalk();
+        yield return new WaitForSeconds(3.3f);
+        AudioManager.Instance.StopMoonwalk();
         //Debug.Log("Hello");
         isMoonwalking = false;
-        Debug.Log("moonwalk end");
+        //Debug.Log("moonwalk end");
     }
     
     void Update()

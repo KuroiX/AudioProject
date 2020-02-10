@@ -79,6 +79,10 @@ public class PauseMenu : MonoBehaviour
             {
                 abilites.transform.GetChild(i).gameObject.SetActive(showAbilities);
             }
+            else if (i == 6 && player.moonwalkUnlocked)
+            {
+                abilites.transform.GetChild(i).gameObject.SetActive(showAbilities);
+            }
         }
     }
 
