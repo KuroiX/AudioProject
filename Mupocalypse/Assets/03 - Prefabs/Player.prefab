@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 2327344997608579314}
   - component: {fileID: 2327344997608579315}
   - component: {fileID: 464831702}
+  - component: {fileID: 7478429288831065377}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -232,6 +233,7 @@ MonoBehaviour:
     attackMiss: {fileID: 8300000, guid: f48ee663a210de24091f2edf88e460ad, type: 3}
     dash: {fileID: 0}
     death: {fileID: 0}
+    hit: {fileID: 0}
     jump: {fileID: 8300000, guid: 3d89918ad84d12d45b07be5ebac608d8, type: 3}
     land: {fileID: 0}
     unlock: {fileID: 8300000, guid: 91f5172d2f9682c46b68d5ab24b81b7c, type: 3}
@@ -576,3 +578,11 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 0
+--- !u!81 &7478429288831065377
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2327344997608579312}
+  m_Enabled: 1

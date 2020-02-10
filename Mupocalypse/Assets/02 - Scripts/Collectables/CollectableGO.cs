@@ -36,6 +36,13 @@ public class CollectableGO : MonoBehaviour
             collectable.ApplyEffect(other.GetComponent<Player>());
             pm.collectables.Add(collectable);
             pm.MarkDestroyed(id);
+            
+            GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
+            foreach (GameObject go in doors)
+            {
+                go.GetComponent<Door>().UnLock();
+            }
+            
             Destroy(gameObject);
         }
     }

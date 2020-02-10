@@ -17,7 +17,8 @@ public class Player : Singleton<Player> {
         dash,
         jump,
         attack,
-        sprint
+        sprint,
+        ultraboost,
     }
 
     // ? the following are 'protected' to avoid unity warnings
@@ -141,6 +142,7 @@ public class Player : Singleton<Player> {
     bool dashUnlocked;
     bool attackUnlocked;
     bool sprintUnlocked;
+    private bool ultraboostUnlocked;
     private static readonly int Jump1 = Animator.StringToHash("jump");
 
     public void DisableAbilities()
@@ -149,6 +151,7 @@ public class Player : Singleton<Player> {
         dashUnlocked = false;
         attackUnlocked = false;
         sprintUnlocked = false;
+        ultraboostUnlocked = false;
     }
 
     #region Singleton
@@ -198,6 +201,13 @@ public class Player : Singleton<Player> {
                 break;*/
             case "Pickup":
                 Heal();
+                break;
+            case "Dashable":
+                if (dashing)
+                {
+                    Destroy(other.gameObject);
+                    Dash();
+                }
                 break;
         }
         // ! end
@@ -333,6 +343,9 @@ public class Player : Singleton<Player> {
                 sprintUnlocked = true;
                 //notes.notes.SetTrigger(notes.sprintTrigger);
                 break;
+            case Ability.ultraboost:
+                ultraboostUnlocked = true;
+                break;
         }
         audioSource.PlayOneShot(sfx.unlock);
     }
@@ -343,10 +356,20 @@ public class Player : Singleton<Player> {
         {
             return;
         }*/
+        if (dashing) DashEnd();
         
         if (rb.velocity.y > 0 && platform != null)
         {
-            GetComponent<TrailRenderer>().emitting = true;
+            Debug.Log("If ultraboostable");
+            if (ultraboostUnlocked)
+            {
+                UltraBoost();
+            }
+            else
+            {
+                Debug.Log("Ultraboost not unlocked");
+                return;
+            }
         }
         
         canDash = true;
@@ -358,7 +381,7 @@ public class Player : Singleton<Player> {
     }
     
     void UltraBoost() {
-    
+        GetComponent<TrailRenderer>().emitting = true;
     }
 
     #endregion
@@ -403,6 +426,7 @@ public class Player : Singleton<Player> {
 
     void Dash()
     {
+        if (isAttacking) return;
         animator.ResetTrigger("hit ground");
         animator.SetTrigger("dash");
         dashing = true;
@@ -417,15 +441,19 @@ public class Player : Singleton<Player> {
     // called from the animation
     void DashEnd()
     {
-        dashing = false;
-        rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-        rb.velocity -= dash.speed * direction * Vector2.right * dash.slowdown;
-        if (Vector2.Dot(rb.velocity, Vector2.right * direction) < 0) // dont move backwards
-            rb.velocity = new Vector2(0, rb.velocity.y);
+        if (dashing)
+        {
+            dashing = false;
+            rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+            rb.velocity -= dash.speed * direction * Vector2.right * dash.slowdown;
+            if (Vector2.Dot(rb.velocity, Vector2.right * direction) < 0) // dont move backwards
+                rb.velocity = new Vector2(0, rb.velocity.y);
+        }
     }
 
     void Move()
     {
+        if (dashing) return;
         var v = moveInput * Vector2.right * Time.fixedDeltaTime * move.speed;
         if (sprinting)
             v *= move.sprintMultiplier;
@@ -532,6 +560,7 @@ public class Player : Singleton<Player> {
     }
     void Attack()
     {
+        if (dashing) DashEnd();
         if (!isMoonwalking && !isAttacking)
         {
             isAttacking = true;
@@ -613,4 +642,5 @@ public class Player : Singleton<Player> {
     }
 
     void CalculateJumpVelocity() => jump.initialVelocity = Mathf.Sqrt(2 * -Physics2D.gravity.y * jump.height);
+    
 }

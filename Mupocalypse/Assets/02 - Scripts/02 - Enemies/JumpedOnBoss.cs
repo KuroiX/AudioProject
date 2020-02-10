@@ -79,16 +79,16 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
                 if (drop != null)
                 {
                     drop.SetActive(true);
-                    drop.transform.position = transform.position;
+                    drop.transform.position = Vector3.zero;
                 }
 
                 Destroy(this.gameObject);
                 ProgressManager.Instance.defeatedBosses.Add(SceneManager.GetActiveScene().buildIndex, true);
-                GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
+                /*GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
                 foreach (GameObject go in doors)
                 {
                     go.GetComponent<Door>().UnLock();
-                }
+                }*/
             }
             else
             {
