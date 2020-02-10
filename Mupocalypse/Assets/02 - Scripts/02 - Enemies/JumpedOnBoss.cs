@@ -75,6 +75,7 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
                 //TODO: right boss music
                 AudioManager.Instance.current = AudioManager.Instance.audioClips[2];
                 AudioManager.Instance.StartFade(0.4f, AudioManager.Instance.current);
+                //AudioManager.Instance.sources[1].PlayOneShot(death);
 
                 if (drop != null)
                 {
@@ -125,6 +126,7 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
                 else
                 {
                     LoseLive();
+                    source.PlayOneShot(hit);
                     Player.Instance.Jump(bounce);
                 }
             }
@@ -150,6 +152,7 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
         if (rand == 0)
         {
             jumping = jumpDuration;
+            source.PlayOneShot(jump);
             animator.SetInteger("State", 1);
         }
         else
@@ -171,6 +174,7 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
     IEnumerator Attack()
     {
         animator.SetInteger("State", 2);
+        PlayFirstPart();
         yield return new WaitForSeconds(1);
         attacking = false;
         if (jumping > 0)
@@ -235,4 +239,26 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             yield return new WaitForFixedUpdate();
         }
     }
+
+    #region audio
+
+    public AudioClip attack1;
+    public AudioClip attack2;
+    public AudioClip hit;
+    public AudioClip jump;
+    //public AudioClip death;
+    public AudioSource source;
+
+    public void PlayFirstPart()
+    {
+        source.PlayOneShot(attack1);
+    }
+    
+    //Called from animation
+    public void PlaySecondPart()
+    {
+        source.PlayOneShot(attack2);
+    }
+    
+    #endregion
 }

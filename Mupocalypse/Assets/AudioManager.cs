@@ -16,7 +16,7 @@ public class AudioManager : Singleton<AudioManager>
     public AudioMixerSnapshot unpause;
     public AudioMixerSnapshot pause;
 
-    private AudioSource[] sources;
+    public AudioSource[] sources;
 
     #region MonoBehavior
     

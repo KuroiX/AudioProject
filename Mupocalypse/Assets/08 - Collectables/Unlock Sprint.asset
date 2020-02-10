@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Unlock Sprint
   m_EditorClassIdentifier: 
   sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  color: {r: 1, g: 0.9137255, b: 0, a: 1}
+  color: {r: 0.2783019, g: 0.54470086, b: 1, a: 1}
   effect: 3
   ability: 3
   id: 

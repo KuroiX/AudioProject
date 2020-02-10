@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c993c53ee60164e31bcdd32cd5a66289, type: 3}
-  m_Name: Ultraboost
+  m_Name: Unlock Ultraboost
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 3d4f28182d23ab9498bcae40075cf849, type: 3}
+  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   color: {r: 0.2688679, g: 0.38835403, b: 1, a: 1}
   effect: 3
   ability: 4

@@ -643,4 +643,27 @@ public class Player : Singleton<Player> {
 
     void CalculateJumpVelocity() => jump.initialVelocity = Mathf.Sqrt(2 * -Physics2D.gravity.y * jump.height);
     
+    #region audio
+
+    public AudioClip[] footsteps;
+    public AudioSource footstepSource;
+    private int last = 0;
+
+    public void PlayFootstep()
+    {
+        if (!grounded) return;
+        int rand = 0;
+        while (rand == last)
+        {
+            rand = (int) (UnityEngine.Random.Range(0f, 1f) * footsteps.Length);
+            
+        }
+        Debug.Log(rand);
+        last = rand;
+        footstepSource.PlayOneShot(footsteps[rand]);
+        //last = (last + 1) % footsteps.Length;
+    }
+    
+    #endregion
+    
 }
