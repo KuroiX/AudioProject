@@ -27174,6 +27174,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: sfx.ultraboost
+      value: 
+      objectReference: {fileID: 8300000, guid: 98f2949a481e4354b8eecc51514d2e52, type: 3}
     - target: {fileID: 2327344997608579317, guid: 859e5b8820854e94cab15505b4087bf1,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -27196,7 +27201,7 @@ PrefabInstance:
     - target: {fileID: 8307617270851301407, guid: 46651b4f2c2576b42aa363fa27b0b1a6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -9.08
+      value: -10.08
       objectReference: {fileID: 0}
     - target: {fileID: 8307617270851301407, guid: 46651b4f2c2576b42aa363fa27b0b1a6,
         type: 3}

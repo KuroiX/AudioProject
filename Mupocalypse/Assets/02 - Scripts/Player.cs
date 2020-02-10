@@ -19,6 +19,7 @@ public class Player : Singleton<Player> {
         attack,
         sprint,
         ultraboost,
+        moonwalk,
     }
 
     // ? the following are 'protected' to avoid unity warnings
@@ -85,6 +86,7 @@ public class Player : Singleton<Player> {
         public AudioClip death;
         public AudioClip hit;
         public AudioClip jump;
+        public AudioClip ultraboost;
         public AudioClip land;
         public AudioClip unlock;
     }
@@ -237,13 +239,13 @@ public class Player : Singleton<Player> {
             if (moveInput > 0)
             {
                 d = 1;
-                flip.flipX = false;
+                flip.flipX = isMoonwalking;
             }
 
             else
             {
                 d = -1;
-                flip.flipX = true;
+                flip.flipX = !isMoonwalking;
             }
                 
             //if (d != direction)
@@ -346,6 +348,9 @@ public class Player : Singleton<Player> {
             case Ability.ultraboost:
                 ultraboostUnlocked = true;
                 break;
+            case Ability.moonwalk:
+                moonwalkUnlocked = true;
+                break;
         }
         audioSource.PlayOneShot(sfx.unlock);
     }
@@ -357,8 +362,8 @@ public class Player : Singleton<Player> {
             return;
         }*/
         if (dashing) DashEnd();
-        
-        if (rb.velocity.y > 0 && platform != null)
+        bool ultra = rb.velocity.y > 0 && platform != null;
+        if (ultra)
         {
             Debug.Log("If ultraboostable");
             if (ultraboostUnlocked)
@@ -374,14 +379,16 @@ public class Player : Singleton<Player> {
         
         canDash = true;
         rb.velocity += Vector2.up * jump.initialVelocity * factor;
-        if (sfx.jump != null)
+        if (sfx.jump != null && !(ultra && ultraboostUnlocked))
             audioSource.PlayOneShot(sfx.jump);
         animator.SetTrigger(Jump1);
         animator.ResetTrigger("hit ground");
     }
-    
+
     void UltraBoost() {
         GetComponent<TrailRenderer>().emitting = true;
+        if (sfx.ultraboost != null)
+            audioSource.PlayOneShot(sfx.ultraboost);
     }
 
     #endregion
@@ -497,12 +504,19 @@ public class Player : Singleton<Player> {
     IEnumerator Moonwalk()
     {
         Debug.Log("moonwalk started");
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
         //Debug.Log("Hello");
-        DirectionFlipped();
-        flipped = false;
         isMoonwalking = false;
         Debug.Log("moonwalk end");
+    }
+    
+    void Update()
+    {
+        if (moonwalkUnlocked && !isMoonwalking && Input.GetKeyDown(KeyCode.Tab))
+        {
+            isMoonwalking = true;
+            StartCoroutine(Moonwalk());
+        }
     }
 
     
@@ -658,12 +672,12 @@ public class Player : Singleton<Player> {
             rand = (int) (UnityEngine.Random.Range(0f, 1f) * footsteps.Length);
             
         }
-        Debug.Log(rand);
+        //Debug.Log(rand);
         last = rand;
         footstepSource.PlayOneShot(footsteps[rand]);
         //last = (last + 1) % footsteps.Length;
     }
-    
+
     #endregion
     
 }
