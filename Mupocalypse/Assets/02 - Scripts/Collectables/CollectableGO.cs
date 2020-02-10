@@ -23,19 +23,23 @@ public class CollectableGO : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (collectable.showMessage)
-            {
-                var text = GameObject.FindGameObjectWithTag("Collect Message")?.GetComponent<Text>();
-                if (text != null)
-                    Player.Instance.StartCoroutine(TextUtil.Type(text, collectable.message, 0, 1));
-                else
-                    Debug.LogWarning("Collect Message not found.");
-            }
-            else Debug.LogWarning("Dont show");
+            
             var pm = ProgressManager.Instance;
             collectable.ApplyEffect(other.GetComponent<Player>());
             pm.collectables.Add(collectable);
             pm.MarkDestroyed(id);
+            
+            if (collectable.showMessage)
+            {
+                /*var text = GameObject.FindGameObjectWithTag("Collect Message")?.GetComponent<Text>();
+                if (text != null)
+                    Player.Instance.StartCoroutine(TextUtil.Type(text, collectable.message, 0, 1));
+                else
+                    Debug.LogWarning("Collect Message not found.");*/
+                GameObject.Find("PauseMenu").GetComponent<PauseMenu>().OpenMenu();
+                GameObject.Find("PauseMenu").GetComponent<PauseMenu>().Abilites(true);
+            }
+            else Debug.LogWarning("Dont show");
             
             GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
             foreach (GameObject go in doors)

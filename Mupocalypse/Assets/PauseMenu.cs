@@ -54,6 +54,32 @@ public class PauseMenu : MonoBehaviour
         }
         
         abilites.SetActive(showAbilities);
+
+        Player player = Player.Instance;
+        
+        for (int i = 0; i < abilites.transform.childCount; i++)
+        {
+            if (i == 1 && player.jumpUnlocked)
+            {
+                abilites.transform.GetChild(i).gameObject.SetActive(showAbilities);
+            } 
+            else if (i == 2 && player.attackUnlocked)
+            {
+                abilites.transform.GetChild(i).gameObject.SetActive(showAbilities);
+            }
+            else if (i == 3 && player.ultraboostUnlocked)
+            {
+                abilites.transform.GetChild(i).gameObject.SetActive(showAbilities);
+            }
+            else if (i == 4 && player.sprintUnlocked)
+            {
+                abilites.transform.GetChild(i).gameObject.SetActive(showAbilities);
+            }
+            else if (i == 5 && player.dashUnlocked)
+            {
+                abilites.transform.GetChild(i).gameObject.SetActive(showAbilities);
+            }
+        }
     }
 
     public GameObject volumePanel;

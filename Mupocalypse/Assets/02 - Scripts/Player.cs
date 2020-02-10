@@ -138,11 +138,11 @@ public class Player : Singleton<Player> {
     bool invulnerable;
 
     // Abilities unlocked
-    bool jumpUnlocked;
-    bool dashUnlocked;
-    bool attackUnlocked;
-    bool sprintUnlocked;
-    private bool ultraboostUnlocked;
+    public bool jumpUnlocked;
+    public bool dashUnlocked;
+    public bool attackUnlocked;
+    public bool sprintUnlocked;
+    public bool ultraboostUnlocked;
     private static readonly int Jump1 = Animator.StringToHash("jump");
 
     public void DisableAbilities()
