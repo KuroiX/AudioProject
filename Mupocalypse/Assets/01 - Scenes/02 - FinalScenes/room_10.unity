@@ -1005,6 +1005,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bee01d7e0c51f9346a498a70561341c4, type: 3}
   - {fileID: 8300000, guid: 4f6ce5c4989561b499542512d1937eb6, type: 3}
   - {fileID: 8300000, guid: f1dff1b651c215d44ab66349677cefd6, type: 3}
+  paperRips: []
   current: {fileID: 0}
   masterVolume: 0
   effectVolume: -10
@@ -15283,6 +15284,11 @@ PrefabInstance:
         type: 3}
       propertyPath: spawnPoint.Array.data[0].spawnPosition.x
       value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8354114357708979483, guid: afcfdc6538ef14f43beaf0d22ae032bb,
+        type: 3}
+      propertyPath: savePointRoom
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8567656993950730338, guid: afcfdc6538ef14f43beaf0d22ae032bb,
         type: 3}

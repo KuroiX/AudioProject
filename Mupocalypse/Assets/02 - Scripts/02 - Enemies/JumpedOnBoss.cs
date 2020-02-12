@@ -73,8 +73,17 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             if (lives == 0)
             {
                 //TODO: right boss music
-                AudioManager.Instance.current = AudioManager.Instance.audioClips[2];
-                AudioManager.Instance.StartFade(0.4f, AudioManager.Instance.current);
+                if (SceneManager.GetActiveScene().buildIndex == 4)
+                {
+                    AudioManager.Instance.current = AudioManager.Instance.audioClips[2];
+                    AudioManager.Instance.StartFade(0.4f, AudioManager.Instance.current);
+                }
+                else
+                {
+                    AudioManager.Instance.current = AudioManager.Instance.audioClips[5];
+                    AudioManager.Instance.StartFade(0.4f, AudioManager.Instance.current);
+                }
+                
                 //AudioManager.Instance.sources[1].PlayOneShot(death);
 
                 if (drop != null)

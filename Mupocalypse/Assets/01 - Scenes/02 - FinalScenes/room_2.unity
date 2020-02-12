@@ -32852,6 +32852,11 @@ PrefabInstance:
       propertyPath: variance
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 568243722239449040, guid: a7e694d830416144ea8d63c7aa79d955,
+        type: 3}
+      propertyPath: jumpable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 568243722239449041, guid: a7e694d830416144ea8d63c7aa79d955,
         type: 3}
       propertyPath: m_Color.r

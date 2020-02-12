@@ -60,7 +60,14 @@ public class AudioManager : Singleton<AudioManager>
                 {
                     //Debug.Log("We play the boss music (of the right boss)");
                     //TODO: use right boss fight music
-                    StartCoroutine(FadeTo(0.4f, audioClips[3]));
+                    if (scene.buildIndex == 4)
+                    {
+                        StartCoroutine(FadeTo(0.4f, audioClips[3]));
+                    }
+                    else
+                    {
+                        StartCoroutine(FadeTo(0.4f, audioClips[4]));
+                    }
                 }
                 else
                 {
