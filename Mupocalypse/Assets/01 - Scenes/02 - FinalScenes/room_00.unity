@@ -27521,6 +27521,11 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608035830, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2327344997608579273, guid: 859e5b8820854e94cab15505b4087bf1,
         type: 3}
       propertyPath: m_LocalPosition.x
