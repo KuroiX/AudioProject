@@ -25,7 +25,8 @@ public class JumpedOnEnemy : MonoBehaviour, IDamageable
         spriteRenderer = GetComponent<SpriteRenderer>();
         collider2d = GetComponent<Collider2D>(); ;
 
-        StartCoroutine(Walk());
+        if (speed != 0)
+            StartCoroutine(Walk());
     }
 
     void IDamageable.GetDamage()
@@ -39,6 +40,8 @@ public class JumpedOnEnemy : MonoBehaviour, IDamageable
         Destroy(this.gameObject);
     }
 
+    public bool jumpable;
+
     void OnCollisionEnter2D (Collision2D col)
     {
         GameObject otherObject = col.gameObject;
@@ -47,10 +50,11 @@ public class JumpedOnEnemy : MonoBehaviour, IDamageable
             float x = Mathf.Abs(transform.position.x - otherObject.transform.position.x);
             float y = Mathf.Abs(transform.position.y - otherObject.transform.position.y);
 
-            if (x <= y && transform.position.y < otherObject.transform.position.y)
+            if (x <= y*10 && transform.position.y < otherObject.transform.position.y && jumpable)
             {
                 Die();
                 // TODO: Maybe jump
+                Player.Instance.Jump(0.5f);
             }
             else
             {

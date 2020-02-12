@@ -600,6 +600,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: jumpUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: attackUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: ultraboostUnlocked
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 859e5b8820854e94cab15505b4087bf1, type: 3}
 --- !u!1001 &840774475

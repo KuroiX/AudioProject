@@ -504,9 +504,10 @@ public class Player : Singleton<Player> {
     IEnumerator Moonwalk()
     {
         //Debug.Log("moonwalk started");
-        int rand = (int) (UnityEngine.Random.Range(0f, 1f) * 2);
         AudioManager.Instance.StartMoonwalk();
+        if (grounded) rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
         yield return new WaitForSeconds(3.3f);
+        rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
         AudioManager.Instance.StopMoonwalk();
         //Debug.Log("Hello");
         isMoonwalking = false;
@@ -535,42 +536,47 @@ public class Player : Singleton<Player> {
         if (hit)
         {
             GameObject destroyable = hit.collider.gameObject;
+            Debug.Log(hit.collider.tag);
             if (destroyable.CompareTag("DestroyableObject"))
             {
                 destroyable.GetComponent<DestroyableObject>().GetDestroyed();
             }
 
-            var damagable = hit.collider.GetComponent<IDamageable>();
+            /*var damagable = hit.collider.GetComponent<IDamageable>();
             if (damagable != null)
             {
                 damagable.GetDamage();
-            }
+            }*/
         } else if (hit2)
         {
             GameObject destroyable = hit2.collider.gameObject;
+            Debug.Log(hit.collider.tag);
             if (destroyable.CompareTag("DestroyableObject"))
             {
                 destroyable.GetComponent<DestroyableObject>().GetDestroyed();
             }
 
-            var damagable = hit2.collider.GetComponent<IDamageable>();
+            /*var damagable = hit2.collider.GetComponent<IDamageable>();
             if (damagable != null)
             {
                 damagable.GetDamage();
-            }
+            }*/
         } else if (hit3)
         {
             GameObject destroyable = hit3.collider.gameObject;
+            Debug.Log(hit.collider.tag);
             if (destroyable.CompareTag("DestroyableObject"))
             {
                 destroyable.GetComponent<DestroyableObject>().GetDestroyed();
             }
 
+            /*
             var damagable = hit3.collider.GetComponent<IDamageable>();
             if (damagable != null)
             {
                 damagable.GetDamage();
             }
+            */
         }
         //else if (sfx.attackMiss != null)
         //    audioSource.PlayOneShot(sfx.attackMiss);

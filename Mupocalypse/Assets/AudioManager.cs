@@ -9,6 +9,7 @@ public class AudioManager : Singleton<AudioManager>
 {
     [Header("Safe")]
     public AudioClip[] audioClips;
+    public AudioClip[] paperRips;
     public AudioClip current;
     public float masterVolume;
     public float effectVolume;
@@ -26,6 +27,7 @@ public class AudioManager : Singleton<AudioManager>
         current = audioClips[1];
         sources = GetComponents<AudioSource>();
         SceneManager.sceneLoaded += OnSceneLoaded;
+        StartCoroutine(PaperRips());
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -116,6 +118,65 @@ public class AudioManager : Singleton<AudioManager>
     }
     
     #endregion
+    
+    #region Moonwalk
+    
+    private float moonwalk;
+    public void StartMoonwalk()
+    {
+        sources[0].volume = 0;
+        int rand = Random.Range(0, 2);
+        sources[2].PlayOneShot(audioClips[6+rand]);
+    }
+
+    public void StopMoonwalk()
+    {
+        StartCoroutine(FadeMoonwalk(0.2f));
+        StartCoroutine(FadeMusic(0.5f));
+    }
+
+    IEnumerator FadeMoonwalk(float duration)
+    {
+        float currentTime = 0;
+
+        while (currentTime < duration)
+        {
+            sources[2].volume = 1- currentTime / duration;
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+
+        sources[2].Stop();
+        sources[2].volume = 1;
+    }
+
+    IEnumerator FadeMusic(float duration)
+    {
+        float currentTime = 0;
+
+        while (currentTime < duration)
+        {
+            sources[0].volume = currentTime / duration;
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        sources[0].volume = 1;
+    }
+    #endregion
+    
+    #region Environment
+
+    IEnumerator PaperRips()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(15, 30));
+            sources[3].PlayOneShot(paperRips[Random.Range(0, paperRips.Length)]);
+        }
+    }
+    
+    #endregion
 
     void SetMaster(float value)
     {
@@ -138,7 +199,6 @@ public class AudioManager : Singleton<AudioManager>
     void PlayClip(AudioClip clip)
     {
         sources[0].clip = clip;
-        sources[0].time = 5f;
         sources[0].Play();
     }
 
@@ -164,37 +224,8 @@ public class AudioManager : Singleton<AudioManager>
         PlayClip(clip);
     }
 
-    private float moonwalk;
-    public void StartMoonwalk()
-    {
-        moonwalk = musicVolume;
-        SetMusic(-80);
-        int rand = (int)(Random.Range(0f, 1f) * 2);
-        sources[2].PlayOneShot(audioClips[6+rand]);
-    }
 
-    public void StopMoonwalk()
-    {
-        StartCoroutine(FadeMoonwalk(0.5f));
-        StartCoroutine(FadeMusic(0.5f, moonwalk));
-    }
-
-    IEnumerator FadeMoonwalk(float duration)
-    {
-        float currentTime = 0;
-
-        while (currentTime < duration)
-        {
-            sources[2].volume -= currentTime / duration;
-            currentTime += Time.deltaTime;
-            yield return null;
-        }
-
-        sources[2].Stop();
-        sources[2].volume = 1;
-    }
-
-    IEnumerator FadeMusic (float duration, float value)
+    /*IEnumerator FadeMusic (float duration, float value)
     {
         float currentTime = 0;
         float currentVolume = musicVolume;
@@ -208,9 +239,9 @@ public class AudioManager : Singleton<AudioManager>
         }
 
         SetMusic(value);
-    }
+    }*/
     
-
+    /*
     public static IEnumerator StartFade(AudioMixer audioMixer, string exposedParam, float duration, float targetVolume)
     {
         float currentTime = 0;
@@ -228,4 +259,5 @@ public class AudioManager : Singleton<AudioManager>
         }
         yield break;
     }
+    */
 }
