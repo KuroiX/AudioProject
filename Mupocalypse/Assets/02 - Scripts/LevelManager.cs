@@ -38,11 +38,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
-        Player.Instance.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        if (scene.buildIndex == 0)
-        {
-            Destroy(gameObject);
-        }
+        
     }
 
     /*public void OnEscape(InputAction.CallbackContext context)

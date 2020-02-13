@@ -8,8 +8,6 @@ public class GameManager : Singleton<GameManager>
     public int spawnID;
     public int savePoint;
 
-    public AudioClip[] clips;
-
     protected override void OnEnableCallback()
     {
         SceneManager.sceneLoaded += OnSceneLoad;
@@ -19,7 +17,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (scene.buildIndex == 0)
         {
-            Destroy(gameObject);
+            spawnID = 0;
         }
     }
 }

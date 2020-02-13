@@ -103,7 +103,8 @@ public class PauseMenu : MonoBehaviour
 
     public void Exit()
     {
-        AudioManager.Instance.SetPaused(false);
-        LevelManager.Instance.OnEscape(); 
+        Application.Quit();
+        //AudioManager.Instance.SetPaused(false);
+        //LevelManager.Instance.OnEscape(); 
     }
 }

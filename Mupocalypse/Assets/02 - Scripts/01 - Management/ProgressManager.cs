@@ -59,7 +59,7 @@ public class ProgressManager : Singleton<ProgressManager>
     {
         if (scene.buildIndex == 0)
         {
-            Destroy(gameObject);
+            Reset();
         }
     }
 }
