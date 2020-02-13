@@ -8,6 +8,7 @@ public class AudioDelegate : MonoBehaviour
     public Slider masterSlider;
     public Slider effectSlider;
     public Slider musicSlider;
+    public Slider environmentSlider;
 
     private AudioManager am;
     void Start()
@@ -31,10 +32,16 @@ public class AudioDelegate : MonoBehaviour
         am.OnMusicChanged(value);        
     }
 
+    public void OnEnvironmentChanged(float value)
+    {
+        am.OnEnvironmentChanged(value);
+    }
+
     public void SetSlider()
     {
         masterSlider.value = am.masterVolume;
         effectSlider.value = am.effectVolume;
         musicSlider.value = am.musicVolume;
+        environmentSlider.value = am.environmentVolume;
     }
 }

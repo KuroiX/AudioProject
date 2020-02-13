@@ -14,6 +14,7 @@ public class AudioManager : Singleton<AudioManager>
     public float masterVolume;
     public float effectVolume;
     public float musicVolume;
+    public float environmentVolume;
     public AudioMixer mixer;
     public AudioMixerSnapshot unpause;
     public AudioMixerSnapshot pause;
@@ -123,6 +124,12 @@ public class AudioManager : Singleton<AudioManager>
         musicVolume = value;
         SetMusic(value);
     }
+
+    public void OnEnvironmentChanged(float value)
+    {
+        environmentVolume = value;
+        SetEnvironment(value);
+    }
     
     #endregion
     
@@ -193,7 +200,7 @@ public class AudioManager : Singleton<AudioManager>
 
     void SetEffect(float value)
     {
-        mixer.SetFloat("VolumeEffects", value);
+        mixer.SetFloat("VolumeSFX", value);
         effectVolume = value;
     }
 
@@ -201,6 +208,12 @@ public class AudioManager : Singleton<AudioManager>
     {
         mixer.SetFloat("VolumeMusic", value);
         musicVolume = value;
+    }
+
+    void SetEnvironment(float value)
+    {
+        mixer.SetFloat("VolumeEnvironment", value);
+        environmentVolume = value;
     }
 
     void PlayClip(AudioClip clip)

@@ -70,7 +70,7 @@ MonoBehaviour:
   current: {fileID: 0}
   masterVolume: 0
   effectVolume: 0
-  musicVolume: -15
+  musicVolume: 0
   mixer: {fileID: 24100000, guid: fd03d885e4e5ef046a2ca85dacff741b, type: 2}
   unpause: {fileID: 5299132429330769310, guid: fd03d885e4e5ef046a2ca85dacff741b, type: 2}
   pause: {fileID: -7810472008039901969, guid: fd03d885e4e5ef046a2ca85dacff741b, type: 2}
@@ -84,7 +84,7 @@ AudioSource:
   m_GameObject: {fileID: 8927869198156953078}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -6684031012589526277, guid: fd03d885e4e5ef046a2ca85dacff741b,
+  OutputAudioMixerGroup: {fileID: -8251419432736775994, guid: fd03d885e4e5ef046a2ca85dacff741b,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: bee01d7e0c51f9346a498a70561341c4, type: 3}
   m_PlayOnAwake: 1
@@ -181,7 +181,7 @@ AudioSource:
   m_GameObject: {fileID: 8927869198156953078}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -8173266279052503703, guid: fd03d885e4e5ef046a2ca85dacff741b,
+  OutputAudioMixerGroup: {fileID: -7913111563615192389, guid: fd03d885e4e5ef046a2ca85dacff741b,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
@@ -278,7 +278,7 @@ AudioSource:
   m_GameObject: {fileID: 8927869198156953078}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -6684031012589526277, guid: fd03d885e4e5ef046a2ca85dacff741b,
+  OutputAudioMixerGroup: {fileID: -8251419432736775994, guid: fd03d885e4e5ef046a2ca85dacff741b,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
