@@ -322,6 +322,7 @@ public class Player : Singleton<Player> {
     public void IncreaseMaxHealth()
     {
         lives.maxLives++;
+        audioSource.PlayOneShot(sfx.unlock);
         UpdateDisplay();
     }
 
