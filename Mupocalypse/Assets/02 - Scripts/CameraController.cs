@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
         player = Player.Instance.transform;
     }
 
-    private void Update() {
+    private void LateUpdate() {
         if (player == null) player = Player.Instance.transform;
 
         innerBoundsRect = new Rect(innerBoundsOffset + transform.Position2D() - innerBounds / 2, innerBounds);

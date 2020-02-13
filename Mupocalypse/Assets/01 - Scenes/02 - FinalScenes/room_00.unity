@@ -27043,6 +27043,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1204544271, guid: 859e5b8820854e94cab15505b4087bf1, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -7913111563615192389, guid: fd03d885e4e5ef046a2ca85dacff741b,
+        type: 2}
     - target: {fileID: 2327344997608035785, guid: 859e5b8820854e94cab15505b4087bf1,
         type: 3}
       propertyPath: m_Color.r
@@ -27123,6 +27128,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2327344997608579314, guid: 859e5b8820854e94cab15505b4087bf1,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -7913111563615192389, guid: fd03d885e4e5ef046a2ca85dacff741b,
+        type: 2}
     - target: {fileID: 2327344997608579316, guid: 859e5b8820854e94cab15505b4087bf1,
         type: 3}
       propertyPath: sfx.ultraboost
