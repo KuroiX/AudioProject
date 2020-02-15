@@ -1,2 +1,2 @@
-# AudioProject
-The game we make for audio and at the gamejam
+# AudioProject Group 5
+Here you can find the source code of Tones of the Deaf
