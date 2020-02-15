@@ -13,6 +13,14 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
     private static readonly object Lock = new object();
     private static Dictionary<System.Type, Singleton<T>> _instances;
 
+    public static void ResetSingleton()
+    {
+        lock (Lock)
+        {
+            _instances = null;
+        }
+    }
+
     public static T Instance
     {
         get
@@ -46,7 +54,10 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
             lock (Lock)
             {
                 if (_instances == null)
+                {
                     _instances = new Dictionary<System.Type, Singleton<T>>();
+                }
+                    
 
                 if (_instances.ContainsKey(this.GetType()))
                     Destroy(this.gameObject);

@@ -9,7 +9,7 @@ public class MainMenu : MonoBehaviour
     public int scene;
     public void StartGame()
     { 
-        SceneManager.LoadScene(scene);
+        SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings-1);
     }
 
     public void Quit()
@@ -31,5 +31,18 @@ public class MainMenu : MonoBehaviour
         //     Destroy(Player.Instance.gameObject);
         // if (LevelManager.Instance != null)
         //     Destroy(LevelManager.Instance.gameObject);
+    }
+
+
+    public GameObject[] buttons;
+    public GameObject options;
+    public void Options(bool on)
+    {
+        foreach (GameObject gO in buttons)
+        {
+            gO.SetActive(!on);
+        }
+
+        options.SetActive(on);
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Unlock Dash
   m_EditorClassIdentifier: 
   sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  color: {r: 0, g: 0.57254905, b: 1, a: 1}
+  color: {r: 1, g: 0.99215686, b: 0.3647059, a: 1}
   effect: 3
   ability: 0
   id: 

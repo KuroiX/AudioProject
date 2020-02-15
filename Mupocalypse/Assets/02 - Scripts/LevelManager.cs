@@ -2,24 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Animator))]
 public class LevelManager : Singleton<LevelManager>
 {
-
-
-    private int _roomID;
+    private int roomId;
     private Animator fade;
 
-    void Start()
+    void Awake()
     {
         fade = GetComponent<Animator>();
     }
     
     public void LoadScene()
     {
-        SceneManager.LoadScene(_roomID + 1);
+        SceneManager.LoadScene(roomId + 1);
         
     }
 
@@ -30,7 +27,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public void FadeOut(int roomID)
     {
-        this._roomID = roomID;
+        this.roomId = roomID;
         fade.SetTrigger("FadeOut");
     }
     
@@ -41,16 +38,17 @@ public class LevelManager : Singleton<LevelManager>
 
     private void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
-        Player.Instance.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        if (scene.buildIndex == 0)
-        {
-            Destroy(gameObject);
-        }
+        
     }
 
-    public void OnEscape(InputAction.CallbackContext context)
+    /*public void OnEscape(InputAction.CallbackContext context)
     {
+        Debug.Log("ah ja");
         if (context.started)
             SceneManager.LoadScene(0);
+    }*/
+    public void OnEscape()
+    {
+        SceneManager.LoadScene(0);
     }
 }

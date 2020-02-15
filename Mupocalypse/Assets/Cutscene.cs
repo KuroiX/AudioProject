@@ -14,7 +14,18 @@ public class Cutscene : MonoBehaviour
     IEnumerator Next()
     {
         yield return new WaitForSeconds(28);
-        GameManager.Instance.GetComponent<AudioSource>().mute = false;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GetComponent<AudioSource>().mute = false;
+        }
         SceneManager.LoadScene(1);
+    }
+
+    void Update()
+    {
+        if (Input.anyKey)
+        {
+            SceneManager.LoadScene(1);
+        }
     }
 }

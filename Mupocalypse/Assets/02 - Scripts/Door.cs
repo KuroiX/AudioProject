@@ -27,7 +27,7 @@ public class Door : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D player)
     {
         
-        if (player.tag == "Player" && condition)
+        if (player.CompareTag("Player") && condition)
         {
             disappear.SetTrigger("Unlock");
         }

@@ -12,6 +12,7 @@ TagManager:
   - DestroyableObject
   - Door
   - Collect Message
+  - Dashable
   layers:
   - Default
   - TransparentFX

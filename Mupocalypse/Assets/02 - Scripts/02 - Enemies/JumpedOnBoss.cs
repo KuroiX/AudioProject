@@ -72,25 +72,33 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             lives -= 1;
             if (lives == 0)
             {
-                GameManager gm = GameManager.Instance;
-                AudioSource source = gm.GetComponent<AudioSource>();
-                gm.clips[0] = gm.clips[2];
-                source.clip = GameManager.Instance.clips[0];
-                source.Play();
+                //TODO: right boss music
+                if (SceneManager.GetActiveScene().buildIndex == 4)
+                {
+                    AudioManager.Instance.current = AudioManager.Instance.audioClips[2];
+                    AudioManager.Instance.StartFade(0.4f, AudioManager.Instance.current);
+                }
+                else
+                {
+                    AudioManager.Instance.current = AudioManager.Instance.audioClips[5];
+                    AudioManager.Instance.StartFade(0.4f, AudioManager.Instance.current);
+                }
+                
+                //AudioManager.Instance.sources[1].PlayOneShot(death);
 
                 if (drop != null)
                 {
                     drop.SetActive(true);
-                    drop.transform.position = transform.position;
+                    drop.transform.position = Vector3.zero;
                 }
 
                 Destroy(this.gameObject);
                 ProgressManager.Instance.defeatedBosses.Add(SceneManager.GetActiveScene().buildIndex, true);
-                GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
+                /*GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
                 foreach (GameObject go in doors)
                 {
                     go.GetComponent<Door>().UnLock();
-                }
+                }*/
             }
             else
             {
@@ -117,15 +125,17 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             float x = Mathf.Abs(transform.position.x - otherObject.transform.position.x);
             float y = Mathf.Abs(transform.position.y - otherObject.transform.position.y);
 
-            if (x <= y && transform.position.y < otherObject.transform.position.y)
+            if (x <= y*10 && transform.position.y - 1 < otherObject.transform.position.y)
             {
                 if (attacking)
                 {
                     // TODO: Player can walk on Boss regularly/gets thrown off
+                    Player.Instance.Jump(bounce);
                 }
                 else
                 {
                     LoseLive();
+                    source.PlayOneShot(hit);
                     Player.Instance.Jump(bounce);
                 }
             }
@@ -151,6 +161,7 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
         if (rand == 0)
         {
             jumping = jumpDuration;
+            source.PlayOneShot(jump);
             animator.SetInteger("State", 1);
         }
         else
@@ -172,6 +183,7 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
     IEnumerator Attack()
     {
         animator.SetInteger("State", 2);
+        PlayFirstPart();
         yield return new WaitForSeconds(1);
         attacking = false;
         if (jumping > 0)
@@ -236,4 +248,26 @@ public class JumpedOnBoss : MonoBehaviour, IDamageable
             yield return new WaitForFixedUpdate();
         }
     }
+
+    #region audio
+
+    public AudioClip attack1;
+    public AudioClip attack2;
+    public AudioClip hit;
+    public AudioClip jump;
+    //public AudioClip death;
+    public AudioSource source;
+
+    public void PlayFirstPart()
+    {
+        source.PlayOneShot(attack1);
+    }
+    
+    //Called from animation
+    public void PlaySecondPart()
+    {
+        source.PlayOneShot(attack2);
+    }
+    
+    #endregion
 }

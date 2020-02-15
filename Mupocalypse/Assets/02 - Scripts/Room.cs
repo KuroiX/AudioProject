@@ -18,6 +18,7 @@ public class Room : MonoBehaviour
     public bool savePointRoom = false;
     private GameObject[] doors;
     public bool bossRoom;
+    public AudioClip clip;
     
     // Start is called before the first frame update
     void Start()
@@ -34,7 +35,7 @@ public class Room : MonoBehaviour
             GameManager.Instance.savePoint = SceneManager.GetActiveScene().buildIndex - 1;
 
 
-        GameManager gm = GameManager.Instance;
+        /*GameManager gm = GameManager.Instance;
         AudioSource source = gm.GetComponent<AudioSource>();
         if (bossRoom && source.clip != gm.clips[1])
         {
@@ -44,41 +45,40 @@ public class Room : MonoBehaviour
         {
             source.clip = gm.clips[0];
             source.Play();
-        }
+        }*/
+        
+        
         
         //if boss room
         if (ProgressManager.Instance.defeatedBosses.ContainsKey(SceneManager.GetActiveScene().buildIndex))
         {
-
+            //Debug.Log("Boss room");
             doors = GameObject.FindGameObjectsWithTag("Door");
             // if Boss hasn't been defeated
             if (!ProgressManager.Instance.defeatedBosses[SceneManager.GetActiveScene().buildIndex])
             {
-
+                //Debug.Log("Boss not defeated");
                 foreach (GameObject door in doors)
                 {
                     door.GetComponent<Door>().Lock();
                 }
+
             }
             else
             {
+                //Debug.Log("Boss defeated");
                 Destroy(GameObject.Find("Boss"));
                 foreach (GameObject door in doors)
                 {
                     door.GetComponent<Door>().UnLock();
                 }
             }
-
-            
-
         }
-            
-            
 
+
+        LevelManager.Instance.FadeIn();
         SetPlayerPos();
         SetCameraPos();
-        
-        LevelManager.Instance.FadeIn();
     }
     
 
@@ -94,13 +94,11 @@ public class Room : MonoBehaviour
 
     public void SetCameraPos()
     {
-
         Vector3 temp = Player.Instance.transform.Position2D().ToVec3();
         temp.z = -10;
         cam.transform.position = temp + new Vector3(0, 3.5f, 0); 
         cam.max = cameraMax;
         cam.min = cameraMin;
-
     }
     
 }

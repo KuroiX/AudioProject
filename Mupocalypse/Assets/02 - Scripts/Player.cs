@@ -6,18 +6,20 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 using UnityEngine.SceneManagement;
+using Random = System.Random;
 
 [RequireComponent(typeof(Rigidbody2D)),
  RequireComponent(typeof(Animator)),
  RequireComponent(typeof(AudioSource))]
-public class Player : Singleton<Player>
-{
+public class Player : Singleton<Player> {
     public enum Ability
     {
         dash,
         jump,
         attack,
-        sprint
+        sprint,
+        ultraboost,
+        moonwalk,
     }
 
     // ? the following are 'protected' to avoid unity warnings
@@ -82,7 +84,9 @@ public class Player : Singleton<Player>
         public AudioClip attackMiss;
         public AudioClip dash;
         public AudioClip death;
+        public AudioClip hit;
         public AudioClip jump;
+        public AudioClip ultraboost;
         public AudioClip land;
         public AudioClip unlock;
     }
@@ -115,11 +119,11 @@ public class Player : Singleton<Player>
     [SerializeField]
     float timeInvulnerable = .4f;
     [SerializeField, Tooltip("Transform to be turned towards direction.")]
-    Transform flip = null;
+    SpriteRenderer flip = null;
     [SerializeField]
     protected SoundEffects sfx;
     [SerializeField]
-    protected NotesSettings notes;
+    //protected NotesSettings notes;
 
     Rigidbody2D rb;
     Animator animator;
@@ -136,10 +140,21 @@ public class Player : Singleton<Player>
     bool invulnerable;
 
     // Abilities unlocked
-    bool jumpUnlocked;
-    bool dashUnlocked;
-    bool attackUnlocked;
-    bool sprintUnlocked;
+    public bool jumpUnlocked;
+    public bool dashUnlocked;
+    public bool attackUnlocked;
+    public bool sprintUnlocked;
+    public bool ultraboostUnlocked;
+    private static readonly int Jump1 = Animator.StringToHash("jump");
+
+    public void DisableAbilities()
+    {
+        jumpUnlocked = false;
+        dashUnlocked = false;
+        attackUnlocked = false;
+        sprintUnlocked = false;
+        ultraboostUnlocked = false;
+    }
 
     #region Singleton
 
@@ -189,6 +204,13 @@ public class Player : Singleton<Player>
             case "Pickup":
                 Heal();
                 break;
+            case "Dashable":
+                if (dashing)
+                {
+                    Destroy(other.gameObject);
+                    Dash();
+                }
+                break;
         }
         // ! end
     }
@@ -207,18 +229,27 @@ public class Player : Singleton<Player>
     #endregion
     #region Input
 
+    public bool paused;
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<float>();
-        if (moveInput != 0)
+        if (moveInput != 0 && !paused)
         {
             var d = direction;
             if (moveInput > 0)
+            {
                 d = 1;
+                flip.flipX = isMoonwalking;
+            }
+
             else
+            {
                 d = -1;
-            if (d != direction)
-                DirectionFlipped();
+                flip.flipX = !isMoonwalking;
+            }
+                
+            //if (d != direction)
+                //DirectionFlipped();
             direction = d;
             animator.SetBool("walking", true);
         }
@@ -228,7 +259,7 @@ public class Player : Singleton<Player>
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.started && jumpUnlocked)
+        if (context.started && jumpUnlocked && !paused)
         {
             jumpButtonPressed = true;
             if (grounded && canMove && !dashing)
@@ -240,14 +271,14 @@ public class Player : Singleton<Player>
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (context.started && dashUnlocked)
+        if (context.started && dashUnlocked && !paused)
             if (canMove && (canDash || grounded) && !dashing)
                 Dash();
     }
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        if (context.started && sprintUnlocked)
+        if (context.started && sprintUnlocked && !paused)
             sprinting = true;
         else if (context.canceled)
             sprinting = false;
@@ -255,7 +286,7 @@ public class Player : Singleton<Player>
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (context.started && attackUnlocked)
+        if (context.started && attackUnlocked && !paused)
             Attack();
     }
 
@@ -265,6 +296,10 @@ public class Player : Singleton<Player>
     public void Damage()
     {
         if (invulnerable) return;
+        
+        rb.AddForce(Vector2.left*(direction > 0 ? 500: -500));
+        audioSource.PlayOneShot(sfx.hit);
+        
         if (lives.lives == 1)
             Die();
         else
@@ -287,6 +322,7 @@ public class Player : Singleton<Player>
     public void IncreaseMaxHealth()
     {
         lives.maxLives++;
+        audioSource.PlayOneShot(sfx.unlock);
         UpdateDisplay();
     }
 
@@ -296,19 +332,25 @@ public class Player : Singleton<Player>
         {
             case Ability.attack:
                 attackUnlocked = true;
-                notes.notes.SetTrigger(notes.attackTrigger);
+                //notes.notes.SetTrigger(notes.attackTrigger);
                 break;
             case Ability.jump:
                 jumpUnlocked = true;
-                notes.notes.SetTrigger(notes.jumpTrigger);
+                //notes.notes.SetTrigger(notes.jumpTrigger);
                 break;
             case Ability.dash:
                 dashUnlocked = true;
-                notes.notes.SetTrigger(notes.dashTrigger);
+                //notes.notes.SetTrigger(notes.dashTrigger);
                 break;
             case Ability.sprint:
                 sprintUnlocked = true;
-                notes.notes.SetTrigger(notes.sprintTrigger);
+                //notes.notes.SetTrigger(notes.sprintTrigger);
+                break;
+            case Ability.ultraboost:
+                ultraboostUnlocked = true;
+                break;
+            case Ability.moonwalk:
+                moonwalkUnlocked = true;
                 break;
         }
         audioSource.PlayOneShot(sfx.unlock);
@@ -316,12 +358,38 @@ public class Player : Singleton<Player>
 
     public void Jump(float factor = 1)
     {
+        /*if (rb.velocity.y > 0)
+        {
+            return;
+        }*/
+        if (dashing) DashEnd();
+        bool ultra = rb.velocity.y > 0 && platform != null;
+        if (ultra)
+        {
+            Debug.Log("If ultraboostable");
+            if (ultraboostUnlocked)
+            {
+                UltraBoost();
+            }
+            else
+            {
+                Debug.Log("Ultraboost not unlocked");
+                return;
+            }
+        }
+        
         canDash = true;
         rb.velocity += Vector2.up * jump.initialVelocity * factor;
-        if (sfx.jump != null)
+        if (sfx.jump != null && !(ultra && ultraboostUnlocked))
             audioSource.PlayOneShot(sfx.jump);
-        animator.SetTrigger("jump");
+        animator.SetTrigger(Jump1);
         animator.ResetTrigger("hit ground");
+    }
+
+    void UltraBoost() {
+        GetComponent<TrailRenderer>().emitting = true;
+        if (sfx.ultraboost != null)
+            audioSource.PlayOneShot(sfx.ultraboost);
     }
 
     #endregion
@@ -329,7 +397,7 @@ public class Player : Singleton<Player>
     private void OnLoad(Scene scene, LoadSceneMode mode)
     {
         lives.display = GameObject.FindGameObjectWithTag(lives.displayTagName)?.transform;
-        notes.notes = GameObject.FindGameObjectWithTag(notes.notesTag)?.GetComponent<Animator>();
+        /*notes.notes = GameObject.FindGameObjectWithTag(notes.notesTag)?.GetComponent<Animator>();
         if (attackUnlocked)
             notes.notes.SetTrigger(notes.attackTrigger);
         if (jumpUnlocked)
@@ -337,7 +405,7 @@ public class Player : Singleton<Player>
         if (sprintUnlocked)
             notes.notes.SetTrigger(notes.sprintTrigger);
         if (dashUnlocked)
-            notes.notes.SetTrigger(notes.dashTrigger);
+            notes.notes.SetTrigger(notes.dashTrigger);*/
         UpdateDisplay();
     }
 
@@ -366,10 +434,12 @@ public class Player : Singleton<Player>
 
     void Dash()
     {
+        if (isAttacking) return;
         animator.ResetTrigger("hit ground");
         animator.SetTrigger("dash");
         dashing = true;
         canDash = false;
+        transform.position += Vector3.up * 0.05f;
         rb.velocity += dash.speed * direction * Vector2.right;
         rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
         if (sfx.dash != null)
@@ -379,44 +449,151 @@ public class Player : Singleton<Player>
     // called from the animation
     void DashEnd()
     {
-        dashing = false;
-        rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-        rb.velocity -= dash.speed * direction * Vector2.right * dash.slowdown;
-        if (Vector2.Dot(rb.velocity, Vector2.right * direction) < 0) // dont move backwards
-            rb.velocity = new Vector2(0, rb.velocity.y);
+        if (dashing)
+        {
+            dashing = false;
+            rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+            rb.velocity -= dash.speed * direction * Vector2.right * dash.slowdown;
+            if (Vector2.Dot(rb.velocity, Vector2.right * direction) < 0) // dont move backwards
+                rb.velocity = new Vector2(0, rb.velocity.y);
+        }
     }
 
     void Move()
     {
+        if (dashing) return;
         var v = moveInput * Vector2.right * Time.fixedDeltaTime * move.speed;
         if (sprinting)
             v *= move.sprintMultiplier;
         rb.position += v;
     }
 
-    void Attack()
+    #region Moonwalk
+    private bool isAttacking;
+    private bool flipped;
+
+    public bool moonwalkUnlocked;
+    private bool isMoonwalking;
+    
+    public void FlipAfterAttack()
+    {
+        isAttacking = false;
+        if (flipped && IsGrounded())
+        {
+            /*if (moonwalkUnlocked && !isMoonwalking)
+            {
+                isMoonwalking = true;
+                StartCoroutine(Moonwalk());
+            }
+            else
+            {*/
+                Debug.Log("hier?");
+                DirectionFlipped();
+                flipped = false;
+            //}
+        }
+
+        /*isAttacking = false;
+        if (flipped)
+        {
+            //Debug.Log("Hello");
+            DirectionFlipped();
+            flipped = false;
+        }*/
+    }
+
+    IEnumerator Moonwalk()
+    {
+        //Debug.Log("moonwalk started");
+        AudioManager.Instance.StartMoonwalk();
+        if (grounded) rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
+        yield return new WaitForSeconds(3.3f);
+        rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        AudioManager.Instance.StopMoonwalk();
+        //Debug.Log("Hello");
+        isMoonwalking = false;
+        //Debug.Log("moonwalk end");
+    }
+    
+    void Update()
+    {
+        if (moonwalkUnlocked && !isMoonwalking && Input.GetKeyDown(KeyCode.Tab))
+        {
+            isMoonwalking = true;
+            StartCoroutine(Moonwalk());
+        }
+    }
+
+    
+    
+    #endregion
+
+    public void CheckAttack()
     {
         var hit = Physics2D.Raycast(rb.position, Vector2.right * direction, attack.range, attack.layers);
-        animator.SetTrigger("attack");
-        if (grounded) canMove = false;
-        if (sfx.attackHit != null)
-            audioSource.PlayOneShot(sfx.attackHit);
+        var hit2 = Physics2D.Raycast(rb.position+new Vector2(0, 0.5f), Vector2.right * direction, attack.range, attack.layers);
+        var hit3 = Physics2D.Raycast(rb.position-new Vector2(0, 0.5f), Vector2.right * direction, attack.range, attack.layers);
+
         if (hit)
         {
             GameObject destroyable = hit.collider.gameObject;
-            if (destroyable.tag =="DestroyableObject")
+            Debug.Log(hit.collider.tag);
+            if (destroyable.CompareTag("DestroyableObject"))
             {
                 destroyable.GetComponent<DestroyableObject>().GetDestroyed();
             }
-            
-            var damagable = hit.collider.GetComponent<IDamageable>();
+
+            /*var damagable = hit.collider.GetComponent<IDamageable>();
+            if (damagable != null)
+            {
+                damagable.GetDamage();
+            }*/
+        } else if (hit2)
+        {
+            GameObject destroyable = hit2.collider.gameObject;
+            Debug.Log(hit.collider.tag);
+            if (destroyable.CompareTag("DestroyableObject"))
+            {
+                destroyable.GetComponent<DestroyableObject>().GetDestroyed();
+            }
+
+            /*var damagable = hit2.collider.GetComponent<IDamageable>();
+            if (damagable != null)
+            {
+                damagable.GetDamage();
+            }*/
+        } else if (hit3)
+        {
+            GameObject destroyable = hit3.collider.gameObject;
+            Debug.Log(hit.collider.tag);
+            if (destroyable.CompareTag("DestroyableObject"))
+            {
+                destroyable.GetComponent<DestroyableObject>().GetDestroyed();
+            }
+
+            /*
+            var damagable = hit3.collider.GetComponent<IDamageable>();
             if (damagable != null)
             {
                 damagable.GetDamage();
             }
+            */
         }
-        else if (sfx.attackMiss != null)
-            audioSource.PlayOneShot(sfx.attackMiss);
+        //else if (sfx.attackMiss != null)
+        //    audioSource.PlayOneShot(sfx.attackMiss);
+    }
+    void Attack()
+    {
+        if (dashing) DashEnd();
+        if (!isMoonwalking && !isAttacking)
+        {
+            isAttacking = true;
+            animator.SetTrigger("attack");
+            if (grounded) canMove = false;
+            if (sfx.attackHit != null)
+                audioSource.PlayOneShot(sfx.attackHit);
+            CheckAttack();
+        }
     }
 
     void Die()
@@ -436,11 +613,24 @@ public class Player : Singleton<Player>
     void DirectionFlipped()
     {
         if (flip != null && canMove)
-            flip.Rotate(0, 180, 0);
+        {
+            flip.flipX = true;
+        }
+        //Debug.Log("DirectionFlipped");
+        // For moonwalking
+        if (isAttacking && !flipped && IsGrounded())
+        {
+            flipped = true;
+        }
+        else
+        {
+            flipped = false;
+        }
     }
 
     void Landed()
     {
+        GetComponent<TrailRenderer>().emitting = false;
         animator.SetTrigger("hit ground");
         animator.SetBool("on platform", platform != null);
     }
@@ -476,4 +666,28 @@ public class Player : Singleton<Player>
     }
 
     void CalculateJumpVelocity() => jump.initialVelocity = Mathf.Sqrt(2 * -Physics2D.gravity.y * jump.height);
+    
+    #region audio
+
+    public AudioClip[] footsteps;
+    public AudioSource footstepSource;
+    private int last = 0;
+
+    public void PlayFootstep()
+    {
+        if (!grounded) return;
+        int rand = 0;
+        while (rand == last)
+        {
+            rand = (int) (UnityEngine.Random.Range(0f, 1f) * footsteps.Length);
+            
+        }
+        //Debug.Log(rand);
+        last = rand;
+        footstepSource.PlayOneShot(footsteps[rand]);
+        //last = (last + 1) % footsteps.Length;
+    }
+
+    #endregion
+    
 }
